@@ -1,12 +1,17 @@
-package fr.ubo.dosi.CSCIEVAE.enstities;
+package fr.ubo.dosi.CSCIEVAE.entity;
 
 import javax.persistence.*;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import java.io.Serializable;
+
 
 @Entity
 @Table(name = "UNITE_ENSEIGNEMENT")
+@IdClass(UniteEnseignementId.class)
 public class UniteEnseignement implements Serializable {
-    @Id
+	@Id
     @Column(name = "CODE_FORMATION")
     private String codeFormation;
 
