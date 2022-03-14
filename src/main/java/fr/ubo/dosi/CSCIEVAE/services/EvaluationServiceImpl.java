@@ -9,6 +9,7 @@ import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,8 @@ public class EvaluationServiceImpl implements EvaluationService{
     public Evaluation getEvalutionParCodeUe(String codeUe) {
         log.info("Recherche de évaluation associée à une UE de code "+codeUe+
                 " en service");
+        Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+
         return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
     }
 
@@ -100,6 +103,13 @@ public class EvaluationServiceImpl implements EvaluationService{
                         return (QuestionDTO) Collections.emptyList();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Rubrique> getRubriquesForEvaluationCreation() {
+        return rubriqueRepository.findAll(
+                Sort.by(Sort.Direction.ASC,"ordre")
+        );
     }
 
 

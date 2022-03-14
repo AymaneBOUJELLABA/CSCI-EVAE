@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @SpringBootTest
 class CsciEvaeApplicationTests {
@@ -29,6 +32,15 @@ class CsciEvaeApplicationTests {
 	/* Tests d'integrations */
 	@Test
 	public void testGetAllEvaluation() throws URISyntaxException {
+
+		String localUrl = baseUrl+"/";
+		URI uri = new URI(localUrl);
+
+		ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+
+		//Verify request succeed
+		Assertions.assertEquals(200, result.getStatusCodeValue());
+		Assertions.assertTrue(Objects.requireNonNull(result.getBody()).contains("data"));
 
 	}
 

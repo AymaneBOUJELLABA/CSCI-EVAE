@@ -20,4 +20,6 @@ public interface EvaluationService {
 
     List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique);
 
+    List<Rubrique> getRubriquesForEvaluationCreation();
+
 }

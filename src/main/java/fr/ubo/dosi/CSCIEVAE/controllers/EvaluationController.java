@@ -2,6 +2,7 @@ package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
@@ -35,15 +36,17 @@ public class EvaluationController {
 
     @GetMapping("/ue")
     @ResponseBody
-    public ResponseEntity<Evaluation> getEvationByCodeUE(@RequestParam String codeUe){
+    public ResponseEntity<EvaluationDTO> getEvationByCodeUE(@RequestParam String codeUe){
         Evaluation evaluation = evaluationService.getEvalutionParCodeUe(codeUe);
         if (evaluation == null) {
             log.error("Evalution not found pour l'UE "+codeUe);
             throw new EvaluationNotfoundException();
         } else {
+            EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);
+            evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(evaluation.getIdEvaluation()));
             log.info("Recherche de l'évaluation de l'UE :" + codeUe);
             return new ResponseEntity<>(
-                    evaluationService.getEvalutionParCodeUe(codeUe),
+                    evaluationDTO,
                     HttpStatus.FOUND);
         }
     }
@@ -65,4 +68,13 @@ public class EvaluationController {
                     HttpStatus.FOUND);
         }
     }
+
+    @GetMapping("/rubriques")
+    @ResponseBody
+    public ResponseEntity<List<Rubrique>> getAllRubriquesForEvaluationCreation(){
+        return new ResponseEntity<>(
+                evaluationService.getRubriquesForEvaluationCreation(),
+                HttpStatus.ACCEPTED);
+    }
+
 }
