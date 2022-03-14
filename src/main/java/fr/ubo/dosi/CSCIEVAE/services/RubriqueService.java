@@ -2,16 +2,17 @@ package fr.ubo.dosi.CSCIEVAE.services;
 
 import java.util.List;
 
+import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
 
 public interface RubriqueService
 {
-	public List<Rubrique> listdesRubriques();
+	public List<RubriqueDTO> listdesRubriques() throws Exception;
 	
-	public Rubrique chercherRubriqueParId(Long id);
+	public RubriqueDTO chercherRubriqueParId(Long id) throws Exception;
 	
-	public Rubrique ajouterRubrique(Rubrique entity);
+	public RubriqueDTO ajouterRubrique(Rubrique entity);
 	
-	public List<Rubrique> ajouterAllRubriques(List<Rubrique> list);
+	public List<RubriqueDTO> modifierOrdreRubrique(List<Rubrique> list);
 	
 }
