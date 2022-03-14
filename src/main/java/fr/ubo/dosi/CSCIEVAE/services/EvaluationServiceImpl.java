@@ -7,6 +7,7 @@ import fr.ubo.dosi.CSCIEVAE.enstities.Qualificatif;
 import fr.ubo.dosi.CSCIEVAE.enstities.Question;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
+@Log4j2
 public class EvaluationServiceImpl implements EvaluationService{
 
     @Autowired
@@ -33,23 +36,29 @@ public class EvaluationServiceImpl implements EvaluationService{
 
     @Override
     public List<Evaluation> getAllEvalutions() {
+        log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
     @Override
     public Evaluation getEvalutionParCodeUe(String codeUe) {
+        log.info("Recherche de évaluation associée à une UE de code "+codeUe+
+                " en service");
         return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
     }
 
     @Override
     public Evaluation getEvalutionParId(Long id) {
-        if (evaluationRepository.findById(id).isPresent())
+
+        if (evaluationRepository.findById(id).isPresent()) {
+            log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
-        else return null;
+        }else
+            log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
+            return null;
     }
 
     @Override
-    @Transactional
     public List<RubriqueDTO> getRubriqueEvaluation(Long idEvaluation) {
         return rubriqueEvalutionRepository.findAllByIdEvaluationOrderByOrdreAsc(idEvaluation)
                 .stream()
@@ -72,7 +81,6 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Override
-    @Transactional
     public List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique) {
         return questionEvaluationRepository.findAllByIdRubriqueEvaluationOrderByOrdreAsc(idRubrique)
                 .stream()
