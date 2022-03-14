@@ -125,6 +125,12 @@ public class RubriqueServiceImpl implements RubriqueService
 			throw new Exception("Erreur Modifier Ordre Rubrique"+ e);
 		}		
 	}
+
+	@Override
+	public Long chercherMaxOrdre()
+	{
+		return rubriqueRepository.findMaxOrdre();
+	}
 	
 	
 

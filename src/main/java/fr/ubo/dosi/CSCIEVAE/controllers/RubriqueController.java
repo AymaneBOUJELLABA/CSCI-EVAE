@@ -30,7 +30,7 @@ public class RubriqueController
 	RubriqueService rubriqueService;
 	
 	@GetMapping
-	public ResponseEntity<List<RubriqueDTO>> getAllRubriques()
+	public ResponseEntity<Object> getAllRubriques()
 	{
 		try
 		{
@@ -39,26 +39,31 @@ public class RubriqueController
 		}catch(Exception e)
 		{
 			logger.error("Error : "+e);
-			return new ResponseEntity<>(null,HttpStatus.SERVICE_UNAVAILABLE);
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 	
 	@PostMapping
-	public ResponseEntity<RubriqueDTO> addRubrique(@RequestBody Rubrique entity)
+	public ResponseEntity<Object> addRubrique(@RequestBody Rubrique entity)
 	{
 		try
 		{
+			if(entity.getOrdre() == null || entity.getOrdre()<0)
+			{
+				logger.warn("Aucun ordre saisie!! --- affectation du l'ordre maximale");
+				entity.setOrdre(rubriqueService.chercherMaxOrdre()+1);
+			}
 			RubriqueDTO r = rubriqueService.ajouterRubrique(entity);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 		}catch(Exception e)
 		{
 			logger.error(e);
-			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@PutMapping("/updateOrdre")
-	public ResponseEntity<List<RubriqueDTO>> updateAllRubriques(@RequestBody List<RubriqueOrdreUpdateMessage> list)
+	public ResponseEntity<Object> updateAllRubriques(@RequestBody List<RubriqueOrdreUpdateMessage> list)
 	{
 		try 
 		{
@@ -68,7 +73,7 @@ public class RubriqueController
 		}catch(Exception e)
 		{
 			logger.error(e);
-			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

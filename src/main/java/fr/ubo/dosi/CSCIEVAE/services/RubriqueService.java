@@ -16,4 +16,5 @@ public interface RubriqueService
 	
 	public List<RubriqueDTO> modifierOrdreRubrique(List<RubriqueOrdreUpdateMessage> list) throws Exception;
 	
+	public Long chercherMaxOrdre();
 }
