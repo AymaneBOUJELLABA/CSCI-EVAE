@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 import fr.ubo.dosi.CSCIEVAE.services.RubriqueService;
 
 @RestController
@@ -29,25 +30,25 @@ public class RubriqueController
 	RubriqueService rubriqueService;
 	
 	@GetMapping
-	public List<RubriqueDTO> getAllRubriques()
+	public ResponseEntity<List<RubriqueDTO>> getAllRubriques()
 	{
 		try
 		{
-			List<Rubrique> r = rubriqueService.listdesRubriques();
-			return r;
+			List<RubriqueDTO> r = rubriqueService.listdesRubriques();
+			return new ResponseEntity<>(r,HttpStatus.OK);
 		}catch(Exception e)
 		{
 			logger.error("Error : "+e);
+			return new ResponseEntity<>(null,HttpStatus.SERVICE_UNAVAILABLE);
 		}
-		return null;
 	}
 	
 	@PostMapping
-	public ResponseEntity<Rubrique> addRubrique(@RequestBody Rubrique entity)
+	public ResponseEntity<RubriqueDTO> addRubrique(@RequestBody Rubrique entity)
 	{
 		try
 		{
-			Rubrique r =rubriqueService.ajouterRubrique(entity);
+			RubriqueDTO r = rubriqueService.ajouterRubrique(entity);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 		}catch(Exception e)
 		{
@@ -56,18 +57,18 @@ public class RubriqueController
 		}
 	}
 	
-	@PutMapping("/all")
-	public ResponseEntity<List<Rubrique>> updateAllRubriques(@RequestBody List<Rubrique> list)
+	@PutMapping("/updateOrdre")
+	public ResponseEntity<List<RubriqueDTO>> updateAllRubriques(@RequestBody List<RubriqueOrdreUpdateMessage> list)
 	{
 		try 
 		{
-			List<Rubrique> r = rubriqueService.ajouterAllRubriques(list);
+			List<RubriqueDTO> r = rubriqueService.modifierOrdreRubrique(list);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 			
 		}catch(Exception e)
 		{
 			logger.error(e);
-			return new ResponseEntity<>(new ArrayList<Rubrique>(),HttpStatus.OK);
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

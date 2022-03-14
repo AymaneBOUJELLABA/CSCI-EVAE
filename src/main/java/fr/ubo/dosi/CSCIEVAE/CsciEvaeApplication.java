@@ -24,14 +24,14 @@ public class CsciEvaeApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		enseignantRepository.findAll().forEach(
+		/*enseignantRepository.findAll().forEach(
 				e -> {
 					System.out.println("Nom enseignant : "+e.getNom());
 					System.out.println("Prenom enseignant : "+e.getPrenom());
 					System.out.println("Email enseignant : "+e.getEmailUbo());
 					System.out.println("Telephone enseignant : "+e.getMobile());
 				}
-		);
+		);*/
 		
 		
 		/*Gson gson = new Gson();

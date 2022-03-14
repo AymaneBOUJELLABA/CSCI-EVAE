@@ -10,5 +10,8 @@ import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
 @Repository
 public interface RubriqueRepository extends JpaRepository<Rubrique, Long>
 {
-	List<Rubrique> findAllOrderByOrdreAsc();
+	List<Rubrique> findAllByOrderByOrdreAsc();
+	
+	Rubrique findByDesignation(String designation);
+	
 }

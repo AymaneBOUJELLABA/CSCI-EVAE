@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 
 public interface RubriqueService
 {
@@ -11,8 +12,8 @@ public interface RubriqueService
 	
 	public RubriqueDTO chercherRubriqueParId(Long id) throws Exception;
 	
-	public RubriqueDTO ajouterRubrique(Rubrique entity);
+	public RubriqueDTO ajouterRubrique(Rubrique entity) throws Exception;
 	
-	public List<RubriqueDTO> modifierOrdreRubrique(List<Rubrique> list);
+	public List<RubriqueDTO> modifierOrdreRubrique(List<RubriqueOrdreUpdateMessage> list) throws Exception;
 	
 }

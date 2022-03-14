@@ -3,16 +3,15 @@ package fr.ubo.dosi.CSCIEVAE.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.catalina.mapper.Mapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.ubo.dosi.CSCIEVAE.controllers.RubriqueController;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueRepository;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 @Service
@@ -32,7 +31,7 @@ public class RubriqueServiceImpl implements RubriqueService
 	{
 		try
 		{
-			List<Rubrique> result = rubriqueRepository.findAllOrderByOrdreAsc();
+			List<Rubrique> result = rubriqueRepository.findAllByOrderByOrdreAsc();
 			List<RubriqueDTO> resultDTO = new ArrayList<RubriqueDTO>();
 			
 			for(Rubrique rub : result)
@@ -68,15 +67,63 @@ public class RubriqueServiceImpl implements RubriqueService
 	}
 
 	@Override
-	public RubriqueDTO ajouterRubrique(Rubrique entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public RubriqueDTO ajouterRubrique(Rubrique entity) throws Exception
+	{
+		try
+		{
+			Rubrique rub = rubriqueRepository.findByDesignation(entity.getDesignation());
+			if(rub!=null)
+			{
+				throw new Exception("Rubrique existe dèja!");
+			}
+			
+			Rubrique newRub = rubriqueRepository.save(entity);
+			return mapper.rubriqueMapperToDTO(newRub, null);
+			
+		}catch(Exception e)
+		{
+			logger.error("Erreur Ajouter Rubrique",e);
+			throw new Exception("Erreur lors de l'ajout du rubrique"+e);
+		}
 	}
 
+	
+	
+	//{ idRubrique , nouveauOrdre : }
 	@Override
-	public List<RubriqueDTO> modifierOrdreRubrique(List<Rubrique> list) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RubriqueDTO> modifierOrdreRubrique(List<RubriqueOrdreUpdateMessage> list) throws Exception
+	{
+		try
+		{
+			List<RubriqueDTO> result = new ArrayList<RubriqueDTO>();
+			
+			for(RubriqueOrdreUpdateMessage item : list)
+			{
+				
+				if(rubriqueRepository.findById(item.getIdRubrique()).isEmpty())
+				{
+					logger.error("ID " + item.getIdRubrique() +" N'existe pas dans la table rubrique!!");
+					throw new Exception("ID " + item.getIdRubrique() +" N'existe pas dans la table rubrique!!");
+				}
+				else
+				{
+					Rubrique r = rubriqueRepository.findById(item.getIdRubrique()).get();
+					//modifier l'ordre
+					r.setOrdre(item.getOrdre());
+					//sauvegarder les modifications
+					Rubrique newR = rubriqueRepository.save(r);
+					//ajouter la nouvelle rubrique dans le resultat du sortie
+					result.add(mapper.rubriqueMapperToDTO(newR, 
+								evaluationService.getQuestionRubriqueForEvaluation(item.getIdRubrique())));
+				}
+			}
+			return result;
+			
+		}catch(Exception e)
+		{
+			logger.error("Erreur Modifier Ordre Rubrique");
+			throw new Exception("Erreur Modifier Ordre Rubrique"+ e);
+		}		
 	}
 	
 	
