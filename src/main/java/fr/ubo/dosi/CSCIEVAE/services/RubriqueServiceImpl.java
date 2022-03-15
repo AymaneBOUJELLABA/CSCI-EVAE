@@ -100,7 +100,7 @@ public class RubriqueServiceImpl implements RubriqueService
 			for(RubriqueOrdreUpdateMessage item : list)
 			{
 				
-				if(rubriqueRepository.findById(item.getIdRubrique()).isEmpty())
+				if(!rubriqueRepository.findById(item.getIdRubrique()).isPresent())
 				{
 					logger.error("ID " + item.getIdRubrique() +" N'existe pas dans la table rubrique!!");
 					throw new Exception("ID " + item.getIdRubrique() +" N'existe pas dans la table rubrique!!");
