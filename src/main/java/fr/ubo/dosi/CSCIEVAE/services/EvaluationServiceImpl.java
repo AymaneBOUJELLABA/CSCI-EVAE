@@ -1,12 +1,12 @@
 package fr.ubo.dosi.CSCIEVAE.services;
 
+import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.enstities.Qualificatif;
-import fr.ubo.dosi.CSCIEVAE.enstities.Question;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.enstities.*;
+import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
+import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -34,6 +34,10 @@ public class EvaluationServiceImpl implements EvaluationService{
     private QuestionRepository questionRepository;
     @Autowired
     private QualificatifRepository qualificatifRepository;
+    @Autowired
+    private DroitRepository droitRepository;
+    @Autowired
+    private DataMapper dataMapper;
 
     @Override
     public List<Evaluation> getAllEvalutions() {
@@ -112,5 +116,48 @@ public class EvaluationServiceImpl implements EvaluationService{
         );
     }
 
+    @Override
+    @Transactional
+    public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
+        log.info("--- Start Evalution Creation ---");
+        Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
+        eva = evaluationRepository.save(eva);
+        Evaluation finalEva = eva;
+        if (finalEva.getIdEvaluation() == null){
+            log.error(" Problème dans la création de l'évaluation !");
+            throw new EvaluationErrorException();
+        }else
+            log.info(" Evalution créer avec success, "+finalEva.getIdEvaluation());
+            log.info(" Donner les droits associer à une évaluation");
+            droitRepository.save( new Droit(
+                    finalEva.getIdEvaluation(),
+                    finalEva.getNoEnseignant(),
+                    "O",
+                    "N"
+            ));
+        log.info(" Droits evaluation associer avec success ");
+        log.info(" __ Assossier les rubriques à l'évalution __ ");
+        associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
+        log.info(" Les rubriques sont associées avec success à l'évalution ");
+            EvaluationDTO newEvaDTO = dataMapper.evaluationMapperToDTO(finalEva);
+            newEvaDTO.setRubriques(getRubriqueEvaluation(finalEva.getIdEvaluation()));
+            log.info("Evalution est associée aux rubriques avec success !");
+            return newEvaDTO;
+    }
+
+    @Override
+    public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
+        log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+        rubriquesDto.forEach(rubriqueDTO -> {
+            RubriqueEvaluation rubEva = new RubriqueEvaluation(
+                    null,
+                    finalEva.getIdEvaluation(),
+                    rubriqueDTO.getIdRubrique(),
+                    rubriqueDTO.getOrdre(),
+                    rubriqueDTO.getType()
+            );
+            rubriqueEvalutionRepository.save(rubEva);
+        });
+    }
 
 }

@@ -23,4 +23,21 @@ public class DataMapper {
         evaDto.setPeriode(eva.getPeriode());
         return evaDto;
     }
+
+    public Evaluation evaluationDtoToEvaluation(EvaluationDTO evaluationDTO){
+        Evaluation eva = new Evaluation();
+        eva.setIdEvaluation(evaluationDTO.getIdEvaluation());
+        eva.setNoEvaluation(evaluationDTO.getNoEvaluation());
+        eva.setAnneeUniversitaire(evaluationDTO.getAnneeUniversitaire());
+        eva.setCodeEc(evaluationDTO.getCodeEc());
+        eva.setCodeFormation(evaluationDTO.getCodeFormation());
+        eva.setCodeUe(evaluationDTO.getCodeUe());
+        eva.setDebutReponse(evaluationDTO.getDebutReponse());
+        eva.setDesignation(evaluationDTO.getDesignation());
+        eva.setEtat(evaluationDTO.getEtat());
+        eva.setFinReponse(evaluationDTO.getFinReponse());
+        eva.setNoEnseignant(evaluationDTO.getNoEnseignant());
+        eva.setPeriode(evaluationDTO.getPeriode());
+        return eva;
+    }
 }

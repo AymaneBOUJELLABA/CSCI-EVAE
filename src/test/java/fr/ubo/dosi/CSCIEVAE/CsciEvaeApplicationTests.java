@@ -33,14 +33,14 @@ class CsciEvaeApplicationTests {
 	@Test
 	public void testGetAllEvaluation() throws URISyntaxException {
 
-		String localUrl = baseUrl+"/";
+		String localUrl = baseUrl+"/evaluations";
 		URI uri = new URI(localUrl);
 
 		ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
 
 		//Verify request succeed
-		Assertions.assertEquals(200, result.getStatusCodeValue());
-		Assertions.assertTrue(Objects.requireNonNull(result.getBody()).contains("data"));
+		Assertions.assertEquals(302, result.getStatusCodeValue());
+		Assertions.assertFalse(Objects.requireNonNull(result.getBody()).isEmpty());
 
 	}
 

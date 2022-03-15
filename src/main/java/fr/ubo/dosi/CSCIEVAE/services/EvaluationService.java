@@ -1,5 +1,6 @@
 package fr.ubo.dosi.CSCIEVAE.services;
 
+import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
@@ -21,5 +22,9 @@ public interface EvaluationService {
     List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique);
 
     List<Rubrique> getRubriquesForEvaluationCreation();
+
+    EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
+
+    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
 }

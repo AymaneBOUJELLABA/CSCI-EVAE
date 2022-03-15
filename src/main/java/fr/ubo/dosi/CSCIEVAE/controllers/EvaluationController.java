@@ -3,14 +3,17 @@ package fr.ubo.dosi.CSCIEVAE.controllers;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerErrorException;
 
 import java.util.List;
 
@@ -75,6 +78,20 @@ public class EvaluationController {
         return new ResponseEntity<>(
                 evaluationService.getRubriquesForEvaluationCreation(),
                 HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<EvaluationDTO> ajouterEvaluationToUE(@RequestBody EvaluationDTO evaluationDTO){
+        log.info("-- Start Add Evaluation --");
+        EvaluationDTO evaDto = evaluationService.createEvalution(evaluationDTO);
+        if (evaDto == null) {
+            throw new EvaluationErrorException();
+        } else {
+            return new ResponseEntity<>(evaDto, HttpStatus.ACCEPTED);
+        }
     }
 
 }
