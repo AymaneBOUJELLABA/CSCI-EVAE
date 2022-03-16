@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueRepository;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;

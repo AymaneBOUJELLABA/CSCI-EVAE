@@ -1,6 +1,6 @@
 package fr.ubo.dosi.CSCIEVAE.dto;
 
-import fr.ubo.dosi.CSCIEVAE.enstities.Qualificatif;
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import lombok.Data;
 
 @Data

@@ -3,11 +3,11 @@ package fr.ubo.dosi.CSCIEVAE.utils;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.enstities.Qualificatif;
-import fr.ubo.dosi.CSCIEVAE.enstities.Question;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
-import fr.ubo.dosi.CSCIEVAE.enstities.RubriqueQuestion;
+import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+import fr.ubo.dosi.CSCIEVAE.entity.Question;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
 
 import java.util.List;
 

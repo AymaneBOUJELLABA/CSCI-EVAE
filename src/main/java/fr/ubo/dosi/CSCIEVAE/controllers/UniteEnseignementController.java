@@ -1,4 +1,4 @@
-package fr.ubo.dosi.CSCIEVAE.controller;
+package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

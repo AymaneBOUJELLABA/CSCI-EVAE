@@ -3,7 +3,7 @@ package fr.ubo.dosi.CSCIEVAE.services;
 import java.util.List;
 
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 
 public interface RubriqueService
