@@ -3,12 +3,11 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @Entity
 @Table(name = "UNITE_ENSEIGNEMENT")
 @IdClass(UniteEnseignementId.class)
 public class UniteEnseignement implements Serializable {
-	@Id
+    @Id
     @Column(name = "CODE_FORMATION")
     private String codeFormation;
 
