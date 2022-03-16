@@ -16,6 +16,7 @@ import java.util.Objects;
 class CsciEvaeApplicationTests {
 
 	RestTemplate restTemplate = new RestTemplate();
+
 	@Autowired
 	private EvaluationService evaluationService;
 

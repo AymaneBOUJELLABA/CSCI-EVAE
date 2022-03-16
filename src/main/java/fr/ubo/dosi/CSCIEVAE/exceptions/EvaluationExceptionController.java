@@ -19,7 +19,9 @@ public class EvaluationExceptionController {
     @ExceptionHandler(EvaluationErrorException.class)
     public ResponseEntity<Object> handleEvaluationExceptions(Exception e) {
         return new ResponseEntity<>(
-                "Problème pendant la céation de l'évalution"+e.getMessage(),
+                "Problème pendant la céation de l'évalution. " +
+                        "Code UE ou Enseignant n'est pas valide ! \t"
+                        +e.getMessage(),
                 HttpStatus.BAD_REQUEST
         );
     }

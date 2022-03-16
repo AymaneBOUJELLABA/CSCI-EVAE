@@ -121,28 +121,32 @@ public class EvaluationServiceImpl implements EvaluationService{
     public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
         log.info("--- Start Evalution Creation ---");
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
-        eva = evaluationRepository.save(eva);
-        Evaluation finalEva = eva;
-        if (finalEva.getIdEvaluation() == null){
-            log.error(" Problème dans la création de l'évaluation !");
-            throw new EvaluationErrorException();
-        }else
-            log.info(" Evalution créer avec success, "+finalEva.getIdEvaluation());
+        try {
+            eva = evaluationRepository.save(eva);
+            Evaluation finalEva = eva;
+            if (finalEva.getIdEvaluation() == null) {
+                log.error(" Problème dans la création de l'évaluation !");
+                throw new EvaluationErrorException();
+            } else
+                log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             log.info(" Donner les droits associer à une évaluation");
-            droitRepository.save( new Droit(
+            droitRepository.save(new Droit(
                     finalEva.getIdEvaluation(),
                     finalEva.getNoEnseignant(),
                     "O",
                     "N"
             ));
-        log.info(" Droits evaluation associer avec success ");
-        log.info(" __ Assossier les rubriques à l'évalution __ ");
-        associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
-        log.info(" Les rubriques sont associées avec success à l'évalution ");
+            log.info(" Droits evaluation associer avec success ");
+            log.info(" __ Assossier les rubriques à l'évalution __ ");
+            associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
+            log.info(" Les rubriques sont associées avec success à l'évalution ");
             EvaluationDTO newEvaDTO = dataMapper.evaluationMapperToDTO(finalEva);
             newEvaDTO.setRubriques(getRubriqueEvaluation(finalEva.getIdEvaluation()));
             log.info("Evalution est associée aux rubriques avec success !");
             return newEvaDTO;
+        }catch (Exception e){
+            throw new EvaluationErrorException(e.getMessage());
+        }
     }
 
     @Override
