@@ -145,6 +145,28 @@ public class RubriqueServiceImpl implements RubriqueService
 	{
 		return rubriqueRepository.findMaxOrdre();
 	}
+
+	@Override
+	public List<RubriqueDTO> ajouterOrUpdateAllRubriques(List<Rubrique> items) throws Exception
+	{
+		try
+		{
+			List<RubriqueDTO> result = new ArrayList<RubriqueDTO>();
+			for(Rubrique r : items)
+			{
+				RubriqueDTO newR;
+				newR = mapper.rubriqueMapperToDTO(rubriqueRepository.save(r), null);
+				result.add(newR);
+			}
+			
+			return result;
+			
+		}catch(Exception e)
+		{
+			logger.error("Erreur Ajouter All rubriques", e);
+			throw new Exception("Erreur Ajouter All rubriques"+e);
+		}
+	}
 	
 	
 

@@ -18,4 +18,6 @@ public interface RubriqueService
 	
 	public Long chercherMaxOrdre();
 	
+	public List<RubriqueDTO> ajouterOrUpdateAllRubriques(List<Rubrique> items) throws Exception;
+	
 }
