@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "UNITE_ENSEIGNEMENT")
+@IdClass(UniteEnseignementId.class)
 public class UniteEnseignement implements Serializable {
     @Id
     @Column(name = "CODE_FORMATION")
