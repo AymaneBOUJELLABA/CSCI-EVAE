@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
+
 import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.service.UniteEnseignementService;
 
 @RestController
-@RequestMapping("/ens")
+@RequestMapping("/api/ue")
 public class UniteEnseignementController {
 	@Autowired
 	private UniteEnseignementService uniteEnseignementService;
