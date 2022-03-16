@@ -71,6 +71,18 @@ public class RubriqueServiceImpl implements RubriqueService
 	{
 		try
 		{
+			List<Rubrique> rubs = rubriqueRepository.findAll();
+			
+			for(Rubrique r : rubs)
+			{
+				if(r.getOrdre() >= entity.getOrdre())
+				{
+					r.setOrdre(r.getOrdre()+1);
+				}
+			}
+			
+			rubriqueRepository.saveAll(rubs);
+			
 			Rubrique rub = rubriqueRepository.findByDesignation(entity.getDesignation());
 			if(rub!=null)
 			{
@@ -86,6 +98,8 @@ public class RubriqueServiceImpl implements RubriqueService
 			throw new Exception("Erreur lors de l'ajout du rubrique"+e);
 		}
 	}
+	
+	
 
 	
 	
