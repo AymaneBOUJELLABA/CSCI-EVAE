@@ -1,7 +1,7 @@
 package fr.ubo.dosi.CSCIEVAE.utils;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import org.springframework.stereotype.Component;
 
 @Component

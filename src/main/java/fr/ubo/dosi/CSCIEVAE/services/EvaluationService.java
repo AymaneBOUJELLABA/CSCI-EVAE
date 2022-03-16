@@ -3,9 +3,8 @@ package fr.ubo.dosi.CSCIEVAE.services;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.enstities.Question;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 
 import java.util.List;
 

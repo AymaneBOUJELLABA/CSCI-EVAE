@@ -1,4 +1,4 @@
-package fr.ubo.dosi.CSCIEVAE.enstities;
+package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

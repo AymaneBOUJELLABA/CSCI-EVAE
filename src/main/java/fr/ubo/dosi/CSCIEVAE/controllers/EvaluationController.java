@@ -1,8 +1,8 @@
 package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.enstities.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerErrorException;
 
 import java.util.List;
 

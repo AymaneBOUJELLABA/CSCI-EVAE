@@ -3,7 +3,7 @@ package fr.ubo.dosi.CSCIEVAE.services;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.enstities.*;
+import fr.ubo.dosi.CSCIEVAE.entity.*;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
@@ -152,12 +152,13 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+        int i= 0;
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
                     finalEva.getIdEvaluation(),
                     rubriqueDTO.getIdRubrique(),
-                    rubriqueDTO.getOrdre(),
+                    (long) i+1,
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
