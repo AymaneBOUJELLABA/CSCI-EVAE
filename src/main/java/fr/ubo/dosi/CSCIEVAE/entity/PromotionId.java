@@ -7,6 +7,7 @@ public class PromotionId implements Serializable {
 
     private String codeFormation;
     private String anneeUniversitaire;
+  
     public String getCodeFormation() {
         return codeFormation;
     }
@@ -37,4 +38,3 @@ public class PromotionId implements Serializable {
     }
 
 }
-

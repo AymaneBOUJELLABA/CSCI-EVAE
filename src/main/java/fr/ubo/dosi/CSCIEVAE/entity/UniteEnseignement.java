@@ -35,6 +35,18 @@ public class UniteEnseignement implements Serializable {
 
     @Column(name = "NBH_TP")
     private Long nbhTp;
+    
+    public UniteEnseignement() {}
+    public UniteEnseignement(String codeUe, Long noEnseignant,String designation, String semestre,String description,Long nbhCm,Long nbhTd,Long nbhTp) {
+    	this.codeUe = codeUe;
+    	this.noEnseignant = noEnseignant;
+    	this.designation= designation;
+    	this.semestre= semestre;
+    	this.description= description;
+    	this.nbhCm= nbhCm;
+    	this.nbhTd= nbhTd;
+    	this.nbhTp= nbhTp;
+    }
 
     public String getCodeFormation() {
         return this.codeFormation;

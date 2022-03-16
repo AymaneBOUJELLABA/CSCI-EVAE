@@ -2,7 +2,6 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

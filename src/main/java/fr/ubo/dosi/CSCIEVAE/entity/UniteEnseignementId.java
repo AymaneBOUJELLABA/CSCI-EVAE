@@ -35,4 +35,3 @@ public class UniteEnseignementId implements Serializable {
     }
 
 }
-
