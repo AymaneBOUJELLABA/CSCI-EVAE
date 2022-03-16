@@ -85,10 +85,6 @@ public class RubriqueController
 	{
 		try 
 		{
-			for(Rubrique r: list)
-			{
-				System.out.println("id : "+ r.getIdRubrique() + " designation :" +r.getDesignation());
-			}
 			List<RubriqueDTO> r = rubriqueService.ajouterOrUpdateAllRubriques(list);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 			
