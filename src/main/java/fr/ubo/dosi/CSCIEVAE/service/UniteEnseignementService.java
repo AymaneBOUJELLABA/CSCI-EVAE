@@ -52,6 +52,7 @@ public class UniteEnseignementService {
 				e = this.enseignantRepository.findByNoEnseignant(unites.get(i).getNoEnseignant());
 				ue.put("nom", e.getNom());
 				ue.put("prenom",e.getPrenom());
+				ue.put("noEnseignant",e.getNoEnseignant().toString());
 				ListUe.add(ue);
 			}
 		}
