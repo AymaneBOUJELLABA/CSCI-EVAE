@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.ubo.dosi.CSCIEVAE.service.UniteEnseignementService;
+import fr.ubo.dosi.CSCIEVAE.services.UniteEnseignementService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -20,7 +20,7 @@ import fr.ubo.dosi.CSCIEVAE.service.UniteEnseignementService;
 public class UniteEnseignementServiceTest {
 	
 	@Autowired
-	private UniteEnseignementService uniteEnseignementService;
+	private UniteEnseignementService uniteEnseignementservices;
   
 	private List<Map<String,String>> list = new ArrayList<Map<String,String>>();
 	
@@ -84,7 +84,7 @@ public class UniteEnseignementServiceTest {
 		map8.put("prenom","P");
 		this.list.add(map8);	
 		
-		List<Map<String,String>> ues= uniteEnseignementService.ListByCodeFormation("M2DOSI");
+		List<Map<String,String>> ues= uniteEnseignementservices.ListByCodeFormation("M2DOSI");
 		assertEquals(8,ues.size());						
 	}
 
@@ -107,7 +107,7 @@ public class UniteEnseignementServiceTest {
 		map.put("emailPerso",null);
 		map.put("emailPerso",null);
 		
-		Map<String,String> ue= uniteEnseignementService.getByCodeUe("WEB");
+		Map<String,String> ue= uniteEnseignementservices.getByCodeUe("WEB");
 		assertEquals(13,ue.size());	
 		
 		assertEquals("20",ue.get("nbhCm"));

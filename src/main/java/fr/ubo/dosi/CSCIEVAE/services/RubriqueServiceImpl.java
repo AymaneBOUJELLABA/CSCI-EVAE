@@ -21,7 +21,7 @@ public class RubriqueServiceImpl implements RubriqueService
 	@Autowired
 	RubriqueRepository rubriqueRepository;
 	@Autowired
-	EvaluationService evaluationService;
+	EvaluationService evaluationservices;
 	
 	
 	private static DataMapper mapper = new DataMapper();
@@ -36,7 +36,7 @@ public class RubriqueServiceImpl implements RubriqueService
 			
 			for(Rubrique rub : result)
 			{
-				List<QuestionDTO> qs = evaluationService.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
+				List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
 				RubriqueDTO rDTO = mapper.rubriqueMapperToDTO(rub, qs);
 				
 				resultDTO.add(rDTO);
@@ -56,7 +56,7 @@ public class RubriqueServiceImpl implements RubriqueService
 		try
 		{
 			Rubrique rub = rubriqueRepository.findById(id).get();
-			List<QuestionDTO> qs = evaluationService.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
+			List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
 			RubriqueDTO result = mapper.rubriqueMapperToDTO(rub,qs);
 			return result;
 		}catch(Exception e)
@@ -128,7 +128,7 @@ public class RubriqueServiceImpl implements RubriqueService
 					Rubrique newR = rubriqueRepository.save(r);
 					//ajouter la nouvelle rubrique dans le resultat du sortie
 					result.add(mapper.rubriqueMapperToDTO(newR, 
-								evaluationService.getQuestionRubriqueForEvaluation(item.getIdRubrique())));
+								evaluationservices.getQuestionRubriqueForEvaluation(item.getIdRubrique())));
 				}
 			}
 			return result;
@@ -156,7 +156,7 @@ public class RubriqueServiceImpl implements RubriqueService
 			
 			for(Rubrique r: DBRubriques)
 			{
-				List<QuestionDTO> qs = evaluationService.getQuestionRubriqueForEvaluation(r.getIdRubrique());
+				List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(r.getIdRubrique());
 				result.add(mapper.rubriqueMapperToDTO(r,qs));
 			}
 			
