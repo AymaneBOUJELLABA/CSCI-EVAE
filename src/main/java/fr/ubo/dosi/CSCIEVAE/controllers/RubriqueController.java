@@ -69,6 +69,7 @@ public class RubriqueController
 	{
 		try 
 		{
+			
 			List<RubriqueDTO> r = rubriqueService.modifierOrdreRubrique(list);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 			
@@ -79,11 +80,15 @@ public class RubriqueController
 		}
 	}
 	
-	@PutMapping("/AddOrUpdate")
+	@PostMapping("/AddOrUpdate")
 	public ResponseEntity<Object> AddorUpdateAllRubriques(@RequestBody List<Rubrique> list)
 	{
 		try 
 		{
+			for(Rubrique r: list)
+			{
+				System.out.println("id : "+ r.getIdRubrique() + " designation :" +r.getDesignation());
+			}
 			List<RubriqueDTO> r = rubriqueService.ajouterOrUpdateAllRubriques(list);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 			

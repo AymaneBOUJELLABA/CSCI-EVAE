@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.services.UniteEnseignementService;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/ue")
 public class UniteEnseignementController {
 	@Autowired
@@ -25,17 +27,18 @@ public class UniteEnseignementController {
 		return this.uniteEnseignementservices.save(ue);
 	}
 	
-	@GetMapping("UniteEnseignements")
+	@GetMapping("/UniteEnseignements")
 	public List<UniteEnseignement> ListerUniteEnseignement(){
 		return this.uniteEnseignementservices.ListAll();
 	}
 	
-	@GetMapping("UniteEnseignement/{code}")
-	public Map<String,String> getUeByCode(@PathVariable String code){
+	@GetMapping("/UniteEnseignement/{code}")
+	public Map<String,String> getUeByCode(@PathVariable String code)
+	{
 		return this.uniteEnseignementservices.getByCodeUe(code);
 	}
 	
-	@GetMapping("UniteEnseignements/{code}")
+	@GetMapping("/UniteEnseignements/{code}")
 	public List<Map<String,String>> ListerUeByFormation(@PathVariable String code){
 		return this.uniteEnseignementservices.ListByCodeFormation(code);
 	}
