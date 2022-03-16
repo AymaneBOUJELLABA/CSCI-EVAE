@@ -155,7 +155,9 @@ public class RubriqueServiceImpl implements RubriqueService
 			for(Rubrique r : items)
 			{
 				RubriqueDTO newR;
-				newR = mapper.rubriqueMapperToDTO(rubriqueRepository.save(r), null);
+
+				newR = mapper.rubriqueMapperToDTO(r, null);
+				rubriqueRepository.save(r);
 				result.add(newR);
 			}
 			
