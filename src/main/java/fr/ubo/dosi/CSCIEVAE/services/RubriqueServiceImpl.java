@@ -152,13 +152,12 @@ public class RubriqueServiceImpl implements RubriqueService
 		try
 		{
 			List<RubriqueDTO> result = new ArrayList<RubriqueDTO>();
-			for(Rubrique r : items)
+			List<Rubrique> DBRubriques = rubriqueRepository.saveAll(items);
+			
+			for(Rubrique r: DBRubriques)
 			{
-				RubriqueDTO newR;
-
-				newR = mapper.rubriqueMapperToDTO(r, null);
-				rubriqueRepository.save(r);
-				result.add(newR);
+				List<QuestionDTO> qs = evaluationService.getQuestionRubriqueForEvaluation(r.getIdRubrique());
+				result.add(mapper.rubriqueMapperToDTO(r,qs));
 			}
 			
 			return result;
