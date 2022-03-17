@@ -77,6 +77,7 @@ public class DataMapper {
     	question.setType(q.getType());
     	return question;
 
+    }
     public Evaluation evaluationDtoToEvaluation(EvaluationDTO evaluationDTO){
     	
         Evaluation eva = new Evaluation();
