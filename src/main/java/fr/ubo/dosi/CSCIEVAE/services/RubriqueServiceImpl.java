@@ -73,14 +73,16 @@ public class RubriqueServiceImpl implements RubriqueService
 		{
 			List<Rubrique> rubs = rubriqueRepository.findAll();
 			
-			for(Rubrique r : rubs)
+			if(entity.getOrdre()>=0)
 			{
-				if(r.getOrdre() >= entity.getOrdre())
+				for(Rubrique r : rubs)
 				{
-					r.setOrdre(r.getOrdre()+1);
+					if(r.getOrdre() >= entity.getOrdre())
+					{
+						r.setOrdre(r.getOrdre()+1);
+					}
 				}
 			}
-			
 			rubriqueRepository.saveAll(rubs);
 			
 			Rubrique rub = rubriqueRepository.findByDesignation(entity.getDesignation());
@@ -98,11 +100,6 @@ public class RubriqueServiceImpl implements RubriqueService
 			throw new Exception("Erreur lors de l'ajout du rubrique"+e);
 		}
 	}
-	
-	
-
-	
-	
 	//{ idRubrique , nouveauOrdre : }
 	@Override
 	public List<RubriqueDTO> modifierOrdreRubrique(List<RubriqueOrdreUpdateMessage> list) throws Exception
@@ -152,14 +149,29 @@ public class RubriqueServiceImpl implements RubriqueService
 		try
 		{
 			List<RubriqueDTO> result = new ArrayList<RubriqueDTO>();
-			List<Rubrique> DBRubriques = rubriqueRepository.saveAll(items);
 			
-			for(Rubrique r: DBRubriques)
+			for(Rubrique r: items)
 			{
-				List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(r.getIdRubrique());
-				result.add(mapper.rubriqueMapperToDTO(r,qs));
+				RubriqueDTO rDB = null;
+				if(r.getDesignation()==null)
+				{
+					logger.info("removing null designations!");
+					items.remove(r);
+				}
+				else if(rubriqueRepository.findById(r.getIdRubrique()).isPresent())
+				{
+					logger.info("updating existing rubriques");
+					Rubrique r2 = rubriqueRepository.save(r);
+					rDB = this.chercherRubriqueParId(r2.getIdRubrique());
+				}else
+				{
+					logger.info("adding new rubriques");
+					rDB = this.ajouterRubrique(r);
+				}
+				
+				if(rDB!=null)
+					result.add(rDB);
 			}
-			
 			return result;
 			
 		}catch(Exception e)
@@ -168,7 +180,4 @@ public class RubriqueServiceImpl implements RubriqueService
 			throw new Exception("Erreur Ajouter All rubriques"+e);
 		}
 	}
-	
-	
-
 }

@@ -84,14 +84,15 @@ public class RubriqueController
 	public ResponseEntity<Object> AddorUpdateAllRubriques(@RequestBody List<Rubrique> list)
 	{
 		try 
-		{
-			List<RubriqueDTO> r = rubriqueService.ajouterOrUpdateAllRubriques(list);
-			return new ResponseEntity<>(r,HttpStatus.OK);
+		{	
+			List<RubriqueDTO> result = rubriqueService.ajouterOrUpdateAllRubriques(list);
+			
+			return new ResponseEntity<>(result,HttpStatus.OK);
 			
 		}catch(Exception e)
 		{
 			logger.error(e);
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
