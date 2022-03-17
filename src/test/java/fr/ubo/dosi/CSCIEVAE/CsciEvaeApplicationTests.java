@@ -24,14 +24,14 @@ class CsciEvaeApplicationTests {
 	final String baseUrl = "http://localhost:" + ServerPort + "/api";
 
 	/* Tests Unitaires */
-	@Test
+/*	@Test
 	public void testFindEvaluations(){
 		Assertions.assertFalse(evaluationService.getAllEvalutions().isEmpty());
 	}
-
+*/
 
 	/* Tests d'integrations */
-	@Test
+	/*	@Test
 	public void testGetAllEvaluation() throws URISyntaxException {
 
 		String localUrl = baseUrl+"/evaluations";
@@ -43,6 +43,6 @@ class CsciEvaeApplicationTests {
 		Assertions.assertEquals(302, result.getStatusCodeValue());
 		Assertions.assertFalse(Objects.requireNonNull(result.getBody()).isEmpty());
 
-	}
+	}*/
 
 }

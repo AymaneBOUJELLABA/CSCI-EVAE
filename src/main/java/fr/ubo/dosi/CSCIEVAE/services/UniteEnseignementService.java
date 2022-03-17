@@ -1,4 +1,4 @@
-package fr.ubo.dosi.CSCIEVAE.service;
+package fr.ubo.dosi.CSCIEVAE.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
 import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
@@ -37,8 +34,7 @@ public class UniteEnseignementService {
 	}
 	
 	public List<Map<String,String>> ListByCodeFormation(String codeFormation){
-		List<UniteEnseignement> unites = this.ListAll();
-		
+		List<UniteEnseignement> unites = this.ListAll();	
 		List<Map<String,String>>ListUe = new ArrayList<Map<String,String>>();
 		Enseignant e;
 	

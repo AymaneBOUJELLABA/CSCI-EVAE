@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.ubo.dosi.CSCIEVAE.service.UniteEnseignementService;
+import fr.ubo.dosi.CSCIEVAE.services.UniteEnseignementService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
