@@ -164,4 +164,16 @@ public class EvaluationServiceImpl implements EvaluationService{
         });
     }
 
+    @Override
+    public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
+        log.info(" __ Updates sur les rubriques associées aux évaluations __ ");
+           rubriqueEvalutionRepository.deleteAllByIdEvaluation(evaluationDTO.getIdEvaluation());
+           Evaluation evaluation = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
+           log.info(" -- Associer l'evaluation au nouveaux rubriques -- ");
+           associetRubriquesToEvaluation(evaluation, evaluationDTO.getRubriques());
+           evaluationDTO.setRubriques(getRubriqueEvaluation(evaluation.getIdEvaluation()));
+           log.info("-- Evaluation updated successfully --");
+        return evaluationDTO;
+    }
+
 }

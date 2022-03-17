@@ -30,7 +30,7 @@ public class EvaluationController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<Evaluation>> getAllEvalutions(){
-       // log.info("Recherche sur toutes les évalutions");
+        log.info("Recherche sur toutes les évalutions");
         return new ResponseEntity<>(
                 evaluationService.getAllEvalutions(),
                 HttpStatus.FOUND);
@@ -41,12 +41,12 @@ public class EvaluationController {
     public ResponseEntity<EvaluationDTO> getEvationByCodeUE(@RequestParam String codeUe){
         Evaluation evaluation = evaluationService.getEvalutionParCodeUe(codeUe);
         if (evaluation == null) {
-            //log.error("Evalution not found pour l'UE "+codeUe);
+            log.error("Evalution not found pour l'UE "+codeUe);
             throw new EvaluationNotfoundException();
         } else {
             EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);
             evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(evaluation.getIdEvaluation()));
-            //log.info("Recherche de l'évaluation de l'UE :" + codeUe);
+            log.info("Recherche de l'évaluation de l'UE :" + codeUe);
             return new ResponseEntity<>(
                     evaluationDTO,
                     HttpStatus.FOUND);
@@ -59,12 +59,12 @@ public class EvaluationController {
 
         Evaluation evaluation = evaluationService.getEvalutionParId((long) id);
         if (evaluation == null){
-            //log.error("Evalution not found pour ID "+id);
+            log.error("Evalution not found pour ID "+id);
             throw new EvaluationNotfoundException();
         }else{
             EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);
             evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(evaluation.getIdEvaluation()));
-            //log.info("Recherche de l'évaluation avec ID :" + id);
+            log.info("Recherche de l'évaluation avec ID :" + id);
             return new ResponseEntity<>(
                     evaluationDTO,
                     HttpStatus.FOUND);
@@ -84,8 +84,23 @@ public class EvaluationController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<EvaluationDTO> ajouterEvaluationToUE(@RequestBody EvaluationDTO evaluationDTO){
-        //log.info("-- Start Add Evaluation --");
+        log.info("-- Start Add Evaluation --");
         EvaluationDTO evaDto = evaluationService.createEvalution(evaluationDTO);
+        if (evaDto == null) {
+            throw new EvaluationErrorException();
+        } else {
+            return new ResponseEntity<>(evaDto, HttpStatus.ACCEPTED);
+        }
+    }
+
+    @PutMapping(
+            path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<EvaluationDTO> updateEvaluationToUE(@PathVariable long id, @RequestBody EvaluationDTO evaluationDTO){
+        log.info("-- Start Update Evaluation --");
+        EvaluationDTO evaDto = evaluationService.updateRubriquesEvaluationOrder(evaluationDTO);
         if (evaDto == null) {
             throw new EvaluationErrorException();
         } else {

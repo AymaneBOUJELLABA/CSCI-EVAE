@@ -26,4 +26,6 @@ public interface EvaluationService {
 
     void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
+    EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
+
 }

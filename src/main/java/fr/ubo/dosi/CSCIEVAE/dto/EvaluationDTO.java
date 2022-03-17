@@ -20,6 +20,7 @@ public class EvaluationDTO {
     private java.sql.Date debutReponse;
     private java.sql.Date finReponse;
     private List<RubriqueDTO> rubriques;
+
 	public Long getIdEvaluation() {
 		return idEvaluation;
 	}
