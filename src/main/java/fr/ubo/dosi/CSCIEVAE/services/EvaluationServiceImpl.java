@@ -39,13 +39,13 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Autowired
     private DataMapper dataMapper;
 
-    @Override
+       @Override
     public List<Evaluation> getAllEvalutions() {
-        log.info("Recherche de toutes les évaluation en service");
+        //log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
-    @Override
+   @Override
     public Evaluation getEvalutionParCodeUe(String codeUe) {
         log.info("Recherche de évaluation associée à une UE de code "+codeUe+
                 " en service");
