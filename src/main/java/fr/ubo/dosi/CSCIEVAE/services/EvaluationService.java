@@ -24,6 +24,6 @@ public interface EvaluationService {
 
     EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
 
-    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
+   void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
 }
