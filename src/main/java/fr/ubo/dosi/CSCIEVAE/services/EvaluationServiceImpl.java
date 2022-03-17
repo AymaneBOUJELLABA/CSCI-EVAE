@@ -152,13 +152,12 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
-        int i= 0;
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
                     finalEva.getIdEvaluation(),
                     rubriqueDTO.getIdRubrique(),
-                    (long) i+1,
+                    (long) rubriquesDto.indexOf(rubriqueDTO)+1,
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
