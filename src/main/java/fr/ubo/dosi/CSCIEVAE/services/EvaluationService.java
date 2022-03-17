@@ -1,9 +1,9 @@
 package fr.ubo.dosi.CSCIEVAE.services;
 
+import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.entity.Question;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 
 import java.util.List;
@@ -19,5 +19,13 @@ public interface EvaluationService {
     List<RubriqueDTO> getRubriqueEvaluation(Long idEvaluation);
 
     List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique);
+
+    List<Rubrique> getRubriquesForEvaluationCreation();
+
+    EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
+
+    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
+
+    EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
 
 }

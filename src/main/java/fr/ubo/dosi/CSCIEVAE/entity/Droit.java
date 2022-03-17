@@ -1,11 +1,14 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "DROIT")
 @IdClass(DroitId.class)
+@AllArgsConstructor @NoArgsConstructor
 public class Droit implements Serializable {
     @Id
     @Column(name = "ID_EVALUATION")
