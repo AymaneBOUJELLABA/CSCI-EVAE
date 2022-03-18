@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "RUBRIQUE_EVALUATION")
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class RubriqueEvaluation implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_RUBRIQUE_EVALUATION")

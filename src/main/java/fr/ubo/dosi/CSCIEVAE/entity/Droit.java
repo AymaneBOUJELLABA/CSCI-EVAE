@@ -23,6 +23,7 @@ public class Droit implements Serializable {
 
     @Column(name = "DUPLICATION", columnDefinition = "CHAR")
     private String duplication;
+    
 
     public Long getIdEvaluation() {
         return this.idEvaluation;
