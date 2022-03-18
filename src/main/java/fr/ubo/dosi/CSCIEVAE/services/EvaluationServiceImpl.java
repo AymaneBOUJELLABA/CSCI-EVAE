@@ -165,4 +165,10 @@ public class EvaluationServiceImpl implements EvaluationService{
         });
     }
 
+	@Override
+	public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

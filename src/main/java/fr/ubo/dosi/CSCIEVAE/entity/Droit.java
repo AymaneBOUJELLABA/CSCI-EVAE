@@ -24,13 +24,6 @@ public class Droit implements Serializable {
     @Column(name = "DUPLICATION", columnDefinition = "CHAR")
     private String duplication;
     
-    public Droit() {}
-    public Droit(Long idEvaluation,Long noEnseignant,String consultation, String duplication) {
-    	this.idEvaluation = idEvaluation;
-    	this.noEnseignant= noEnseignant;
-    	this.consultation = consultation;
-    	this.duplication = duplication;  	
-    }
 
     public Long getIdEvaluation() {
         return this.idEvaluation;
