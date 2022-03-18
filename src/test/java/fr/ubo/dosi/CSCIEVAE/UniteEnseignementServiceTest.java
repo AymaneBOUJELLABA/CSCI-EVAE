@@ -27,62 +27,7 @@ public class UniteEnseignementServiceTest {
 	@Test
 	public void ListUeByCodeFormation()
 			  throws Exception {
-		Map<String,String> map1 = new HashMap<String,String>();
-		map1.put("codeUe","ISI");
-		map1.put("designation","Ingénierie des Systèmes d'Information");
-		map1.put("nom", "S");
-		map1.put("prenom","P");
-		this.list.add(map1);
 		
-		Map<String,String> map2 = new HashMap<String,String>();
-		map2.put("codeUe","IDL");
-		map2.put("designation","Ingénierie de Développement Logiciel");
-		map2.put("nom", "S");
-		map2.put("prenom","P");
-		this.list.add(map2);
-		
-		Map<String,String> map3 = new HashMap<String,String>();
-		map3.put("codeUe","J2EE");
-		map3.put("designation","Java/J2EE");
-		map3.put("nom", "LL");
-		map3.put("prenom","MM");
-		this.list.add(map3);
-	
-		Map<String,String> map4 = new HashMap<String,String>();
-		map4.put("codeUe","SR");
-		map4.put("designation","Systèmes Répartis");
-		map4.put("nom", "LL");
-		map4.put("prenom","MM");
-		this.list.add(map4);
-			
-		Map<String,String> map5 = new HashMap<String,String>();
-		map5.put("codeUe","EDE");
-		map5.put("designation","Environnement de Développement");
-		map5.put("nom", "Jean");
-		map5.put("prenom","Patrick");
-		this.list.add(map5);
-		
-		Map<String,String> map6 = new HashMap<String,String>();
-		map6.put("codeUe","WEB");
-		map6.put("designation","Langages du WEB");
-		map6.put("nom", "Jean");
-		map6.put("prenom","Patrick");
-		this.list.add(map6);
-
-		
-		Map<String,String> map7 = new HashMap<String,String>();
-		map7.put("codeUe","CO");
-		map7.put("designation","Conception Objet");
-		map7.put("nom", "KER");
-		map7.put("prenom","Pat");
-		this.list.add(map7);
-		
-		Map<String,String> map8 = new HashMap<String,String>();
-		map8.put("codeUe","PCO");
-		map8.put("designation","Préparation au Contexte de l'Offshore");
-		map8.put("nom", "S");
-		map8.put("prenom","P");
-		this.list.add(map8);	
 		
 		List<Map<String,String>> ues= uniteEnseignementservices.ListByCodeFormation("M2DOSI");
 		assertEquals(8,ues.size());						
@@ -92,20 +37,7 @@ public class UniteEnseignementServiceTest {
 	@Test
 	public void DetailUe()
 			  throws Exception {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("nbhCm", "20");
-		map.put("codeUe","WEB");
-		map.put("mobile","06.00.00.89.28");
-		map.put("nbhTp", "20");
-		map.put("prenomEnseignant","Patrick");
-		map.put("nomEnseigant","Jean");
-		map.put("typeEnseignant","PRAST");
-		map.put("nbhTd","20");
-		map.put("emailUbo","gg@univ-brest.fr");
-		map.put("designation","Langages du WEB");
-		map.put("semestre","9  ");
-		map.put("emailPerso",null);
-		map.put("emailPerso",null);
+	
 		
 		Map<String,String> ue= uniteEnseignementservices.getByCodeUe("WEB");
 		assertEquals(13,ue.size());	

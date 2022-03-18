@@ -25,8 +25,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class DataMapper {
 	
-	@Autowired
-	private EnseignantRepository enseignantRepository;
+
 
     public EvaluationDTO evaluationMapperToDTO(Evaluation eva){
         EvaluationDTO evaDto = new EvaluationDTO();
@@ -95,24 +94,5 @@ public class DataMapper {
         eva.setPeriode(evaluationDTO.getPeriode());
         return eva;
     }
-    
-    public UniteEnseignementDTO ueMapperToDTO(UniteEnseignement ue){
-    	//EnseignantRepository enseignantRepository = new EnseignantRepository();
-    	UniteEnseignementDTO ueDto = new UniteEnseignementDTO();
-    	Enseignant e = this.enseignantRepository.findByNoEnseignant(ue.getNoEnseignant());
-    	ueDto.setCodeUe(ue.getCodeUe());
-    	ueDto.setDesignation(ue.getDesignation());
-    	ueDto.setNoEnseignant(ue.getNoEnseignant());
-    	ueDto.setDescription(ue.getDescription());
-        ueDto.setSemestre(ue.getSemestre());
-        ueDto.setNbhCm(ue.getNbhCm());
-        ueDto.setNbhTd(ue.getNbhTd());
-        ueDto.setNbhTp(ue.getNbhTp());
-        ueDto.setNom(e.getNom());
-        ueDto.setPrenom(e.getPrenom());
-        ueDto.setEmailPerso(e.getMobile());
-        ueDto.setEmailPerso(e.getEmailPerso());
-        ueDto.setMobile(e.getMobile());    
-        return ueDto;
-    }
+
 }

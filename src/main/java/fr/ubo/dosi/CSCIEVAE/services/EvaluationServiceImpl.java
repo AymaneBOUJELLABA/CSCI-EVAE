@@ -39,15 +39,15 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Autowired
     private DataMapper dataMapper;
 
-       @Override
+      @Override
     public List<Evaluation> getAllEvalutions() {
-        //log.info("Recherche de toutes les évaluation en service");
+        log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
    @Override
     public Evaluation getEvalutionParCodeUe(String codeUe) {
-        log.info("Recherche de évaluation associée à une UE de code "+codeUe+
+       log.info("Recherche de évaluation associée à une UE de code "+codeUe+
                 " en service");
         Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
 
@@ -58,10 +58,10 @@ public class EvaluationServiceImpl implements EvaluationService{
     public Evaluation getEvalutionParId(Long id) {
 
         if (evaluationRepository.findById(id).isPresent()) {
-            log.info("Recherche d'une évaluation par ID " + id + " en service");
+           log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
         }else
-            log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
+          log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
             return null;
     }
 
@@ -87,7 +87,7 @@ public class EvaluationServiceImpl implements EvaluationService{
                 .collect(Collectors.toList());
     }
 
-    @Override
+   @Override
     public List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique) {
         return questionEvaluationRepository.findAllByIdRubriqueEvaluationOrderByOrdreAsc(idRubrique)
                 .stream()
@@ -128,7 +128,7 @@ public class EvaluationServiceImpl implements EvaluationService{
                 log.error(" Problème dans la création de l'évaluation !");
                 throw new EvaluationErrorException();
             } else
-                log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
+            log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             log.info(" Donner les droits associer à une évaluation");
             droitRepository.save(new Droit(
                     finalEva.getIdEvaluation(),
@@ -151,29 +151,18 @@ public class EvaluationServiceImpl implements EvaluationService{
 
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
-        log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+       log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+        int i= 0;
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
                     finalEva.getIdEvaluation(),
                     rubriqueDTO.getIdRubrique(),
-                    (long) rubriquesDto.indexOf(rubriqueDTO)+1,
+                    (long) i+1,
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
         });
-    }
-
-    @Override
-    public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
-        log.info(" __ Updates sur les rubriques associées aux évaluations __ ");
-           rubriqueEvalutionRepository.deleteAllByIdEvaluation(evaluationDTO.getIdEvaluation());
-           Evaluation evaluation = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
-           log.info(" -- Associer l'evaluation au nouveaux rubriques -- ");
-           associetRubriquesToEvaluation(evaluation, evaluationDTO.getRubriques());
-           evaluationDTO.setRubriques(getRubriqueEvaluation(evaluation.getIdEvaluation()));
-           log.info("-- Evaluation updated successfully --");
-        return evaluationDTO;
     }
 
 }
