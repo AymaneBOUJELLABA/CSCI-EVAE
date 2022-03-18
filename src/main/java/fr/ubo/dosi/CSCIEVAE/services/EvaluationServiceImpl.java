@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,19 +40,18 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Autowired
     private DataMapper dataMapper;
 
-    @Override
+       @Override
     public List<Evaluation> getAllEvalutions() {
-        log.info("Recherche de toutes les évaluation en service");
+        //log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
-    @Override
-    public Evaluation getEvalutionParCodeUe(String codeUe) {
-        log.info("Recherche de évaluation associée à une UE de code "+codeUe+
-                " en service");
-        Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
-
-        return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+   @Override
+    public Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv) {
+        log.info("Recherche de évaluation associée à une UE de code "+codeUe
+                        + "pour l'année univercitaire " + anneeUniv +", en service");
+       return evaluationRepository.
+               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);
     }
 
     @Override
@@ -152,17 +152,48 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
-        int i= 0;
+//        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
                     finalEva.getIdEvaluation(),
                     rubriqueDTO.getIdRubrique(),
-                    (long) i+1,
+                    (long) rubriquesDto.indexOf(rubriqueDTO)+1,
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
+//            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
         });
+//        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+    }
+
+    @Override
+    public void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriquesEvaluation) {
+        rubriquesEvaluation.forEach( rubriqueEvaluation -> {
+//            questionRepository
+            questionEvaluationRepository.save(
+                    new QuestionEvaluation(
+                            null,
+                            rubriqueEvaluation.getIdRubriqueEvaluation(),
+                            null,
+                            null,
+                            null,
+                            ""
+                    )
+            );
+        });
+    }
+
+    @Override
+    public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
+        log.info(" __ Updates sur les rubriques associées aux évaluations __ ");
+           rubriqueEvalutionRepository.deleteAllByIdEvaluation(evaluationDTO.getIdEvaluation());
+           Evaluation evaluation = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
+           log.info(" -- Associer l'evaluation au nouveaux rubriques -- ");
+           associetRubriquesToEvaluation(evaluation, evaluationDTO.getRubriques());
+           evaluationDTO.setRubriques(getRubriqueEvaluation(evaluation.getIdEvaluation()));
+           log.info("-- Evaluation updated successfully --");
+        return evaluationDTO;
     }
 
 }

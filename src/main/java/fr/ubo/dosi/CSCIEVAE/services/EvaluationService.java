@@ -5,6 +5,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface EvaluationService {
 
     List<Evaluation> getAllEvalutions();
 
-    Evaluation getEvalutionParCodeUe(String codeUe);
+    Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv);
 
     Evaluation getEvalutionParId(Long id);
 
@@ -24,6 +25,10 @@ public interface EvaluationService {
 
     EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
 
+    void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriqueEvaluations);
+
     void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
+
+    EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
 
 }
