@@ -8,4 +8,7 @@ import java.util.List;
 public interface QuestionEvaluationRepository extends JpaRepository<QuestionEvaluation,Long> {
 
     List<QuestionEvaluation> findAllByIdRubriqueEvaluationOrderByOrdreAsc(Long idRubEva);
+
+    void deleteAllByIdRubriqueEvaluation(long idRubEva);
+
 }
