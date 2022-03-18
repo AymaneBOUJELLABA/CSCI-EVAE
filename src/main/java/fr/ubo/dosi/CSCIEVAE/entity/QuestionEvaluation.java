@@ -1,12 +1,16 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "QUESTION_EVALUATION")
+@AllArgsConstructor @NoArgsConstructor
 public class QuestionEvaluation implements Serializable {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_QUESTION_EVALUATION")
     private Long idQuestionEvaluation;
 

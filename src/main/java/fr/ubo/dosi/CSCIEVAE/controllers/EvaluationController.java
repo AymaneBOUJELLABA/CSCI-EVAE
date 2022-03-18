@@ -38,10 +38,10 @@ public class EvaluationController {
 
     @GetMapping("/ue")
     @ResponseBody
-    public ResponseEntity<EvaluationDTO> getEvationByCodeUE(@RequestParam String codeUe){
-        Evaluation evaluation = evaluationService.getEvalutionParCodeUe(codeUe);
+    public ResponseEntity<EvaluationDTO> getEvationByCodeUEAndAnneUniv(@RequestParam String codeUe, @RequestParam String anneeUniv){
+        Evaluation evaluation = evaluationService.getEvalutionParCodeUeAndAnneeUniv(codeUe,anneeUniv);
         if (evaluation == null) {
-            log.error("Evalution not found pour l'UE "+codeUe);
+            log.error("Evalution not found pour l'UE "+codeUe+ ", and Annee Univ "+anneeUniv);
             throw new EvaluationNotfoundException();
         } else {
             EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);

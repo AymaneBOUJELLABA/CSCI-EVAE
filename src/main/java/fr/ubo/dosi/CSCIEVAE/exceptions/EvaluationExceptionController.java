@@ -26,4 +26,14 @@ public class EvaluationExceptionController {
         );
     }
 
+    @ExceptionHandler(EvaluationRubQuesErrorException.class)
+    public ResponseEntity<Object> handleEvaluationRubQuestionExceptions(Exception e) {
+        return new ResponseEntity<>(
+                "Problème pendant la modification de l'évalution. " +
+                        "Conflict dans les questions d'evaluation ! \t"
+                        +e.getMessage(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
 }

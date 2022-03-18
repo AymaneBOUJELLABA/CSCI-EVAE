@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,12 +47,11 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
    @Override
-    public Evaluation getEvalutionParCodeUe(String codeUe) {
-        log.info("Recherche de évaluation associée à une UE de code "+codeUe+
-                " en service");
-        Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
-
-        return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+    public Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv) {
+        log.info("Recherche de évaluation associée à une UE de code "+codeUe
+                        + "pour l'année univercitaire " + anneeUniv +", en service");
+       return evaluationRepository.
+               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);
     }
 
     @Override
@@ -152,6 +152,7 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+//        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
@@ -161,6 +162,25 @@ public class EvaluationServiceImpl implements EvaluationService{
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
+//            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
+        });
+//        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+    }
+
+    @Override
+    public void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriquesEvaluation) {
+        rubriquesEvaluation.forEach( rubriqueEvaluation -> {
+//            questionRepository
+            questionEvaluationRepository.save(
+                    new QuestionEvaluation(
+                            null,
+                            rubriqueEvaluation.getIdRubriqueEvaluation(),
+                            null,
+                            null,
+                            null,
+                            ""
+                    )
+            );
         });
     }
 
