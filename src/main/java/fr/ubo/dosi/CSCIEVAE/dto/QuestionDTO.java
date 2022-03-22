@@ -2,8 +2,10 @@ package fr.ubo.dosi.CSCIEVAE.dto;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+ @Data 
 public class QuestionDTO {
 
     private Long idQuestion;
@@ -12,5 +14,7 @@ public class QuestionDTO {
     private String intitule;
     private Long order;
     private Qualificatif qualificatif;
+	
+    
 
 }

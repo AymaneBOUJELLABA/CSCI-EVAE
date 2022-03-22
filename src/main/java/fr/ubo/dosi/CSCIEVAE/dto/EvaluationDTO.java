@@ -99,7 +99,5 @@ public class EvaluationDTO {
 	public void setRubriques(List<RubriqueDTO> rubriques) {
 		this.rubriques = rubriques;
 	}
-    
-    
 
 }

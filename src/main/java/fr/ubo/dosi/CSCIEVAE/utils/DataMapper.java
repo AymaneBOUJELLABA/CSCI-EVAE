@@ -1,6 +1,16 @@
 package fr.ubo.dosi.CSCIEVAE.utils;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
+import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+import fr.ubo.dosi.CSCIEVAE.entity.Question;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
+
+import java.util.List;
+
 import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
@@ -15,8 +25,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class DataMapper {
 	
-	@Autowired
-	private EnseignantRepository enseignantRepository;
+
 
     public EvaluationDTO evaluationMapperToDTO(Evaluation eva){
         EvaluationDTO evaDto = new EvaluationDTO();
@@ -34,7 +43,40 @@ public class DataMapper {
         evaDto.setPeriode(eva.getPeriode());
         return evaDto;
     }
+    
+    public RubriqueDTO rubriqueMapperToDTO(Rubrique rub,List<QuestionDTO> questions)
+    {
+    	RubriqueDTO rubDto = new RubriqueDTO();
+    	
+    	rubDto.setDesignation(rub.getDesignation());
+    	rubDto.setIdRubrique(rub.getIdRubrique());
+    	rubDto.setOrdre(rub.getOrdre());
+    	rubDto.setQuestions(questions);
+    	rubDto.setType(rub.getType());
+    	
+    	return rubDto;
+    }
+    
+    
+    public QuestionDTO questionMapperToDTO(Question q,RubriqueQuestion rq,Qualificatif qf) throws Exception
+    {
+    	QuestionDTO question = new QuestionDTO();
+    	
+    	question.setIdQuestion(q.getIdQualificatif());
+    	question.setIntitule(q.getIntitule());
+    	question.setNoEnseignant(q.getNoEnseignant());
+    	if(q.getIdQuestion() == rq.getIdQuestion())
+    		question.setOrder(rq.getOrdre());
+    	else
+    		throw new Exception("Rubriques Question et Question ne sont pas lié");
+    	if(q.getIdQualificatif().equals(qf.getIdQualificatif()))
+    		question.setQualificatif(qf);
+    	else
+    		throw new Exception("Qualificatif et Question ne sont pas lié");
+    	question.setType(q.getType());
+    	return question;
 
+    }
     public Evaluation evaluationDtoToEvaluation(EvaluationDTO evaluationDTO){
     	
         Evaluation eva = new Evaluation();
@@ -52,24 +94,5 @@ public class DataMapper {
         eva.setPeriode(evaluationDTO.getPeriode());
         return eva;
     }
-    
-    public UniteEnseignementDTO ueMapperToDTO(UniteEnseignement ue){
-    	//EnseignantRepository enseignantRepository = new EnseignantRepository();
-    	UniteEnseignementDTO ueDto = new UniteEnseignementDTO();
-    	Enseignant e = this.enseignantRepository.findByNoEnseignant(ue.getNoEnseignant());
-    	ueDto.setCodeUe(ue.getCodeUe());
-    	ueDto.setDesignation(ue.getDesignation());
-    	ueDto.setNoEnseignant(ue.getNoEnseignant());
-    	ueDto.setDescription(ue.getDescription());
-        ueDto.setSemestre(ue.getSemestre());
-        ueDto.setNbhCm(ue.getNbhCm());
-        ueDto.setNbhTd(ue.getNbhTd());
-        ueDto.setNbhTp(ue.getNbhTp());
-        ueDto.setNom(e.getNom());
-        ueDto.setPrenom(e.getPrenom());
-        ueDto.setEmailPerso(e.getMobile());
-        ueDto.setEmailPerso(e.getEmailPerso());
-        ueDto.setMobile(e.getMobile());    
-        return ueDto;
-    }
+
 }
