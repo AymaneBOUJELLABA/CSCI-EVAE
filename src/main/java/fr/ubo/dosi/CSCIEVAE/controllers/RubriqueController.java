@@ -86,7 +86,8 @@ public class RubriqueController
 		try 
 		{	
 			List<RubriqueDTO> result = rubriqueService.ajouterOrUpdateAllRubriques(list);
-			
+			for(RubriqueDTO r : result)
+				System.out.println(r);
 			return new ResponseEntity<>(result,HttpStatus.OK);
 			
 		}catch(Exception e)

@@ -1,8 +1,11 @@
 package fr.ubo.dosi.CSCIEVAE;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
+import fr.ubo.dosi.CSCIEVAE.services.RubriqueService;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -63,6 +68,27 @@ class CsciEvaeApplicationTests {
 			System.out.println(result.getClass().getFields().length);
 			//E eva= evaluationService.getEvalutionParCodeUe("ISI");
 			//assertEquals(5,eva.getRubriques().size());						
+		}
+		
+		
+		@Autowired
+		RubriqueService rubriqueService;
+		@Test
+		public void getAllRubrique()
+		{
+			List<RubriqueDTO> list = null;
+			try {
+				 list= rubriqueService.listdesRubriques();
+				 for(RubriqueDTO r: list)
+				 {
+					 System.out.println(r);
+				 }
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+			Assertions.assertTrue(list != null);
 		}
 
 		
