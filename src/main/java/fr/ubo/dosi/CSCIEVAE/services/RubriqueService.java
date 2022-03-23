@@ -2,6 +2,7 @@ package fr.ubo.dosi.CSCIEVAE.services;
 
 import java.util.List;
 
+import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
@@ -19,5 +20,7 @@ public interface RubriqueService
 	public Long chercherMaxOrdre();
 	
 	public List<RubriqueDTO> ajouterOrUpdateAllRubriques(List<Rubrique> items) throws Exception;
+
+	List<QuestionDTO> getQuestionsForRubrique(Long idRubrique);
 	
 }

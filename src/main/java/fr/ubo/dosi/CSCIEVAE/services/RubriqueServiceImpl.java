@@ -1,8 +1,15 @@
 package fr.ubo.dosi.CSCIEVAE.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+import fr.ubo.dosi.CSCIEVAE.entity.Question;
+import fr.ubo.dosi.CSCIEVAE.repository.QualificatifRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.QuestionRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.RubriqueQuestionRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +21,19 @@ import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueRepository;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
+
 @Service
 public class RubriqueServiceImpl implements RubriqueService
 {
-	private static Logger logger = LogManager.getLogger(RubriqueServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(RubriqueServiceImpl.class);
 	@Autowired
 	RubriqueRepository rubriqueRepository;
 	@Autowired
-	EvaluationService evaluationservices;
+	private RubriqueQuestionRepository rubriqueQuestionRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
+	@Autowired
+	private QualificatifRepository qualificatifRepository;
 	
 	
 	private static DataMapper mapper = new DataMapper();
@@ -36,7 +48,7 @@ public class RubriqueServiceImpl implements RubriqueService
 			
 			for(Rubrique rub : result)
 			{
-				List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
+				List<QuestionDTO> qs = getQuestionsForRubrique(rub.getIdRubrique());
 				RubriqueDTO rDTO = mapper.rubriqueMapperToDTO(rub, qs);
 				
 				resultDTO.add(rDTO);
@@ -56,7 +68,7 @@ public class RubriqueServiceImpl implements RubriqueService
 		try
 		{
 			Rubrique rub = rubriqueRepository.findById(id).get();
-			List<QuestionDTO> qs = evaluationservices.getQuestionRubriqueForEvaluation(rub.getIdRubrique());
+			List<QuestionDTO> qs = getQuestionsForRubrique(rub.getIdRubrique());
 			RubriqueDTO result = mapper.rubriqueMapperToDTO(rub,qs);
 			return result;
 		}catch(Exception e)
@@ -125,7 +137,7 @@ public class RubriqueServiceImpl implements RubriqueService
 					Rubrique newR = rubriqueRepository.save(r);
 					//ajouter la nouvelle rubrique dans le resultat du sortie
 					result.add(mapper.rubriqueMapperToDTO(newR, 
-								evaluationservices.getQuestionRubriqueForEvaluation(item.getIdRubrique())));
+								getQuestionsForRubrique(item.getIdRubrique())));
 				}
 			}
 			return result;
@@ -179,5 +191,27 @@ public class RubriqueServiceImpl implements RubriqueService
 			logger.error("Erreur Ajouter All rubriques", e);
 			throw new Exception("Erreur Ajouter All rubriques"+e);
 		}
+	}
+
+	@Override
+	public List<QuestionDTO> getQuestionsForRubrique(Long idRubrique) {
+		return rubriqueQuestionRepository.findAllByIdRubriqueOrderByOrdreAsc(idRubrique)
+				.stream()
+				.map(qe -> {
+					QuestionDTO questionDTO = new QuestionDTO();
+					if (questionRepository.findById(qe.getIdQuestion()).isPresent()){
+						Question question = questionRepository.findById(qe.getIdQuestion()).get();
+						Qualificatif qualificatif = qualificatifRepository.findById(question.getIdQualificatif()).get();
+						questionDTO.setIdQuestion(question.getIdQuestion());
+						questionDTO.setIntitule(question.getIntitule());
+						questionDTO.setType(question.getType());
+						questionDTO.setNoEnseignant(question.getNoEnseignant());
+						questionDTO.setQualificatif(qualificatif);
+						questionDTO.setOrder(qe.getOrdre());
+						return questionDTO;
+					}else
+						return (QuestionDTO) Collections.emptyList();
+				})
+				.collect(Collectors.toList());
 	}
 }

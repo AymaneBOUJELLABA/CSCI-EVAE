@@ -85,7 +85,7 @@ public class EvaluationController {
     )
     public ResponseEntity<EvaluationDTO> ajouterEvaluationToUE(@RequestBody EvaluationDTO evaluationDTO){
         log.info("-- Start Add Evaluation --");
-        EvaluationDTO evaDto = evaluationService.createEvalution(evaluationDTO);
+        EvaluationDTO evaDto = evaluationService.createEvaluation(evaluationDTO);
         if (evaDto == null) {
             throw new EvaluationErrorException();
         } else {
