@@ -30,6 +30,8 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Autowired
     private RubriqueRepository rubriqueRepository;
     @Autowired
+    private RubriqueQuestionRepository rubriqueQuestionRepository;
+    @Autowired
     private QuestionEvaluationRepository questionEvaluationRepository;
     @Autowired
     private QuestionRepository questionRepository;
@@ -42,7 +44,7 @@ public class EvaluationServiceImpl implements EvaluationService{
 
        @Override
     public List<Evaluation> getAllEvalutions() {
-        //log.info("Recherche de toutes les évaluation en service");
+        log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
@@ -95,6 +97,7 @@ public class EvaluationServiceImpl implements EvaluationService{
                     QuestionDTO questionDTO = new QuestionDTO();
                     if (questionRepository.findById(qe.getIdQuestion()).isPresent()){
                         Question question = questionRepository.findById(qe.getIdQuestion()).get();
+//                        if (qualificatifRepository.findById(question.getIdQualificatif()).isPresent())
                         Qualificatif qualificatif = qualificatifRepository.findById(question.getIdQualificatif()).get();
                         questionDTO.setIdQuestion(question.getIdQuestion());
                         questionDTO.setIntitule(question.getIntitule());
@@ -116,9 +119,8 @@ public class EvaluationServiceImpl implements EvaluationService{
         );
     }
 
-    @Override
     @Transactional
-    public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
+    public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
         log.info("--- Start Evalution Creation ---");
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
         try {
@@ -152,7 +154,7 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
-//        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
+        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
@@ -162,26 +164,40 @@ public class EvaluationServiceImpl implements EvaluationService{
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
-//            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
+            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
         });
-//        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+        //setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
     }
 
     @Override
+    @Transactional
     public void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriquesEvaluation) {
+           log.info(" ___ Start association of questions to Rubriques evaluation ___");
         rubriquesEvaluation.forEach( rubriqueEvaluation -> {
-//            questionRepository
-            questionEvaluationRepository.save(
-                    new QuestionEvaluation(
-                            null,
-                            rubriqueEvaluation.getIdRubriqueEvaluation(),
-                            null,
-                            null,
-                            null,
-                            ""
-                    )
-            );
+            System.out.println(" -> For Rubrique Eva : "+ rubriqueEvaluation.getIdRubriqueEvaluation());
+            rubriqueQuestionRepository.findAllByIdRubriqueOrderByOrdreAsc(rubriqueEvaluation.getIdRubrique())
+                    .forEach(rubriqueQuestion -> {
+                        if (questionRepository.findById(rubriqueQuestion.getIdQuestion()).isPresent()) {
+                            Question question = questionRepository.findById(rubriqueQuestion.getIdQuestion()).get();
+                            QuestionEvaluation questionEvaluation = questionEvaluationRepository.save(
+                                    new QuestionEvaluation(
+                                            null,
+                                            rubriqueEvaluation.getIdRubriqueEvaluation(),
+                                            rubriqueQuestion.getIdQuestion(),
+                                            question.getIdQualificatif(),
+                                            rubriqueQuestion.getOrdre(),
+                                            null
+                                    )
+                            );
+                            System.out.println("  --> Setting ques Eva : "+ questionEvaluation.getIdQuestionEvaluation()
+                                +" | Rub ID : "+questionEvaluation.getIdRubriqueEvaluation()
+                                    +" | Quest ID : "+questionEvaluation.getIdQuestion()
+                                    +" | Qualif ID : " +questionEvaluation.getIdQualificatif()
+                                    + " | Order : "+questionEvaluation.getOrdre());
+                        }
+                    });
         });
+        log.info(" ___ End association of questions to Rubriques evaluation ___");
     }
 
     @Override
@@ -199,6 +215,11 @@ public class EvaluationServiceImpl implements EvaluationService{
            log.info("-- Evaluation updated successfully --");
         }
         return evaluationDTO;
+    }
+
+    @Override
+    public RubriqueDTO getQuestionsEvalForRubriqueEval(Long idRubEval) {
+           return null;
     }
 
 }
