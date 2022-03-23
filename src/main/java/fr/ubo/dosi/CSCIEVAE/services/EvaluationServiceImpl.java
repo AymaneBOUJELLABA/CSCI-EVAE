@@ -166,17 +166,39 @@ public class EvaluationServiceImpl implements EvaluationService{
             rubriqueEvalutionRepository.save(rubEva);
             rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
         });
-        //setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
     }
 
     @Override
-    @Transactional
     public void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriquesEvaluation) {
            log.info(" ___ Start association of questions to Rubriques evaluation ___");
         rubriquesEvaluation.forEach( rubriqueEvaluation -> {
             System.out.println(" -> For Rubrique Eva : "+ rubriqueEvaluation.getIdRubriqueEvaluation());
+            List<QuestionEvaluation> questionEvaluations =
             rubriqueQuestionRepository.findAllByIdRubriqueOrderByOrdreAsc(rubriqueEvaluation.getIdRubrique())
-                    .forEach(rubriqueQuestion -> {
+                    .stream()
+                    .map(rubriqueQuestion -> {
+                        if (questionRepository.findById(rubriqueQuestion.getIdQuestion()).isPresent()) {
+                            Question question = questionRepository.findById(rubriqueQuestion.getIdQuestion()).get();
+                            return new QuestionEvaluation(
+                                            null,
+                                            rubriqueEvaluation.getIdRubriqueEvaluation(),
+                                            rubriqueQuestion.getIdQuestion(),
+                                            question.getIdQualificatif(),
+                                            rubriqueQuestion.getOrdre(),
+                                            null);
+                        } else return null;
+                    })
+                    .collect(Collectors.toList());
+            questionEvaluations.forEach(questionEvaluation -> {
+                System.out.println("  --> Setting ques Eva : "+ questionEvaluation.getIdQuestionEvaluation()
+                        +" | Rub ID : "+questionEvaluation.getIdRubriqueEvaluation()
+                        +" | Quest ID : "+questionEvaluation.getIdQuestion()
+                        +" | Qualif ID : " +questionEvaluation.getIdQualificatif()
+                        + " | Order : "+questionEvaluation.getOrdre());
+            });
+            questionEvaluationRepository.saveAll(questionEvaluations);
+                    /*.forEach(rubriqueQuestion -> {
                         if (questionRepository.findById(rubriqueQuestion.getIdQuestion()).isPresent()) {
                             Question question = questionRepository.findById(rubriqueQuestion.getIdQuestion()).get();
                             QuestionEvaluation questionEvaluation = questionEvaluationRepository.save(
@@ -195,8 +217,9 @@ public class EvaluationServiceImpl implements EvaluationService{
                                     +" | Qualif ID : " +questionEvaluation.getIdQualificatif()
                                     + " | Order : "+questionEvaluation.getOrdre());
                         }
-                    });
+                    });*/
         });
+
         log.info(" ___ End association of questions to Rubriques evaluation ___");
     }
 
