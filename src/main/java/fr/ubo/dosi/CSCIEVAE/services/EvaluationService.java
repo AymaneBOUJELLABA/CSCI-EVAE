@@ -23,12 +23,14 @@ public interface EvaluationService {
 
     List<Rubrique> getRubriquesForEvaluationCreation();
 
-    EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
+    EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO);
 
     void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriqueEvaluations);
 
     void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
     EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
+
+    RubriqueDTO getQuestionsEvalForRubriqueEval(Long idRubEval);
 
 }
