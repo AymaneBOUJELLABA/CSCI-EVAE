@@ -19,5 +19,5 @@ public interface RubriqueRepository extends JpaRepository<Rubrique, Long>
 	Long findMaxOrdre();
 	
 	@Query(value="DELETE FROM rubrique WHERE ID_RUBRIQUE>9", nativeQuery = true)
-	boolean deleteAllNewRubriques();
+	void deleteAllNewRubriques();
 }

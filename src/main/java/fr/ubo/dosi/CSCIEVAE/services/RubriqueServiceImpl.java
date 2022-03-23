@@ -31,6 +31,13 @@ public class RubriqueServiceImpl implements RubriqueService
 	{
 		try
 		{
+			try{
+				//rubriqueRepository.deleteAllNewRubriques();
+			}catch(Exception e1)
+			{
+				System.out.println("DELETE FAILED" + e1);
+			}
+			
 			List<Rubrique> result = rubriqueRepository.findAllByOrderByOrdreAsc();
 			List<RubriqueDTO> resultDTO = new ArrayList<RubriqueDTO>();
 			
