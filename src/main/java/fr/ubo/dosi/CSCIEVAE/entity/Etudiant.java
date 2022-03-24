@@ -1,10 +1,14 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import javax.persistence.*;
+
+import lombok.ToString;
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = "ETUDIANT")
+@ToString
 public class Etudiant implements Serializable {
     @Id
     @Column(name = "NO_ETUDIANT")

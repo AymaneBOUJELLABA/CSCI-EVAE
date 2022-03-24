@@ -18,6 +18,7 @@ import java.util.List;
 
 import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
+import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.repository.EnseignantRepository;
@@ -100,7 +101,7 @@ public class DataMapper {
         return eva;
     }
     
-    public ReponseEvaluationDTO RepEvaltoRepEvalDTO(EtudiantDTO e, EvaluationDTO eval , List<ReponseQuestionDTO> qst)
+    public ReponseEvaluationDTO RepEvaltoRepEvalDTO(Etudiant e, EvaluationDTO eval , List<ReponseQuestionDTO> qst)
     {
     	ReponseEvaluationDTO r = new ReponseEvaluationDTO();
     	r.setEtudiant(e);
@@ -119,6 +120,13 @@ public class DataMapper {
     	r.setQuestion(qst);
     	
     	return r;
+    }
+    
+    //pour l'instant pas de props
+    public EtudiantDTO EtdToEtdDTO(Etudiant etd)
+    {
+    	EtudiantDTO e = new EtudiantDTO();
+    	return e;
     }
 
 }
