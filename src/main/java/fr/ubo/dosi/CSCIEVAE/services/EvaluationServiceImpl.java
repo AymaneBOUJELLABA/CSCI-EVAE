@@ -152,7 +152,7 @@ public class EvaluationServiceImpl implements EvaluationService{
     @Override
     public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
-//        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
+        List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
         rubriquesDto.forEach(rubriqueDTO -> {
             RubriqueEvaluation rubEva = new RubriqueEvaluation(
                     null,
@@ -162,9 +162,9 @@ public class EvaluationServiceImpl implements EvaluationService{
                     rubriqueDTO.getType()
             );
             rubriqueEvalutionRepository.save(rubEva);
-//            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
+            rubriqueEvaluations.add(rubriqueEvalutionRepository.save(rubEva));
         });
-//        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+        setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
     }
 
     @Override
