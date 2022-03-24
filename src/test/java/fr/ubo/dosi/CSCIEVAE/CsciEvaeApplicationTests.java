@@ -3,6 +3,8 @@ package fr.ubo.dosi.CSCIEVAE;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
+import fr.ubo.dosi.CSCIEVAE.repository.ReponseEvaluationRepository;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.services.RubriqueService;
 
@@ -89,6 +91,20 @@ class CsciEvaeApplicationTests {
 			} 
 			
 			Assertions.assertTrue(list != null);
+		}
+		
+		
+		@Autowired
+		ReponseEvaluationRepository reponseEvaluationRepository;
+		
+		@Test void testGetAllReponseEvaluation()
+		{
+			List<ReponseEvaluation> r = reponseEvaluationRepository.findAllByCodeUeAndAnneUniv("ISI", "2014-2015");
+			
+			for(ReponseEvaluation i : r)
+			{
+				System.out.println(i);
+			}
 		}
 
 		

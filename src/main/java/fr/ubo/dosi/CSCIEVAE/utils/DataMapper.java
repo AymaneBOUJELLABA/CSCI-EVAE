@@ -1,11 +1,16 @@
 package fr.ubo.dosi.CSCIEVAE.utils;
 
+import fr.ubo.dosi.CSCIEVAE.dto.EtudiantDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseQuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import fr.ubo.dosi.CSCIEVAE.entity.Question;
+import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
 
@@ -93,6 +98,27 @@ public class DataMapper {
         eva.setNoEnseignant(evaluationDTO.getNoEnseignant());
         eva.setPeriode(evaluationDTO.getPeriode());
         return eva;
+    }
+    
+    public ReponseEvaluationDTO RepEvaltoRepEvalDTO(EtudiantDTO e, EvaluationDTO eval , List<ReponseQuestionDTO> qst)
+    {
+    	ReponseEvaluationDTO r = new ReponseEvaluationDTO();
+    	r.setEtudiant(e);
+    	r.setEvaluation(eval);
+    	r.setQuestions(qst);
+    	
+    	return r;
+    }
+    
+    public ReponseQuestionDTO RepQuestoRepQuesDTO(ReponseQuestion q,QuestionDTO qst)
+    {
+    	ReponseQuestionDTO r = new ReponseQuestionDTO();
+    	r.setIdQuestionEvaluation(q.getIdQuestionEvaluation());
+    	r.setIdReponseEvaluation(q.getIdReponseEvaluation());
+    	r.setPositionnement(q.getPositionnement());
+    	r.setQuestion(qst);
+    	
+    	return r;
     }
 
 }

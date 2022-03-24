@@ -8,8 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 public class ReponseQuestionDTO
 {
+	//La question dans l'evaluation
 	private Long idQuestionEvaluation;
-	private RubriqueDTO rubrique;
+	//L'id de la reponse de l'evaluation
+	private Long idReponseEvaluation;
+	//réponse de l'étudiant
+	private Long positionnement;
+	
 	private QuestionDTO question;
-	private Long position;
 }

@@ -14,7 +14,4 @@ public class QuestionDTO {
     private String intitule;
     private Long order;
     private Qualificatif qualificatif;
-	
-    
-
 }
