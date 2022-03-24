@@ -5,6 +5,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseQuestionDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
@@ -101,12 +102,13 @@ public class DataMapper {
         return eva;
     }
     
-    public ReponseEvaluationDTO RepEvaltoRepEvalDTO(Etudiant e, EvaluationDTO eval , List<ReponseQuestionDTO> qst)
+    public ReponseEvaluationDTO RepEvaltoRepEvalDTO(ReponseEvaluation rep,Etudiant e, EvaluationDTO eval , List<ReponseRubriqueDTO> rubs)
     {
     	ReponseEvaluationDTO r = new ReponseEvaluationDTO();
     	r.setEtudiant(e);
     	r.setEvaluation(eval);
-    	r.setQuestions(qst);
+    	r.setIdReponseEvaluation(rep.getIdReponseEvaluation());
+    	r.setRubriques(rubs);
     	
     	return r;
     }
