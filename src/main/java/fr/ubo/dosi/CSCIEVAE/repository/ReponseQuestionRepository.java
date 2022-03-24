@@ -5,21 +5,24 @@ import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestionId;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReponseQuestionRepository extends JpaRepository<ReponseQuestion, ReponseQuestionId>
 {
 	@Query(value="SELECT QUESTION.ID_QUESTION, "
-			+ "	 QUESTION.TYPE, "
-			+ "	 QUESTION.NO_ENSEIGNANT, "
-			+ "	 QUESTION.ID_QUALIFICATIF, "
-			+ "	 QUESTION.INTITULE, "
-			+ "	 POSITIONNEMENT, "
-			+ "	 NO_ETUDIANT, "
-			+ "	 REPONSE_QUESTION.ID_REPONSE_EVALUATION, "
-			+ "	 QUESTION_EVALUATION.ID_RUBRIQUE_EVALUATION "
+			+ "QUESTION.TYPE,"
+			+ "QUESTION.NO_ENSEIGNANT, "
+			+ "QUESTION.ID_QUALIFICATIF, "
+			+ "QUESTION.INTITULE, "
+			+ "POSITIONNEMENT, "
+			+ "NO_ETUDIANT, "
+			+ "REPONSE_QUESTION.ID_REPONSE_EVALUATION, "
+			+ "QUESTION_EVALUATION.ID_RUBRIQUE_EVALUATION "
 			+ "FROM QUESTION "
 			+ "JOIN QUESTION_EVALUATION "
 			+ "ON QUESTION_EVALUATION.ID_QUESTION = QUESTION.ID_QUESTION "
@@ -27,7 +30,7 @@ public interface ReponseQuestionRepository extends JpaRepository<ReponseQuestion
 			+ "ON REPONSE_QUESTION.ID_QUESTION_EVALUATION = QUESTION_EVALUATION.ID_QUESTION_EVALUATION "
 			+ "JOIN REPONSE_EVALUATION "
 			+ "ON REPONSE_EVALUATION.ID_REPONSE_EVALUATION = REPONSE_QUESTION.ID_REPONSE_EVALUATION "
-			+ ";",nativeQuery = true)
-	public List<QuestionReponseInfoDTO> findAllReponseQuestionInfo();
+			+ "WHERE REPONSE_QUESTION.ID_REPONSE_EVALUATION = ?1",nativeQuery = true)
+	public List<Object[]> findAllReponseQuestionInfo(Integer idReponseEvaluation);
 
 }

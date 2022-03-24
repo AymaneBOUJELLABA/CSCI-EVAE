@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EtudiantDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.QuestionReponseInfoDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
@@ -21,5 +22,7 @@ public interface ReponseEvaluationService
 	
 	Etudiant getEtudiantFromResponseEvaluation(Long idReponseEvaluation);
 	
-	List<ReponseQuestion> getAllQuestionReponseByIdReponseEvaluation(Long idReponseEvaluation); 
+	List<ReponseQuestion> getAllQuestionReponseByIdReponseEvaluation(Long idReponseEvaluation);
+
+	List<QuestionReponseInfoDTO> getQuestionReponseAllInfo(Integer idReponseEvaluation); 
 }

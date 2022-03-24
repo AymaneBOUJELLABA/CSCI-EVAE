@@ -1,11 +1,15 @@
 package fr.ubo.dosi.CSCIEVAE;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.QuestionReponseInfoDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseEvaluationRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
+import fr.ubo.dosi.CSCIEVAE.services.ReponseEvaluationService;
 import fr.ubo.dosi.CSCIEVAE.services.RubriqueService;
 
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -105,6 +110,30 @@ class CsciEvaeApplicationTests {
 			{
 				System.out.println(i);
 			}
+		}
+		
+		@Autowired
+		ReponseQuestionRepository reponseQuestionRepository;
+		@Test void testGetQuestionReponseEval()
+		{
+			
+			System.out.println("-------------- GETTING QUESTION RESPONSES OF EVALUATION");
+			List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo(1);
+						
+			r.forEach(item->
+			{
+				QuestionReponseInfoDTO i = QuestionReponseInfoDTO.builder()
+							.idQuestion(((BigDecimal) item[0]).longValue())
+							.type((String) item[1])
+							.noEnseignant((String) item[2])
+							.idQualificatif(((BigDecimal) item[3]).longValue())
+							.intitule((String) item[4])
+							.positionnement(((BigDecimal) item[5]).intValue())
+							.noEtudiant(((String) item[6]))
+							.idReponseEvaluation(((BigDecimal) item[7]).longValue())
+							.idRubriqueEvaluation(((BigDecimal) item[8]).longValue())
+							.build();
+			});
 		}
 
 		
