@@ -4,26 +4,26 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-@Getter @Setter
-public class EvaluationNotfoundException extends RuntimeException{
+@Setter @Getter
+public class QuestionsEvaluationErrorException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5L;
 
     private HttpStatus status = null;
 
     private Object data = null;
 
-    public EvaluationNotfoundException() {
+    public QuestionsEvaluationErrorException() {
         super();
     }
 
-    public EvaluationNotfoundException(
+    public QuestionsEvaluationErrorException(
             String message
     ) {
         super(message);
     }
 
-    public EvaluationNotfoundException(
+    public QuestionsEvaluationErrorException(
             HttpStatus status,
             String message
     ) {
@@ -31,7 +31,7 @@ public class EvaluationNotfoundException extends RuntimeException{
         this.status = status;
     }
 
-    public EvaluationNotfoundException(
+    public QuestionsEvaluationErrorException(
             HttpStatus status,
             String message,
             Object data

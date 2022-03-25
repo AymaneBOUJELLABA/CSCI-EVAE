@@ -20,9 +20,19 @@ public class EvaluationExceptionController {
     public ResponseEntity<Object> handleEvaluationExceptions(Exception e) {
         return new ResponseEntity<>(
                 "Problème pendant la céation de l'évalution. " +
-                        "Code UE ou Enseignant n'est pas valide ! \t"
+                        " \t"
                         +e.getMessage(),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
+        ); //Code UE ou Enseignant n'est pas valide !
+    }
+
+    @ExceptionHandler(EvaluationUpdateErrorException.class)
+    public ResponseEntity<Object> handleEvaluationUpdateExceptions(Exception e) {
+        return new ResponseEntity<>(
+                "Problème pendant la modification de l'évalution. " +
+                        "\n"
+                        +e.getMessage(),
+                HttpStatus.CONFLICT
         );
     }
 
@@ -32,8 +42,29 @@ public class EvaluationExceptionController {
                 "Problème pendant la modification de l'évalution. " +
                         "Conflict dans les questions d'evaluation ! \t"
                         +e.getMessage(),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(RubriquesEvaluationErrorException.class)
+    public ResponseEntity<Object> handleRubriquesEvaluationExceptions(Exception e) {
+        return new ResponseEntity<>(
+                "Problème pendant l'enregistrement des rubriqueq " +
+                        "Conflict dans les rubriques d'évaluation ! \t"
+                        +e.getMessage(),
+                HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(QuestionsEvaluationErrorException.class)
+    public ResponseEntity<Object> handleQuestionsEvaluationExceptions(Exception e) {
+        return new ResponseEntity<>(
+                "Problème pendant l'enregistrement des questions " +
+                        "Conflict dans les questions d'évaluation ! \t"
+                        +e.getMessage(),
+                HttpStatus.CONFLICT
+        );
+    }
+
 
 }

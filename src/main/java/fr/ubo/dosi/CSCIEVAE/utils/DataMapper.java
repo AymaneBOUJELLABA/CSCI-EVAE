@@ -95,7 +95,7 @@ public class DataMapper {
         eva.setCodeUe(evaluationDTO.getCodeUe());
         eva.setDebutReponse(evaluationDTO.getDebutReponse());
         eva.setDesignation(evaluationDTO.getDesignation());
-        eva.setEtat(evaluationDTO.getEtat());
+        eva.setEtat("ELA");
         eva.setFinReponse(evaluationDTO.getFinReponse());
         eva.setNoEnseignant(evaluationDTO.getNoEnseignant());
         eva.setPeriode(evaluationDTO.getPeriode());
