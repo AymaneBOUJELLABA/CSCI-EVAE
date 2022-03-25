@@ -31,6 +31,6 @@ public interface ReponseQuestionRepository extends JpaRepository<ReponseQuestion
 			+ "JOIN REPONSE_EVALUATION "
 			+ "ON REPONSE_EVALUATION.ID_REPONSE_EVALUATION = REPONSE_QUESTION.ID_REPONSE_EVALUATION "
 			+ "WHERE REPONSE_QUESTION.ID_REPONSE_EVALUATION = ?1",nativeQuery = true)
-	public List<Object[]> findAllReponseQuestionInfo(Integer idReponseEvaluation);
+	public List<Object[]> findAllReponseQuestionInfo(Long idReponseEvaluation);
 
 }

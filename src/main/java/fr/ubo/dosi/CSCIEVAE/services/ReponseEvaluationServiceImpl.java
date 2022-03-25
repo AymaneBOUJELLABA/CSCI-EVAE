@@ -11,10 +11,12 @@ import fr.ubo.dosi.CSCIEVAE.dto.EtudiantDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionReponseInfoDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
+import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.repository.EtudiantRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseEvaluationRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
@@ -37,7 +39,9 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	EtudiantRepository etudiantRepo;
 	@Autowired
 	ReponseQuestionRepository reponseQuestionRepository;
-
+	@Autowired
+	RubriqueService rubriqueService;
+	
 	@Override
 	public List<ReponseEvaluationDTO> getAllReponseEvaluations()
 	{
@@ -49,14 +53,40 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			ReponseEvaluationDTO item = new ReponseEvaluationDTO();
 			Etudiant etd = this.getEtudiantFromResponseEvaluation(i.getIdReponseEvaluation());
 			Evaluation eval = evaluationService.getEvalutionParId(i.getIdEvaluation());
+			List<QuestionReponseInfoDTO> rQuestions = this.getQuestionReponseAllInfo(i.getIdReponseEvaluation());
 			
+			List<ReponseRubriqueDTO> rubriques = new ArrayList<ReponseRubriqueDTO>();
+			rQuestions.forEach(question->
+			{
+				boolean rubExists = false;
+				
+				for(ReponseRubriqueDTO j : rubriques)
+				{
+					if(j.getIdRubriqueEvaluation().equals(question.getIdRubriqueEvaluation()))
+						rubExists = true;
+				}
+				
+				ReponseRubriqueDTO rub = rubriques.stream()
+											.filter(el -> el.getIdRubriqueEvaluation().equals(question.getIdRubriqueEvaluation()))
+											.findFirst()
+											.orElse(new ReponseRubriqueDTO());
+				
+				//if rub exists
+				
+				
+				
+				Rubrique rubInfo = rubriqueService.getRubriqueByIdRubriqueEvaluation(question.getIdReponseEvaluation()); //RubriqueInfo
+				rub.setRubriqueinfo(rubInfo);
+				rub.setQuestions(null);
+				rub.setIdRubriqueEvaluation(question.getIdRubriqueEvaluation());
+			});
 			
 			
 			
 			item.setEtudiant(etd);
 			item.setEvaluation(mapper.evaluationMapperToDTO(eval));
 			item.setIdReponseEvaluation(i.getIdReponseEvaluation());
-			item.setRubriques(null);
+			item.setRubriques(rubriques);
 		}
 		
 		return null;
@@ -113,7 +143,7 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	}
 	
 	@Override
-	public List<QuestionReponseInfoDTO> getQuestionReponseAllInfo(Integer idReponseEvaluation)
+	public List<QuestionReponseInfoDTO> getQuestionReponseAllInfo(Long idReponseEvaluation)
 	{
 		try
 		{

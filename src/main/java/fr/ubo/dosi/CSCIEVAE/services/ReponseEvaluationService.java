@@ -24,5 +24,5 @@ public interface ReponseEvaluationService
 	
 	List<ReponseQuestion> getAllQuestionReponseByIdReponseEvaluation(Long idReponseEvaluation);
 
-	List<QuestionReponseInfoDTO> getQuestionReponseAllInfo(Integer idReponseEvaluation); 
+	List<QuestionReponseInfoDTO> getQuestionReponseAllInfo(Long idReponseEvaluation); 
 }

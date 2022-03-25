@@ -3,12 +3,14 @@ package fr.ubo.dosi.CSCIEVAE.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import fr.ubo.dosi.CSCIEVAE.entity.Question;
 import fr.ubo.dosi.CSCIEVAE.repository.QualificatifRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.QuestionRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.RubriqueEvalutionRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueQuestionRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 import fr.ubo.dosi.CSCIEVAE.messages.RubriqueOrdreUpdateMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueRepository;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
@@ -220,5 +223,16 @@ public class RubriqueServiceImpl implements RubriqueService
 						return (QuestionDTO) Collections.emptyList();
 				})
 				.collect(Collectors.toList());
+	}
+
+	
+	@Autowired
+	RubriqueEvalutionRepository rubEvalrepo;
+	@Override
+	public Rubrique getRubriqueByIdRubriqueEvaluation(Long idRubriqueEvaluation) throws NoSuchElementException
+	{
+		RubriqueEvaluation rubE = rubEvalrepo.findById(idRubriqueEvaluation).get();
+		
+		return this.rubriqueRepository.findById(rubE.getIdRubrique()).get();
 	}
 }

@@ -23,4 +23,6 @@ public interface RubriqueService
 
 	List<QuestionDTO> getQuestionsForRubrique(Long idRubrique);
 	
+	public Rubrique getRubriqueByIdRubriqueEvaluation(Long idRubriqueEvaluation);
+	
 }

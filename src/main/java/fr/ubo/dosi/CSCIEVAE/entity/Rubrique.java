@@ -1,10 +1,14 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import javax.persistence.*;
+
+import lombok.EqualsAndHashCode;
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = "RUBRIQUE")
+@EqualsAndHashCode
 public class Rubrique implements Serializable {
     @Id
     @Column(name = "ID_RUBRIQUE")

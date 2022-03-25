@@ -9,6 +9,7 @@ import lombok.ToString;
 @Data @ToString
 public class ReponseRubriqueDTO
 {
+	private Long idRubriqueEvaluation;
 	private Rubrique rubriqueinfo;
 	private List<ReponseQuestionDTO> questions;
 }
