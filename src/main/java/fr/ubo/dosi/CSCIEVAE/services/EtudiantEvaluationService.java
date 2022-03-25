@@ -2,8 +2,8 @@ package fr.ubo.dosi.CSCIEVAE.services;
 
 public interface EtudiantEvaluationService {
 
-    Long NumberOfResponses(Long idEvaluation);
+    int NumberOfResponses(Long idEvaluation);
 
-    Long NumberOfStudents(String codeFormation, String anneeUniversitaire);
+    int NumberOfStudents(String codeFormation, String anneeUniversitaire);
 
 }

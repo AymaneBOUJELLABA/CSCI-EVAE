@@ -116,9 +116,15 @@ public class EvaluationController {
     @GetMapping(path="/{id}/details")
     @ResponseBody
     public ResponseEntity<Object> getOfNumberEtudiantRepondu(@PathVariable int id){
-        Long NumberEtudiantRepondu = etudiantEvaluationService.NumberOfResponses((long) id);
+        int NumberEtudiantRepondu = etudiantEvaluationService.NumberOfResponses((long) id);
         return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
     }
 
+    @GetMapping(path="/students")
+    @ResponseBody
+    public ResponseEntity<Object> getOfNumberEtudiants(@RequestParam String codeFormation, @RequestParam String anneeUniv){
+        int NumberEtudiantRepondu = etudiantEvaluationService.NumberOfStudents(codeFormation,anneeUniv);
+        return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
+    }
 
 }
