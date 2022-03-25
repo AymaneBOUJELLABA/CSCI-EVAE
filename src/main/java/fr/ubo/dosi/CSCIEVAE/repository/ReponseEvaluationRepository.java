@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReponseEvaluationRepository extends JpaRepository<ReponseEvaluation,Long> {
 
+    int countReponseEvaluationByIdEvaluation(Long idEval);
+
 }
