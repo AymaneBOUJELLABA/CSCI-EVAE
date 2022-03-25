@@ -13,9 +13,11 @@ public class QuestionReponseInfoDTO
 	String noEnseignant;
 	Long idQualificatif;
 	String intitule;
-	Integer positionnement;
+	Long positionnement;
 	String noEtudiant;
 	Long idReponseEvaluation;
 	Long idRubriqueEvaluation;
+	Long idQuestionEvaluation;
+	Long ordre;
 	
 }

@@ -3,12 +3,13 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 import javax.persistence.*;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "RUBRIQUE")
-@EqualsAndHashCode
+@EqualsAndHashCode @ToString
 public class Rubrique implements Serializable {
     @Id
     @Column(name = "ID_RUBRIQUE")

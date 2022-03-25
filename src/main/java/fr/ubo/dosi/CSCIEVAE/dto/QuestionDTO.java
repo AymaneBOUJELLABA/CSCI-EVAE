@@ -1,9 +1,12 @@
 package fr.ubo.dosi.CSCIEVAE.dto;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
- @Data 
+@Data
+@AllArgsConstructor @NoArgsConstructor
 public class QuestionDTO {
 
     private Long idQuestion;

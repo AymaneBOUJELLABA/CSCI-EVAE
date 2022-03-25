@@ -2,6 +2,8 @@ package fr.ubo.dosi.CSCIEVAE;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionReponseInfoDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
@@ -118,7 +120,7 @@ class CsciEvaeApplicationTests {
 		{
 			
 			System.out.println("-------------- GETTING QUESTION RESPONSES OF EVALUATION");
-			List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo(1);
+			List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo((long) 1);
 						
 			r.forEach(item->
 			{
@@ -128,11 +130,37 @@ class CsciEvaeApplicationTests {
 							.noEnseignant((String) item[2])
 							.idQualificatif(((BigDecimal) item[3]).longValue())
 							.intitule((String) item[4])
-							.positionnement(((BigDecimal) item[5]).intValue())
+							.positionnement(((BigDecimal) item[5]).longValue())
 							.noEtudiant(((String) item[6]))
 							.idReponseEvaluation(((BigDecimal) item[7]).longValue())
 							.idRubriqueEvaluation(((BigDecimal) item[8]).longValue())
 							.build();
+			});
+		}
+		
+		@Autowired
+		ReponseEvaluationService reponseEvaluationService;
+		@Test void testgetAllreponseevaluation()
+		{
+			System.out.println("________ GETTING ALL REPONSE EVALUATIONS");
+			List<ReponseEvaluationDTO> r = reponseEvaluationService.getAllReponseEvaluations();
+			
+			
+			r.forEach(rub ->
+			{
+				System.out.println("etd => "+rub.getEtudiant());
+				System.out.println("eval => "+rub.getEvaluation());
+				
+				for(ReponseRubriqueDTO i : rub.getRubriques())
+				{
+					System.out.println("\t - rub info => "+i.getRubriqueinfo());
+					System.out.println("\t - id rub eval => "+i.getIdRubriqueEvaluation());
+					
+					i.getQuestions().forEach(q -> {
+						System.out.println("\t\t - question info => "+q.getQuestion());
+						System.out.println("\t\t - question pos => "+q.getPositionnement());
+					});
+				}
 			});
 		}
 
