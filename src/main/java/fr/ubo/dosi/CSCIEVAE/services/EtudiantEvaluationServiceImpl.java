@@ -24,6 +24,6 @@ public class EtudiantEvaluationServiceImpl implements EtudiantEvaluationService{
 
     @Override
     public int NumberOfStudents(String codeFormation, String anneeUniversitaire) {
-        return etudiantsRepository.countEtudiantsByCodeFormationAndAnneeUniversitaire(codeFormation,anneeUniversitaire);
+        return etudiantsRepository.countByCodeFormationAndAnneeUniversitaire(codeFormation,anneeUniversitaire);
     }
 }

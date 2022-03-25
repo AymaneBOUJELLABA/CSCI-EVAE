@@ -123,7 +123,7 @@ public class EvaluationController {
     @GetMapping(path="/students")
     @ResponseBody
     public ResponseEntity<Object> getOfNumberEtudiants(@RequestParam String codeFormation, @RequestParam String anneeUniv){
-        int NumberEtudiantRepondu = etudiantEvaluationService.NumberOfStudents(codeFormation,anneeUniv);
+        Integer NumberEtudiantRepondu = etudiantEvaluationService.NumberOfStudents(codeFormation,anneeUniv);
         return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
     }
 
