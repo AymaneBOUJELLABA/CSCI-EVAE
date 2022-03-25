@@ -5,6 +5,7 @@ import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
+import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.log4j.*;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -105,6 +107,30 @@ public class EvaluationController {
             throw new EvaluationErrorException();
         } else {
             return new ResponseEntity<>(evaDto, HttpStatus.ACCEPTED);
+        }
+    }
+
+    @PutMapping(
+            path = "/{id}/publier",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<Evaluation> publierEvaluation(@PathVariable int id)throws ParseException {
+        log.info("--- Controller for Publishing Evaluation with ID : "+id);
+        Evaluation evaluation = evaluationService.getEvalutionParId((long) id);
+        if (!evaluation.getEtat().equals("ELA")){
+            log.info(" --- Evaluation already published --");
+            throw new EvaluationUpdateErrorException(
+                    HttpStatus.NOT_MODIFIED,
+                    "Cette évaluation est déja publiée ou cloturée !",
+                    evaluation
+            );
+        }else {
+            log.info(" -- Send request to service to Start the process of publishing --");
+            return new ResponseEntity<>(
+                    evaluationService.publierEvaluation(evaluation),
+                    HttpStatus.ACCEPTED
+            );
         }
     }
 

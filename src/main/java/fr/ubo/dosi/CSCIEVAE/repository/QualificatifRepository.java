@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QualificatifRepository extends JpaRepository<Qualificatif, Long> {
 
-
-
 }

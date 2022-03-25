@@ -27,10 +27,11 @@ public interface EvaluationService {
 
     void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriqueEvaluations);
 
-    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
+    void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto);
 
     EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
 
-    RubriqueDTO getQuestionsEvalForRubriqueEval(Long idRubEval);
+    List<QuestionDTO> getQuestionsEvalForRubriqueEval(Long idRubEval);
 
+    Evaluation publierEvaluation(Evaluation evaluation);
 }
