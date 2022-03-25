@@ -117,31 +117,33 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	{
 		try
 		{
+			System.out.println("-------------- GETTING QUESTION RESPONSES OF EVALUATION");
+			List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo(idReponseEvaluation);
+			
+			List<QuestionReponseInfoDTO> result = new ArrayList<QuestionReponseInfoDTO>();
+			r.forEach(item->
+			{
+				QuestionReponseInfoDTO i = QuestionReponseInfoDTO.builder()
+							.idQuestion(((BigDecimal) item[0]).longValue())
+							.type((String) item[1])
+							.noEnseignant((String) item[2])
+							.idQualificatif(((BigDecimal) item[3]).longValue())
+							.intitule((String) item[4])
+							.positionnement(((BigDecimal) item[5]).intValue())
+							.noEtudiant(((String) item[6]))
+							.idReponseEvaluation(((BigDecimal) item[7]).longValue())
+							.idRubriqueEvaluation(((BigDecimal) item[8]).longValue())
+							.build();
+				result.add(i);
+			});
+			
+			return result;
 			
 		}catch(Exception e)
 		{
 			log.error("____ERREUR!! get=>");
+			return null;
 		}
-		System.out.println("-------------- GETTING QUESTION RESPONSES OF EVALUATION");
-		List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo(idReponseEvaluation);
-					
-		List<QuestionReponseInfoDTO> result = new ArrayList<QuestionReponseInfoDTO>();
-		r.forEach(item->
-		{
-			QuestionReponseInfoDTO i = QuestionReponseInfoDTO.builder()
-						.idQuestion(((BigDecimal) item[0]).longValue())
-						.type((String) item[1])
-						.noEnseignant((String) item[2])
-						.idQualificatif(((BigDecimal) item[3]).longValue())
-						.intitule((String) item[4])
-						.positionnement(((BigDecimal) item[5]).intValue())
-						.noEtudiant(((String) item[6]))
-						.idReponseEvaluation(((BigDecimal) item[7]).longValue())
-						.idRubriqueEvaluation(((BigDecimal) item[8]).longValue())
-						.build();
-			result.add(i);
-		});
 		
-		return result;
 	}
 }
