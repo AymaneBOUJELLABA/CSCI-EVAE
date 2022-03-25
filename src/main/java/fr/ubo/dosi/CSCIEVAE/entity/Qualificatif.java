@@ -1,10 +1,14 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "QUALIFICATIF")
+@AllArgsConstructor @NoArgsConstructor
 public class Qualificatif implements Serializable {
     @Id
     @Column(name = "ID_QUALIFICATIF")
