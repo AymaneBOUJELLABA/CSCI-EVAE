@@ -233,6 +233,20 @@ public class RubriqueServiceImpl implements RubriqueService
 	{
 		RubriqueEvaluation rubE = rubEvalrepo.findById(idRubriqueEvaluation).get();
 		
-		return this.rubriqueRepository.findById(rubE.getIdRubrique()).get();
+		Rubrique r = this.rubriqueRepository.findById(rubE.getIdRubrique()).get();
+		
+		System.out.println("Rubrique from RubriqueEvaluation "+idRubriqueEvaluation+" : " + r);
+		
+		return r;
+	}
+
+	@Override
+	public Rubrique getRubriqueByDesignation(String Designation) throws NoSuchElementException
+	{
+		Rubrique r = this.rubriqueRepository.findByDesignation(Designation);
+		
+		System.out.println("Rubrique "+Designation+" : " + r);
+		
+		return r;
 	}
 }

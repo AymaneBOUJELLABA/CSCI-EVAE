@@ -2,6 +2,7 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "RUBRIQUE_EVALUATION")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class RubriqueEvaluation implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_RUBRIQUE_EVALUATION")

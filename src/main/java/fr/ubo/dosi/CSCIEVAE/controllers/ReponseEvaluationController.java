@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.ubo.dosi.CSCIEVAE.dto.PromotionsStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseEvaluationService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -49,6 +50,15 @@ public class ReponseEvaluationController
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
+	@GetMapping("/graphes")
+	@ResponseBody
+	public ResponseEntity<List<PromotionsStatsDTO>> getAllPromotionsForGraphes()
+	{
+		log.info("Recherche des informations pour affichage des graphes");
+		List<PromotionsStatsDTO> result = reponseEvaluationService.getAllPromotionsGraphesData();
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 	
 
 }

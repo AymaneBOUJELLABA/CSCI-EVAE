@@ -23,6 +23,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueGraphesDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.Promotion;
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
@@ -161,12 +162,10 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 		try
 		{
 			ReponseEvaluationDTO item = new ReponseEvaluationDTO();
-			log.info("___searching for Etudiant of this ReponseEvaluation "+repEval.getIdReponseEvaluation()+"......");
 			Etudiant etd = this.getEtudiantFromResponseEvaluation(repEval.getIdReponseEvaluation());
-			log.info("__searching for Eval associer à cette reponse evaluation....");
 			Evaluation eval = evaluationService.getEvalutionParId(repEval.getIdEvaluation());
 			
-			log.info("___searching for les questions de cette réponse....");
+			
 			List<QuestionReponseInfoDTO> rQuestions = this.getQuestionReponseAllInfo(repEval.getIdReponseEvaluation());
 			List<ReponseRubriqueDTO> rubriques = new ArrayList<ReponseRubriqueDTO>();
 			
@@ -174,17 +173,19 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			rQuestions.forEach(question->
 			{
 				boolean rubExists = false;
-				
 				for(ReponseRubriqueDTO j : rubriques)
 				{
 					if(j.getIdRubriqueEvaluation().equals(question.getIdRubriqueEvaluation()))
+					{
 						rubExists = true;
+					}
 				}
 				
 				ReponseRubriqueDTO rub = rubriques.stream()
 											.filter(el -> el.getIdRubriqueEvaluation().equals(question.getIdRubriqueEvaluation()))
 											.findFirst()
 											.orElse(new ReponseRubriqueDTO());
+				
 				//if rub exists
 				List<ReponseQuestionDTO> rubQsts = rubExists ? rub.getQuestions() : new ArrayList<ReponseQuestionDTO>();
 				
@@ -198,7 +199,7 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 				qDTO.setOrder(question.getOrdre());
 				if(qualifRepo.findById(question.getIdQualificatif()).isPresent())
 					qDTO.setQualificatif(qualifRepo.findById(question.getIdQualificatif()).get());
-				
+				qDTO.setType(question.getType());
 				rubQsts.add(
 						new ReponseQuestionDTO(
 								question.getIdQuestionEvaluation(),
@@ -209,11 +210,20 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 				
 				rub.setQuestions(rubQsts);
 				
-				Rubrique rubInfo = rubriqueService.getRubriqueByIdRubriqueEvaluation(question.getIdReponseEvaluation()); //RubriqueInfo
-				rub.setRubriqueinfo(rubInfo);
-				rub.setIdRubriqueEvaluation(question.getIdRubriqueEvaluation());
+				if(!rubExists)
+				{
+					Rubrique rubInfo = rubriqueService.getRubriqueByIdRubriqueEvaluation(question.getIdRubriqueEvaluation()); //RubriqueInfo
+					System.out.println("RUB INFO : " + rubInfo);
+					rub.setRubriqueinfo(rubInfo);
+					rub.setIdRubriqueEvaluation(question.getIdRubriqueEvaluation());
+					rubriques.add(rub);
+				}else
+				{
+					int  i =rubriques.indexOf(rub);
+					rubriques.set(i, rub);
+				}
 				
-				rubriques.add(rub);
+				
 			});
 			
 			item.setEtudiant(etd);
@@ -247,30 +257,40 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	@Autowired
 	PromotionRepository promoRepo;
 	@Override
+	//GET ALL PROMOS -> GET ALL EVALUATIONS REPONSES OF PROMO -> CALCULER MOY FOR EACH EVAL
 	public List<PromotionsStatsDTO> getAllPromotionsGraphesData()
 	{
 		try
 		{
-			List<ReponseEvaluationDTO> allData = this.getAllReponseEvaluations();
+			log.info("----Chercher tous les promos....");
+			//chercher tous les promos
+			List<Promotion> dbPromos = promoRepo.findAll();
+
+			log.info("---chercher les réponse des evaluations");
 			
-			
-			List<PromotionsStatsDTO> result = allData.stream().map(data ->
+			//mapper les promos en PromotionsStatsDTO
+			List<PromotionsStatsDTO> result = dbPromos.stream().map(promo ->
 			{
-				PromotionsStatsDTO promo = new PromotionsStatsDTO();
-				List<ReponseEvaluationGraphesDTO> reponsesEvaluations = new ArrayList<ReponseEvaluationGraphesDTO>();
+				//chercher tous les evaluations
+				List<ReponseEvaluationDTO> repEvals = this.getAllReponseEvaluationsByAnneUnivAndCodeFormation(promo.getAnneeUniversitaire(), promo.getCodeFormation());
 				
+				PromotionsStatsDTO newP = new PromotionsStatsDTO();
+				//mapper les evaluations en reponseEvaluationsGraphesDTO
+				List<ReponseEvaluationGraphesDTO> gEvals = repEvals.stream().map(eval->
+				{
+					ReponseEvaluationGraphesDTO r = new ReponseEvaluationGraphesDTO();
+					
+					
+					r.setCodeUe(eval.getEvaluation().getCodeUe());
+					r.setRubriques(this.calculerMoyenneRub(eval.getRubriques()));
+					return r;
+				}).collect(Collectors.toList());
 				
-				
-				
-				promo.setAnneUniv(null);
-				promo.setNomFormation(null);
-				promo.setReponseEvaluations(null);
-				
-				return promo;
+				newP.setAnneUniv(promo.getAnneeUniversitaire());
+				newP.setCodeFormation(promo.getCodeFormation());
+				newP.setReponseEvaluations(gEvals);
+				return newP;
 			}).collect(Collectors.toList());
-			
-			
-			
 			return result;
 			
 		}catch(Exception e)
@@ -284,6 +304,7 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	{
 		try
 		{
+			log.info("---Calculer la moyenne pour chaque Rubrique---");
 			List<RubriqueGraphesDTO> rubG = rubriques.stream().map(rub ->
 			{
 				Double sum = 0d;
@@ -292,7 +313,10 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 					sum += q.getPositionnement();
 				}
 				
-				return new RubriqueGraphesDTO(rub.getRubriqueinfo().getDesignation(),sum/rub.getQuestions().size());				
+				RubriqueGraphesDTO r = new RubriqueGraphesDTO(rub.getRubriqueinfo().getDesignation(),sum/rub.getQuestions().size());				
+				
+				log.info("----Rubrique Graphe : "+ r);
+				return r;
 			}).collect(Collectors.toList());
 			
 			return rubG;
@@ -303,5 +327,23 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			return null;
 		}
 		
+	}
+
+	@Override
+	public List<ReponseEvaluationDTO> getAllReponseEvaluationsByAnneUnivAndCodeFormation(String anneeUniv,String codeFormation)
+	{
+		try
+		{
+			List<ReponseEvaluation> repsEval = reponseEvalRepo.findAllByAnneeUnivAndCodeFormation(anneeUniv,codeFormation);
+			List<ReponseEvaluationDTO> output = repsEval.stream().map(rep -> 
+				this.populateDTOfromReponseEvaluation(rep)
+			).collect(Collectors.toList());
+			
+			return output;
+		}catch(Exception e)
+		{
+			log.error("___Erreur get All reponse evaluation By CodeFormation And anneUniv  __ =>" + e);
+		}
+		return null;
 	}
 }

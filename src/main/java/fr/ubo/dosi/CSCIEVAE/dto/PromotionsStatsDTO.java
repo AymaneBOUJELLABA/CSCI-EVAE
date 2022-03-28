@@ -8,7 +8,7 @@ import lombok.Data;
 public class PromotionsStatsDTO
 {
 	private String AnneUniv;
-	private String nomFormation;
+	private String codeFormation;
 	private List<ReponseEvaluationGraphesDTO> reponseEvaluations;
 
 }

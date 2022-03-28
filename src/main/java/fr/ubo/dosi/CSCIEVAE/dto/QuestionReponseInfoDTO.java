@@ -19,5 +19,4 @@ public class QuestionReponseInfoDTO
 	Long idRubriqueEvaluation;
 	Long idQuestionEvaluation;
 	Long ordre;
-	
 }

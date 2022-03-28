@@ -18,6 +18,8 @@ public interface ReponseEvaluationService
 
 	List<ReponseEvaluationDTO> getAllReponseEvaluationsByUeAndAnneUniv(String codeUe,String anneeUniv);
 	
+	List<ReponseEvaluationDTO> getAllReponseEvaluationsByAnneUnivAndCodeFormation(String anneeUniv, String codeFormation);
+	
 	ReponseEvaluationDTO addReponseEvaluation(ReponseEvaluation entity);
 	
 	EvaluationDTO getEvaluationFromResponseEvaluation(Long idReponseEvaluation);
