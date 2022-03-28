@@ -11,6 +11,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationGraphesDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
+import fr.ubo.dosi.CSCIEVAE.messages.EvaluationReponseInMessage;
 
 public interface ReponseEvaluationService 
 {
@@ -20,7 +21,7 @@ public interface ReponseEvaluationService
 	
 	List<ReponseEvaluationDTO> getAllReponseEvaluationsByAnneUnivAndCodeFormation(String anneeUniv, String codeFormation);
 	
-	ReponseEvaluationDTO addReponseEvaluation(ReponseEvaluation entity);
+	ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity);
 	
 	EvaluationDTO getEvaluationFromResponseEvaluation(Long idReponseEvaluation);
 	

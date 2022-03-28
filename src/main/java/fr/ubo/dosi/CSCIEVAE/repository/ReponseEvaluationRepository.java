@@ -30,5 +30,6 @@ public interface ReponseEvaluationRepository extends JpaRepository<ReponseEvalua
 			+ "	AND EVALUATION.CODE_FORMATION = ?2 "
 			+ ") ", nativeQuery = true)
 	List<ReponseEvaluation> findAllByAnneeUnivAndCodeFormation(String anneUniv, String codeFormation);
-
+	
+	ReponseEvaluation findByIdEvaluationAndNoEtudiant(Long idEvaluation,String noEtudiant);
 }

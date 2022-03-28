@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import fr.ubo.dosi.CSCIEVAE.dto.PromotionsStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
+import fr.ubo.dosi.CSCIEVAE.repository.EtudiantRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseEvaluationRepository;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseEvaluationService;
 
@@ -48,6 +50,14 @@ public class ReponseEvaluationsTests
 		
 		ReponseEvaluationDTO result = reponseEvaluationService.populateDTOfromReponseEvaluation(repEval);
 		
+	}
+	
+	@Autowired
+	EtudiantRepository etudiantRepository;
+	@Test
+	public void getEtudiantByNoEtudiant()
+	{
+		//Etudiant etd = etudiantRepository.findById("");
 	}
 
 }

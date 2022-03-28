@@ -28,6 +28,7 @@ import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.messages.EvaluationReponseInMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.EtudiantRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.PromotionRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.QualificatifRepository;
@@ -98,10 +99,53 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	}
 
 	@Override
-	public ReponseEvaluationDTO addReponseEvaluation(ReponseEvaluation entity)
+	public ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		///SAVE INTO REPONSE_EVALUATION
+		//THEN -> REPONSE_QUESTION
+		try
+		{
+			ReponseEvaluationDTO result = new ReponseEvaluationDTO();
+			Etudiant etd = etudiantRepo.findByNoEtudiant(entity.getIdEtudiant());
+			log.info("___Etudiant :" + etd);
+			Evaluation eval = evaluationService.getEvalutionParId(entity.getIdEvaluation());
+			log.info("__Evaluation :" + eval);
+			
+			ReponseEvaluation repEvalExists = reponseEvalRepo.findByIdEvaluationAndNoEtudiant(eval.getIdEvaluation(), etd.getNoEtudiant());
+			
+			
+			if(repEvalExists == null || repEvalExists.getIdReponseEvaluation() ==null)
+			{
+				log.error("___Etudiant a déjà rempli le questionnaire de cette evaluation");
+				throw new Exception("Etudiant "+ etd.getNoEtudiant() + " a dèjà répondue à cette evaluation!");
+			}
+			
+			List<ReponseRubriqueDTO> repRubs = entity.getRubriques().stream().map(rub ->
+			{
+				ReponseRubriqueDTO r = new ReponseRubriqueDTO();
+				
+				
+				
+				r.setIdRubriqueEvaluation(null);
+				r.setQuestions(null);
+				r.setRubriqueinfo(null);
+				return r;
+			}).collect(Collectors.toList());
+			
+		
+			result.setCommentaire(entity.getCommentaire());
+			result.setEtudiant(etd);
+			result.setEvaluation(mapper.evaluationMapperToDTO(eval));
+			result.setIdReponseEvaluation(null);
+			result.setRubriques(null);
+			return result;
+			
+		}catch(Exception e)
+		{
+			log.error("__Erreur ajout Reponse evaluation " + e);
+			return null;
+			
+		}
 	}
 
 	@Override
@@ -279,7 +323,6 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 				List<ReponseEvaluationGraphesDTO> gEvals = repEvals.stream().map(eval->
 				{
 					ReponseEvaluationGraphesDTO r = new ReponseEvaluationGraphesDTO();
-					
 					
 					r.setCodeUe(eval.getEvaluation().getCodeUe());
 					r.setRubriques(this.calculerMoyenneRub(eval.getRubriques()));
