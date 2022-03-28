@@ -1,7 +1,10 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,6 +12,7 @@ import java.io.Serializable;
 @Table(name = "DROIT")
 @IdClass(DroitId.class)
 @AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Droit implements Serializable {
     @Id
     @Column(name = "ID_EVALUATION")
@@ -23,37 +27,5 @@ public class Droit implements Serializable {
 
     @Column(name = "DUPLICATION", columnDefinition = "CHAR")
     private String duplication;
-    
 
-    public Long getIdEvaluation() {
-        return this.idEvaluation;
-    }
-
-    public void setIdEvaluation(Long idEvaluation) {
-        this.idEvaluation = idEvaluation;
-    }
-
-    public Long getNoEnseignant() {
-        return this.noEnseignant;
-    }
-
-    public void setNoEnseignant(Long noEnseignant) {
-        this.noEnseignant = noEnseignant;
-    }
-
-    public String getConsultation() {
-        return this.consultation;
-    }
-
-    public void setConsultation(String consultation) {
-        this.consultation = consultation;
-    }
-
-    public String getDuplication() {
-        return this.duplication;
-    }
-
-    public void setDuplication(String duplication) {
-        this.duplication = duplication;
-    }
 }

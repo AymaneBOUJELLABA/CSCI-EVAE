@@ -1,13 +1,23 @@
 package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatReponseQuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
+
+import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
+
 import fr.ubo.dosi.CSCIEVAE.services.EtudiantEvaluationService;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
+
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
+import fr.ubo.dosi.CSCIEVAE.services.ReponseQuestionService;
+import fr.ubo.dosi.CSCIEVAE.services.RubriqueEvaluationService;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +41,12 @@ public class EvaluationController {
     private EvaluationService evaluationService;
     @Autowired
     private DataMapper dataMapper;
+    @Autowired
+    private ReponseQuestionRepository reponseQuestionRepository;
+    @Autowired
+    private ReponseQuestionService reponseQuestionService;
+    @Autowired
+    private RubriqueEvaluationService rubriqueEvaluationService;
 
     @Autowired
     EtudiantEvaluationService etudiantEvaluationService;
@@ -115,6 +131,35 @@ public class EvaluationController {
             return new ResponseEntity<>(evaDto, HttpStatus.ACCEPTED);
         }
     }
+    
+    @GetMapping("/statQuestion/{id}")
+    @ResponseBody
+    public StatReponseQuestionDTO getStatQuestion(@PathVariable int id){
+    	return this.reponseQuestionService.getStatReponseQuestion((long)id);    	
+    }
+    
+    
+    @GetMapping("/rubriques/{id}")
+    @ResponseBody
+    public List<RubriqueEvaluation> getQuestions(@PathVariable int id){
+    	return this.rubriqueEvaluationService.findAllByIdEvaluationOrderByOrdreAsc((long)id);
+    	
+    }
+    
+    
+    @GetMapping("/statEval/{id}")
+    @ResponseBody
+    public StatEvaluationDTO getStatEvaluation(@PathVariable int id){
+    	return this.evaluationService.getStatEvaluation((long)id);
+    	
+    }
+    
+    @GetMapping("/reponses")
+    @ResponseBody
+    public List<ReponseQuestion> getStatRepnses(){
+    	return this.reponseQuestionRepository.findAll();    	
+    }
+         
 
     @PutMapping(
             path = "/{id}/publier",
