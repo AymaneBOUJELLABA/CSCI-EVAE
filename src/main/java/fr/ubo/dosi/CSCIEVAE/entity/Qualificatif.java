@@ -1,10 +1,14 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "QUALIFICATIF")
+
 public class Qualificatif implements Serializable {
     @Id
     @Column(name = "ID_QUALIFICATIF")

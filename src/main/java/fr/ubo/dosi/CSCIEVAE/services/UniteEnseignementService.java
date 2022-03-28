@@ -21,6 +21,7 @@ public class UniteEnseignementService {
 	@Autowired
 	private EnseignantRepository enseignantRepository;
 	
+	
 	public UniteEnseignement save(UniteEnseignement uniteEnseignement) {
 		return this.uniteEnseignementRepository.save(uniteEnseignement);
 	}

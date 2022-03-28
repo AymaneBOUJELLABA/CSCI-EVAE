@@ -1,10 +1,17 @@
 package fr.ubo.dosi.CSCIEVAE.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+
 @Data
+@AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class EvaluationDTO {
 
     private Long idEvaluation;
@@ -20,6 +27,6 @@ public class EvaluationDTO {
     private java.sql.Date debutReponse;
     private java.sql.Date finReponse;
     private List<RubriqueDTO> rubriques;
-	
+
 
 }
