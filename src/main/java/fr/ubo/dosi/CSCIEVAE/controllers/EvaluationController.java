@@ -9,7 +9,12 @@ import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
 import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
+
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
+
+import fr.ubo.dosi.CSCIEVAE.services.EtudiantEvaluationService;
+import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
+
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseQuestionService;
 import fr.ubo.dosi.CSCIEVAE.services.RubriqueEvaluationService;
@@ -20,6 +25,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
+import java.text.ParseException;
 
 import java.util.List;
 
@@ -40,10 +48,13 @@ public class EvaluationController {
     @Autowired
     private RubriqueEvaluationService rubriqueEvaluationService;
 
+    @Autowired
+    EtudiantEvaluationService etudiantEvaluationService;
+
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<Evaluation>> getAllEvalutions(){
-       // log.info("Recherche sur toutes les évalutions");
+        log.info("Recherche sur toutes les évalutions");
         return new ResponseEntity<>(
                 evaluationService.getAllEvalutions(),
                 HttpStatus.FOUND);
@@ -51,15 +62,15 @@ public class EvaluationController {
 
     @GetMapping("/ue")
     @ResponseBody
-    public ResponseEntity<EvaluationDTO> getEvationByCodeUE(@RequestParam String codeUe){
-        Evaluation evaluation = evaluationService.getEvalutionParCodeUe(codeUe);
+    public ResponseEntity<EvaluationDTO> getEvationByCodeUEAndAnneUniv(@RequestParam String codeUe, @RequestParam String anneeUniv){
+        Evaluation evaluation = evaluationService.getEvalutionParCodeUeAndAnneeUniv(codeUe,anneeUniv);
         if (evaluation == null) {
-            //log.error("Evalution not found pour l'UE "+codeUe);
+            log.error("Evalution not found pour l'UE "+codeUe+ ", and Annee Univ "+anneeUniv);
             throw new EvaluationNotfoundException();
         } else {
             EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);
             evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(evaluation.getIdEvaluation()));
-            //log.info("Recherche de l'évaluation de l'UE :" + codeUe);
+            log.info("Recherche de l'évaluation de l'UE :" + codeUe);
             return new ResponseEntity<>(
                     evaluationDTO,
                     HttpStatus.FOUND);
@@ -72,12 +83,12 @@ public class EvaluationController {
 
         Evaluation evaluation = evaluationService.getEvalutionParId((long) id);
         if (evaluation == null){
-            //log.error("Evalution not found pour ID "+id);
+            log.error("Evalution not found pour ID "+id);
             throw new EvaluationNotfoundException();
         }else{
             EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(evaluation);
             evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(evaluation.getIdEvaluation()));
-            //log.info("Recherche de l'évaluation avec ID :" + id);
+            log.info("Recherche de l'évaluation avec ID :" + id);
             return new ResponseEntity<>(
                     evaluationDTO,
                     HttpStatus.FOUND);
@@ -97,8 +108,23 @@ public class EvaluationController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<EvaluationDTO> ajouterEvaluationToUE(@RequestBody EvaluationDTO evaluationDTO){
-        //log.info("-- Start Add Evaluation --");
-        EvaluationDTO evaDto = evaluationService.createEvalution(evaluationDTO);
+        log.info("-- Start Add Evaluation --");
+        EvaluationDTO evaDto = evaluationService.createEvaluation(evaluationDTO);
+        if (evaDto == null) {
+            throw new EvaluationErrorException();
+        } else {
+            return new ResponseEntity<>(evaDto, HttpStatus.ACCEPTED);
+        }
+    }
+
+    @PutMapping(
+            path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<EvaluationDTO> updateEvaluationToUE(@PathVariable long id, @RequestBody EvaluationDTO evaluationDTO){
+        log.info("-- Start Update Evaluation --");
+        EvaluationDTO evaDto = evaluationService.updateRubriquesEvaluationOrder(evaluationDTO);
         if (evaDto == null) {
             throw new EvaluationErrorException();
         } else {
@@ -134,5 +160,45 @@ public class EvaluationController {
     	return this.reponseQuestionRepository.findAll();    	
     }
          
+
+    @PutMapping(
+            path = "/{id}/publier",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<Evaluation> publierEvaluation(@PathVariable int id)throws ParseException {
+        log.info("--- Controller for Publishing Evaluation with ID : "+id);
+        Evaluation evaluation = evaluationService.getEvalutionParId((long) id);
+        if (!evaluation.getEtat().equals("ELA")){
+            log.info(" --- Evaluation already published --");
+            throw new EvaluationUpdateErrorException(
+                    HttpStatus.NOT_MODIFIED,
+                    "Cette évaluation est déja publiée ou cloturée !",
+                    evaluation
+            );
+        }else {
+            log.info(" -- Send request to service to Start the process of publishing --");
+            return new ResponseEntity<>(
+                    evaluationService.publierEvaluation(evaluation),
+                    HttpStatus.ACCEPTED
+            );
+        }
+    }
+  
+  // Etudiant Evaluation data 
+  
+    @GetMapping(path="/{id}/details")
+    @ResponseBody
+    public ResponseEntity<Object> getOfNumberEtudiantRepondu(@PathVariable int id){
+        int NumberEtudiantRepondu = etudiantEvaluationService.NumberOfResponses((long) id);
+        return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path="/students")
+    @ResponseBody
+    public ResponseEntity<Object> getOfNumberEtudiants(@RequestParam String codeFormation, @RequestParam String anneeUniv){
+        Integer NumberEtudiantRepondu = etudiantEvaluationService.NumberOfStudents(codeFormation,anneeUniv);
+        return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
+    }
 
 }

@@ -23,11 +23,11 @@ public class EvaluationServiceTest {
 	@Test
 	public void getEvationByCodeUETest()
 			  throws Exception {
-		Evaluation eva= evaluationService.getEvalutionParCodeUe("ISI");
+		Evaluation eva= evaluationService.getEvalutionParCodeUeAndAnneeUniv("ISI","2014-2015");
 		assertEquals("M2DOSI",eva.getCodeFormation());
 		assertEquals("2014-2015",eva.getAnneeUniversitaire());
 		assertEquals("Evaluation ISI",eva.getDesignation());
-		assertEquals("Du 22 septembre au 24 octobre",eva.getPeriode());		
+		assertEquals("Du 22 septembre au 24 octobre",eva.getPeriode());	
 	}
 			
 		@Test

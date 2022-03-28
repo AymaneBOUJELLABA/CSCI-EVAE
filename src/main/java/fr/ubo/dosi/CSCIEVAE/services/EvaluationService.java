@@ -18,7 +18,7 @@ public interface EvaluationService {
 
     List<Evaluation> getAllEvalutions();
 
-    Evaluation getEvalutionParCodeUe(String codeUe);
+    Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv);
 
     Evaluation getEvalutionParId(Long id);
 
@@ -30,4 +30,15 @@ public interface EvaluationService {
     EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
     void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
+    EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO);
+
+    void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriqueEvaluations);
+
+    void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto);
+
+    EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
+
+    List<QuestionDTO> getQuestionsEvalForRubriqueEval(Long idRubEval);
+
+    Evaluation publierEvaluation(Evaluation evaluation);
 }

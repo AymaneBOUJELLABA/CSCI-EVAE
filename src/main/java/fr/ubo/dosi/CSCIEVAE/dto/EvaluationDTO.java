@@ -29,4 +29,5 @@ public class EvaluationDTO {
     private List<RubriqueDTO> rubriques;
 
 
+
 }

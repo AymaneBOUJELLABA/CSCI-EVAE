@@ -3,6 +3,9 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import lombok.ToString;
+
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,6 +13,9 @@ import java.io.Serializable;
 @Table(name = "REPONSE_QUESTION")
 @IdClass(ReponseQuestionId.class)
 @AllArgsConstructor @NoArgsConstructor
+
+@ToString
+
 public class ReponseQuestion implements Serializable {
     @Id
     @Column(name = "ID_REPONSE_EVALUATION")

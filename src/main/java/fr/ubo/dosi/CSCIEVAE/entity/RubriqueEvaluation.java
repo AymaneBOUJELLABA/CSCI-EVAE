@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "RUBRIQUE_EVALUATION")
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class RubriqueEvaluation implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_RUBRIQUE_EVALUATION")
@@ -25,6 +26,7 @@ public class RubriqueEvaluation implements Serializable {
 
     @Column(name = "DESIGNATION")
     private String designation;
+
     
    // public RubriqueEvaluation() {}
   /*  public RubriqueEvaluation(Long idRubriqueEvaluation,Long idEvaluation,Long idRubrique,Long ordre,String designation) {
@@ -35,6 +37,7 @@ public class RubriqueEvaluation implements Serializable {
     	this.designation= designation;
     	
     }*/
+
 
     public Long getIdRubriqueEvaluation() {
         return this.idRubriqueEvaluation;

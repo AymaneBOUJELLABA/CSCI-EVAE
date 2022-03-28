@@ -11,7 +11,7 @@ import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.exceptions.UeNotFoundException;
 import fr.ubo.dosi.CSCIEVAE.services.UniteEnseignementService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ue")
 public class UniteEnseignementController {
@@ -29,7 +29,6 @@ public class UniteEnseignementController {
 	}
 	
 	@GetMapping("{code}")
-	
 	 public ResponseEntity<Map<String,String>> getEvationByCodeUE(@PathVariable String code){
 		Map<String,String> ue = this.uniteEnseignementService.getByCodeUe(code);
 	        if (ue == null) {
@@ -41,10 +40,9 @@ public class UniteEnseignementController {
 	                    HttpStatus.FOUND);
 	        }
 	    }
-	
 
-	
-	@GetMapping("list/{code}")
+	@GetMapping("/list/{code}")
+
 	public ResponseEntity<List<Map<String,String>>> ListerUeByFormation(@PathVariable String code){
 		
 		return new ResponseEntity<>(

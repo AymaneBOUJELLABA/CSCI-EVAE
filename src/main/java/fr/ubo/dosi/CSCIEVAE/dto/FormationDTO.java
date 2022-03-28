@@ -1,3 +1,4 @@
+
 package fr.ubo.dosi.CSCIEVAE.dto;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
@@ -20,3 +21,4 @@ public class FormationDTO {
 
    
 }
+
