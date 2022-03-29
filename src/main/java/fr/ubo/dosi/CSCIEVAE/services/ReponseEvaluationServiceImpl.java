@@ -21,6 +21,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationGraphesDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseQuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueGraphesDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.UeStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Promotion;
@@ -406,6 +407,31 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			log.error("___ ERROR GETTING ALL RESPONSES EVALUATION FOR GRAPHES____ => "+ e);
 			return null;
 		}
+	}
+	
+	public UeStatsDTO getStatsForUeByAnneUniv(String codeUe, String anneeUniv)
+	{
+		//chercher tous les evaluations
+		List<ReponseEvaluationDTO> repEvals = this.getAllReponseEvaluationsByUeAndAnneUniv(codeUe, anneeUniv);
+		
+		//mapper les evaluations en reponseEvaluationsGraphesDTO
+		List<ReponseEvaluationGraphesDTO> gEvals = repEvals.stream().map(eval->
+		{
+			ReponseEvaluationGraphesDTO r = new ReponseEvaluationGraphesDTO();
+			
+			r.setCodeUe(eval.getEvaluation().getCodeUe());
+			r.setRubriques(this.calculerMoyenneRub(eval.getRubriques()));
+			return r;
+		}).collect(Collectors.toList());
+
+		
+		//for()
+		
+		UeStatsDTO reponse = new UeStatsDTO();
+		reponse.setAnneUniv(anneeUniv);
+		reponse.setCodeUe(codeUe);
+		reponse.setMoy(0D);
+		return reponse;
 	}
 	
 	public List<RubriqueGraphesDTO> calculerMoyenneRub(List<ReponseRubriqueDTO> rubriques)

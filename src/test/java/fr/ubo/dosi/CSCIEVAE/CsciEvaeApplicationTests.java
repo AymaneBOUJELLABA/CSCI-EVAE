@@ -114,54 +114,6 @@ class CsciEvaeApplicationTests {
 			}
 		}
 		
-		@Autowired
-		ReponseQuestionRepository reponseQuestionRepository;
-		@Test void testGetQuestionReponseEval()
-		{
-			
-			System.out.println("-------------- GETTING QUESTION RESPONSES OF EVALUATION");
-			List<Object[]> r = reponseQuestionRepository.findAllReponseQuestionInfo((long) 1);
-						
-			r.forEach(item->
-			{
-				QuestionReponseInfoDTO i = QuestionReponseInfoDTO.builder()
-							.idQuestion(((BigDecimal) item[0]).longValue())
-							.type((String) item[1])
-							.noEnseignant((String) item[2])
-							.idQualificatif(((BigDecimal) item[3]).longValue())
-							.intitule((String) item[4])
-							.positionnement(((BigDecimal) item[5]).longValue())
-							.noEtudiant(((String) item[6]))
-							.idReponseEvaluation(((BigDecimal) item[7]).longValue())
-							.idRubriqueEvaluation(((BigDecimal) item[8]).longValue())
-							.build();
-			});
-		}
 		
-		@Autowired
-		ReponseEvaluationService reponseEvaluationService;
-		@Test void testgetAllreponseevaluation()
-		{
-			System.out.println("________ GETTING ALL REPONSE EVALUATIONS");
-			List<ReponseEvaluationDTO> r = reponseEvaluationService.getAllReponseEvaluations();
-			
-			
-			r.forEach(rub ->
-			{
-				System.out.println("etd => "+rub.getEtudiant());
-				System.out.println("eval => "+rub.getEvaluation());
-				
-				for(ReponseRubriqueDTO i : rub.getRubriques())
-				{
-					System.out.println("\t - rub info => "+i.getRubriqueinfo());
-					System.out.println("\t - id rub eval => "+i.getIdRubriqueEvaluation());
-					
-					i.getQuestions().forEach(q -> {
-						System.out.println("\t\t - question info => "+q.getQuestion());
-						System.out.println("\t\t - question pos => "+q.getPositionnement());
-					});
-				}
-			});
-		}
 
 }

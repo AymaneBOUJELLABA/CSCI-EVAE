@@ -34,5 +34,7 @@ public interface ReponseEvaluationService
 	ReponseEvaluationDTO populateDTOfromReponseEvaluation(ReponseEvaluation repEval);
 
 	List<PromotionsStatsDTO> getAllPromotionsGraphesData();
+	
+	
 
 }
