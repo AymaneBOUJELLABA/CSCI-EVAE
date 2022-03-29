@@ -1,20 +1,11 @@
 package fr.ubo.dosi.CSCIEVAE.utils;
 
-import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
-import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
-import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
-import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
-import fr.ubo.dosi.CSCIEVAE.entity.Question;
-import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
-import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
+import fr.ubo.dosi.CSCIEVAE.dto.*;
+import fr.ubo.dosi.CSCIEVAE.entity.*;
 
 import java.util.List;
 
-import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
-import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.repository.EnseignantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -95,4 +86,15 @@ public class DataMapper {
         return eva;
     }
 
+    public AuthentificationDTO authentificationMapperToDTO(Authentification authentification) {
+        AuthentificationDTO authentificationDTO = new AuthentificationDTO();
+        authentificationDTO.setIdConnection(authentification.getIdConnection());
+        authentificationDTO.setLogin(authentification.getLogin());
+        authentificationDTO.setPseudo(authentification.getPseudo());
+        authentificationDTO.setPwd(authentification.getPwd());
+        authentificationDTO.setRole(authentification.getRole());
+        authentificationDTO.setNoEnseignant(authentification.getNoEnseignant());
+        authentificationDTO.setNoEtudiant(authentification.getNoEtudiant());
+        return authentificationDTO;
+    }
 }
