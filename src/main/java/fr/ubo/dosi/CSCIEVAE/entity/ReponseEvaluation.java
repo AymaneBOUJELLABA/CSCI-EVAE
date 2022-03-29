@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class ReponseEvaluation implements Serializable {
     @Id
     @Column(name = "ID_REPONSE_EVALUATION")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idReponseEvaluation;
 
     @Column(name = "ID_EVALUATION")

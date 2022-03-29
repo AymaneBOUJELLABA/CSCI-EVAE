@@ -124,6 +124,19 @@ public class DataMapper {
     	return r;
     }
     
+    public QuestionDTO QuestionToQuestionDTO(Question question, Long order, Qualificatif qualif)
+    {
+    	QuestionDTO qDTO = new QuestionDTO();
+		qDTO.setIdQuestion(question.getIdQuestion());
+		qDTO.setIntitule(question.getIntitule());
+		qDTO.setNoEnseignant(question.getNoEnseignant());
+		qDTO.setOrder(order);
+		qDTO.setQualificatif(qualif);
+		qDTO.setType(question.getType());
+		
+		return qDTO;
+    }
+    
     //pour l'instant pas de props
     public EtudiantDTO EtdToEtdDTO(Etudiant etd)
     {

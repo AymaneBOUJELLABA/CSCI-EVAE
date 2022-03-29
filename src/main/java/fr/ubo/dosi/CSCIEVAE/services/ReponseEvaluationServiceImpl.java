@@ -25,15 +25,19 @@ import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.Promotion;
 import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+import fr.ubo.dosi.CSCIEVAE.entity.QuestionEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.Rubrique;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 import fr.ubo.dosi.CSCIEVAE.messages.EvaluationReponseInMessage;
 import fr.ubo.dosi.CSCIEVAE.repository.EtudiantRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.PromotionRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.QualificatifRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.QuestionEvaluationRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseEvaluationRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.RubriqueEvalutionRepository;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.log4j.Log4j2;
 
@@ -56,6 +60,10 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	RubriqueService rubriqueService;
 	@Autowired
 	QualificatifRepository qualifRepo;
+	@Autowired
+	RubriqueEvalutionRepository rubriqueEvaluationrepo;
+	@Autowired
+	QuestionEvaluationRepository questEvalRepo;
 	
 	@Override
 	public List<ReponseEvaluationDTO> getAllReponseEvaluations()
@@ -99,36 +107,97 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 	}
 
 	@Override
-	public ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity)
+	public ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity) throws Exception
 	{
 		///SAVE INTO REPONSE_EVALUATION
 		//THEN -> REPONSE_QUESTION
-		try
-		{
+			log.info("---input : " + entity.getIdEtudiant() + " | " + entity.getIdEvaluation());
 			ReponseEvaluationDTO result = new ReponseEvaluationDTO();
-			Etudiant etd = etudiantRepo.findByNoEtudiant(entity.getIdEtudiant());
-			log.info("___Etudiant :" + etd);
-			Evaluation eval = evaluationService.getEvalutionParId(entity.getIdEvaluation());
-			log.info("__Evaluation :" + eval);
 			
-			ReponseEvaluation repEvalExists = reponseEvalRepo.findByIdEvaluationAndNoEtudiant(eval.getIdEvaluation(), etd.getNoEtudiant());
-			
-			
-			if(repEvalExists == null || repEvalExists.getIdReponseEvaluation() ==null)
+			if(etudiantRepo.findById(entity.getIdEtudiant()).isPresent())
 			{
-				log.error("___Etudiant a déjà rempli le questionnaire de cette evaluation");
-				throw new Exception("Etudiant "+ etd.getNoEtudiant() + " a dèjà répondue à cette evaluation!");
+				throw new Exception("Numero d'étudiant invalide!");
 			}
 			
+			Etudiant etd = etudiantRepo.findById(entity.getIdEtudiant()).get();
+			log.info("___Etudiant :" + etd);
+			
+			
+			Evaluation eval = evaluationService.getEvalutionParId(entity.getIdEvaluation());
+			if(eval == null)
+			{
+				throw new Exception("Erreur lors de la recherche de l'evaluation "+entity.getIdEvaluation());
+			}
+			log.info("__Evaluation :" + eval);
+			
+			ReponseEvaluation RepEval = reponseEvalRepo.findByIdEvaluationAndNoEtudiant(eval.getIdEvaluation(), etd.getNoEtudiant());
+
+			if(RepEval != null && RepEval.getIdReponseEvaluation() !=null)
+			{
+				log.error("___Etudiant a déjà rempli le questionnaire de cette evaluation");
+				throw new Exception("Etudiant à dèja remplie ce questionnaire!");
+			}else
+			{
+				log.info("__ajout d'une nouvelle réponse pour l'etudiant " + etd.getNoEtudiant() + " pour l'évaluation : " + eval.getIdEvaluation());
+				RepEval = new ReponseEvaluation();
+				RepEval.setIdEvaluation(eval.getIdEvaluation());
+				RepEval.setIdReponseEvaluation(null);
+				RepEval.setCommentaire(entity.getCommentaire());
+				RepEval.setNoEtudiant(etd.getNoEtudiant());
+				RepEval.setNom(etd.getNom());
+				RepEval.setPrenom(etd.getPrenom());
+				log.info("__Nouvelle reponse Evaluation : " + RepEval);
+				try
+				{
+					RepEval = reponseEvalRepo.save(RepEval);
+				}catch(Exception e)
+				{
+					throw new Exception("Erreur lors de l'ajout de la nouvelle reponse evaluation => cause: " +e.getMessage());
+				}
+				
+				log.info("__Ajout d'une nouvelle reponse evaluation avec succes!" + RepEval);
+			}
+			
+			log.info("__Début de l'ajout des question réponse....");
+			log.info("___Getting all rubriques réponses....");
 			List<ReponseRubriqueDTO> repRubs = entity.getRubriques().stream().map(rub ->
 			{
 				ReponseRubriqueDTO r = new ReponseRubriqueDTO();
+				RubriqueEvaluation rubEval = rubriqueEvaluationrepo.findByIdEvaluationAndIdRubrique(eval.getIdEvaluation(), rub.getIdRubrique());
 				
+
+				List<ReponseQuestionDTO> repQst = rub.getQuestions().stream().map(repQ ->
+				{
+					ReponseEvaluation rEval = reponseEvalRepo.findByIdEvaluationAndNoEtudiant(eval.getIdEvaluation(), etd.getNoEtudiant());
+					ReponseQuestionDTO nQ = new ReponseQuestionDTO();
+					ReponseQuestion Q2S = new ReponseQuestion();
+					QuestionEvaluation QEval = questEvalRepo.findByIdQuestionAndIdRubriqueEvaluation(repQ.getIdQuestion(), rubEval.getIdRubriqueEvaluation());
+					
+					//enregistrer la nouvelle Réponse Question
+					Q2S.setIdQuestionEvaluation(QEval.getIdQuestionEvaluation());
+					Q2S.setIdReponseEvaluation(rEval.getIdReponseEvaluation());
+					Q2S.setPositionnement(repQ.getReponse());
+					Q2S = reponseQuestionRepository.save(Q2S);
+					
+					
+					//Récupérer les infos nécessaire pour populer la sortie
+					nQ.setIdQuestionEvaluation(Q2S.getIdQuestionEvaluation());
+					nQ.setIdReponseEvaluation(Q2S.getIdReponseEvaluation());
+					nQ.setPositionnement(Q2S.getPositionnement());
+					
+					nQ.setQuestion(new QuestionDTO(
+								QEval.getIdQuestion(),
+								repQ.getType(), 
+								repQ.getNoEnseignant(), 
+								repQ.getIntitule(), 
+								QEval.getOrdre(), 
+								repQ.getQualificatif()));
+					return nQ;
+				}).collect(Collectors.toList());
 				
-				
-				r.setIdRubriqueEvaluation(null);
-				r.setQuestions(null);
-				r.setRubriqueinfo(null);
+				r.setIdRubriqueEvaluation(rubEval.getIdRubriqueEvaluation());
+				r.setQuestions(repQst);
+				r.setRubriqueinfo(rubriqueService.getRubriqueByDesignation(rub.getDesignation()));
 				return r;
 			}).collect(Collectors.toList());
 			
@@ -136,22 +205,18 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			result.setCommentaire(entity.getCommentaire());
 			result.setEtudiant(etd);
 			result.setEvaluation(mapper.evaluationMapperToDTO(eval));
-			result.setIdReponseEvaluation(null);
-			result.setRubriques(null);
+			result.setIdReponseEvaluation(RepEval.getIdReponseEvaluation());
+			result.setRubriques(repRubs);
+			
+			log.info("_____Opération términé! resultat : ", result);
 			return result;
-			
-		}catch(Exception e)
-		{
-			log.error("__Erreur ajout Reponse evaluation " + e);
-			return null;
-			
-		}
 	}
 
 	@Override
 	public Etudiant getEtudiantFromResponseEvaluation(Long idReponseEvaluation)
 	{
-		try {
+		try
+		{
 			log.info("__Chercher l'etudiant liée à l'id réponse evaluation  :"+idReponseEvaluation+" ___");
 			Etudiant etd = etudiantRepo.findByReponseEvaluation(idReponseEvaluation);
 			log.info("__Etudiant trouvé : " + etd);

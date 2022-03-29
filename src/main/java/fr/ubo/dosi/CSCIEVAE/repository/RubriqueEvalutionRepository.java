@@ -13,5 +13,7 @@ public interface RubriqueEvalutionRepository extends JpaRepository<RubriqueEvalu
     
     List<RubriqueEvaluation> findByDesignation(String designation);
     
+    RubriqueEvaluation findByIdEvaluationAndIdRubrique(Long idEvaluation, Long idRubrique);
+    
     void deleteAllByIdEvaluation(Long idEva);
 }

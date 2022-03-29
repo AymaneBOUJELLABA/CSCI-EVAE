@@ -12,5 +12,7 @@ public interface QuestionEvaluationRepository extends JpaRepository<QuestionEval
     List<QuestionEvaluation> findAllByIdRubriqueEvaluationOrderByOrdreAsc(Long idRubEva);
 
     void deleteAllByIdRubriqueEvaluation(long idRubEva);
+    
+    QuestionEvaluation findByIdQuestionAndIdRubriqueEvaluation(Long idQuestion, Long idRubriqueEvaluation);
 
 }

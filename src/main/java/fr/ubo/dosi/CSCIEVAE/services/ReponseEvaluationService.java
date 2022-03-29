@@ -21,7 +21,7 @@ public interface ReponseEvaluationService
 	
 	List<ReponseEvaluationDTO> getAllReponseEvaluationsByAnneUnivAndCodeFormation(String anneeUniv, String codeFormation);
 	
-	ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity);
+	ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity) throws Exception;
 	
 	EvaluationDTO getEvaluationFromResponseEvaluation(Long idReponseEvaluation);
 	

@@ -2,22 +2,22 @@ package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.ubo.dosi.CSCIEVAE.dto.PromotionsStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.messages.EvaluationReponseInMessage;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseEvaluationService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.log4j.Log4j2;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -60,6 +60,29 @@ public class ReponseEvaluationController
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
+	@PostMapping
+	public ResponseEntity<Object> ajouterReponseEvaluation(@RequestBody EvaluationReponseInMessage reponseEvaluation)
+	{
+		try
+		{
+			if(reponseEvaluation.getRubriques() == null || reponseEvaluation.getIdEtudiant() == null || reponseEvaluation.getIdEvaluation() == null)
+			{
+				log.error("__A Required input is missing!!");
+				return new ResponseEntity<>("veuillez bien saisir les champs idEtudiant, idEvaluation et rubriques!!", HttpStatus.BAD_REQUEST);
+			}
+			log.info("L'ajout d'une nouvelle reponseEvaluation");
+			ReponseEvaluationDTO result = reponseEvaluationService.addReponseEvaluation(reponseEvaluation);
+			
+			return new ResponseEntity<>(result, HttpStatus.OK);
+			
+		}catch(Exception e)
+		{
+			log.error("__Erreur lors de l'ajout d'une réponse évaluation");
+			
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
 	
 	
 }
