@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "QUESTION_EVALUATION")
 @AllArgsConstructor @NoArgsConstructor

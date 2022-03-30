@@ -21,7 +21,6 @@ import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
-import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
 import fr.ubo.dosi.CSCIEVAE.repository.EnseignantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -144,4 +143,15 @@ public class DataMapper {
     	return e;
     }
 
+    public AuthentificationDTO authentificationMapperToDTO(Authentification authentification) {
+        AuthentificationDTO authentificationDTO = new AuthentificationDTO();
+        authentificationDTO.setIdConnection(authentification.getIdConnection());
+        authentificationDTO.setLogin(authentification.getLogin());
+        authentificationDTO.setPseudo(authentification.getPseudo());
+        authentificationDTO.setPwd(authentification.getPwd());
+        authentificationDTO.setRole(authentification.getRole());
+        authentificationDTO.setNoEnseignant(authentification.getNoEnseignant());
+        authentificationDTO.setNoEtudiant(authentification.getNoEtudiant());
+        return authentificationDTO;
+    }
 }

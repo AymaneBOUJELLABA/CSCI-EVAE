@@ -32,4 +32,6 @@ public interface ReponseEvaluationRepository extends JpaRepository<ReponseEvalua
 	List<ReponseEvaluation> findAllByAnneeUnivAndCodeFormation(String anneUniv, String codeFormation);
 	
 	ReponseEvaluation findByIdEvaluationAndNoEtudiant(Long idEvaluation,String noEtudiant);
+
+	int countReponseEvaluationByIdEvaluation(Long idEval);
 }

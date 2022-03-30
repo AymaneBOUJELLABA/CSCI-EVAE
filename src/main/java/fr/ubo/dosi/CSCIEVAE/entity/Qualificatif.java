@@ -4,11 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "QUALIFICATIF")
 @AllArgsConstructor @NoArgsConstructor
+
 public class Qualificatif implements Serializable {
     @Id
     @Column(name = "ID_QUALIFICATIF")

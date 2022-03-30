@@ -21,6 +21,7 @@ public class UniteEnseignementService {
 	@Autowired
 	private EnseignantRepository enseignantRepository;
 	
+	
 	public UniteEnseignement save(UniteEnseignement uniteEnseignement) {
 		return this.uniteEnseignementRepository.save(uniteEnseignement);
 	}
@@ -79,6 +80,7 @@ public class UniteEnseignementService {
 				ue.put("emailUbo",e.getEmailUbo());
 				ue.put("emailPerso",e.getEmailPerso());
 				ue.put("mobile",e.getMobile());
+				ue.put("noEnseignant", e.getNoEnseignant().toString());
 				return ue;
 				
 			}

@@ -1,5 +1,6 @@
 package fr.ubo.dosi.CSCIEVAE.repository;
 
+
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestion;
 import fr.ubo.dosi.CSCIEVAE.entity.ReponseQuestionId;
 
@@ -32,5 +33,6 @@ public interface ReponseQuestionRepository extends JpaRepository<ReponseQuestion
 			+ "ON REPONSE_EVALUATION.ID_REPONSE_EVALUATION = REPONSE_QUESTION.ID_REPONSE_EVALUATION "
 			+ "WHERE REPONSE_QUESTION.ID_REPONSE_EVALUATION = ?1",nativeQuery = true)
 	public List<Object[]> findAllReponseQuestionInfo(Long idReponseEvaluation);
+
 
 }
