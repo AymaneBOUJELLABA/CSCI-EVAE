@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @Log4j2
-@RequestMapping(path = "/api/evaluations/reponses")
+@RequestMapping(path = "/api/questionnaire")
 public class ReponseEvaluationController
 {
 	@Autowired
