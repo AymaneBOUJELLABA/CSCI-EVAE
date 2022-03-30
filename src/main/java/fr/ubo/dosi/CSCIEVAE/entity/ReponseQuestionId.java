@@ -28,6 +28,6 @@ public class ReponseQuestionId implements Serializable{
 				&& Objects.equals(idReponseEvaluation, other.idReponseEvaluation);
 	}
     
-    
+}
 
 
