@@ -8,7 +8,6 @@ import java.io.Serializable;
 public class Rubrique implements Serializable {
     @Id
     @Column(name = "ID_RUBRIQUE")
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long idRubrique;
 
     @Column(name = "TYPE")

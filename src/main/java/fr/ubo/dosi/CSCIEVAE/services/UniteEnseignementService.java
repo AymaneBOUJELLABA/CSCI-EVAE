@@ -21,6 +21,7 @@ public class UniteEnseignementService {
 	@Autowired
 	private EnseignantRepository enseignantRepository;
 	
+	
 	public UniteEnseignement save(UniteEnseignement uniteEnseignement) {
 		return this.uniteEnseignementRepository.save(uniteEnseignement);
 	}
@@ -64,6 +65,7 @@ public class UniteEnseignementService {
 		for(int i=0; i<unites.size(); i++) {
 			if(unites.get(i).getCodeUe().equals(code)) {
 				ue.put("codeUe", unites.get(i).getCodeUe());
+				ue.put("noEnseignant", unites.get(i).getNoEnseignant().toString());
 			    ue.put("designation", unites.get(i).getDesignation());
 			    ue.put("semestre", unites.get(i).getSemestre());
 			    ue.put("description", unites.get(i).getDescription());

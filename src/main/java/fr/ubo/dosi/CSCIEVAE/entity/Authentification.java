@@ -86,4 +86,3 @@ public class Authentification implements Serializable {
         this.noEtudiant = noEtudiant;
     }
 }
-
