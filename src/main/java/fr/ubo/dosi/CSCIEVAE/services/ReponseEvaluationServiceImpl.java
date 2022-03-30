@@ -115,7 +115,7 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 			log.info("---input : " + entity.getIdEtudiant() + " | " + entity.getIdEvaluation());
 			ReponseEvaluationDTO result = new ReponseEvaluationDTO();
 			
-			if(etudiantRepo.findById(entity.getIdEtudiant()).isPresent())
+			if(!etudiantRepo.findById(entity.getIdEtudiant()).isPresent())
 			{
 				throw new Exception("Numero d'étudiant invalide!");
 			}
