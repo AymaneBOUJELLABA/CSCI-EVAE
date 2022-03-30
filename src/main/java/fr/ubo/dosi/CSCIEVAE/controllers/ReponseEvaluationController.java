@@ -30,7 +30,7 @@ public class ReponseEvaluationController
 	ReponseEvaluationService reponseEvaluationService;
 	
 	
-	@GetMapping
+	@GetMapping("/all")
 	@ResponseBody
 	public ResponseEntity<List<ReponseEvaluationDTO>> getAllReponsesEvaluations()
 	{

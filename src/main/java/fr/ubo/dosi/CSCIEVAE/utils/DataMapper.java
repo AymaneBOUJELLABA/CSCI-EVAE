@@ -1,5 +1,6 @@
 package fr.ubo.dosi.CSCIEVAE.utils;
 
+import fr.ubo.dosi.CSCIEVAE.dto.AuthentificationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.EtudiantDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
@@ -18,6 +19,7 @@ import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
 import java.util.List;
 
 import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
+import fr.ubo.dosi.CSCIEVAE.entity.Authentification;
 import fr.ubo.dosi.CSCIEVAE.entity.Enseignant;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
