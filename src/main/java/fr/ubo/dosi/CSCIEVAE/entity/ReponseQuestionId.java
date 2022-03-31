@@ -1,5 +1,6 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
+
 import java.io.Serializable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,7 +13,6 @@ public class ReponseQuestionId implements Serializable{
 	private Long idReponseEvaluation;
     private Long idQuestionEvaluation;
     
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(idQuestionEvaluation, idReponseEvaluation);
@@ -31,6 +31,6 @@ public class ReponseQuestionId implements Serializable{
 	}
     
     
-
-
 }
+
+

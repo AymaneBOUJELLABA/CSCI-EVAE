@@ -14,8 +14,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "QUALIFICATIF")
 
+
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
+
 
 public class Qualificatif implements Serializable {
     @Id

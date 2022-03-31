@@ -62,9 +62,7 @@ public class ReponseQuestionService {
        ReponseQuestion reponseQ = new ReponseQuestion();
     	
     	//chercher question reponse
-    
   
-       
        QuestionEvaluation qe = this.questionEvaluationRepository.getById(idQuestionEvaluation);    		   
     	Question q = questionRepository.getById(qe.getIdQuestion());
 		

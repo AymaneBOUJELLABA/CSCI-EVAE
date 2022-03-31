@@ -1,6 +1,9 @@
 
 package fr.ubo.dosi.CSCIEVAE.dto;
 
+
+import fr.ubo.dosi.CSCIEVAE.entity.Qualificatif;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

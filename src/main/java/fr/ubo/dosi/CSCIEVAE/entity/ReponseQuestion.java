@@ -3,7 +3,9 @@ package fr.ubo.dosi.CSCIEVAE.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import lombok.Setter;
+
 import lombok.ToString;
 
 
@@ -14,7 +16,9 @@ import java.io.Serializable;
 @Table(name = "REPONSE_QUESTION")
 @IdClass(ReponseQuestionId.class)
 @AllArgsConstructor @NoArgsConstructor
+
 @Getter @Setter
+
 
 @ToString
 
