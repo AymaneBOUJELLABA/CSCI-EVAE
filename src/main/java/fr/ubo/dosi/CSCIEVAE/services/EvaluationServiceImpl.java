@@ -94,11 +94,13 @@ public class EvaluationServiceImpl implements EvaluationService{
             log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
 
 
+
            log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
         }
 
     }
+
 
     @Override
     @Transactional
@@ -156,10 +158,11 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Transactional
+ @Override
 
-    @Override
-    public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
-        //log.info("--- Start Evalution Creation ---");
+
+    public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
+        log.info("--- Start Evalution Creation ---");
 
 
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
@@ -177,6 +180,7 @@ public class EvaluationServiceImpl implements EvaluationService{
 
             //log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             //log.info(" Donner les droits associer à une évaluation");
+
 
 
             droitRepository.save(new Droit(
@@ -275,6 +279,10 @@ public class EvaluationServiceImpl implements EvaluationService{
             throw new EvaluationUpdateErrorException(
                     HttpStatus.NOT_ACCEPTABLE,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> US5
                     "L'évaluation est déja publiée vous ne pouvez pas faire des modification !");}*/
 
     @Override
@@ -290,9 +298,15 @@ public class EvaluationServiceImpl implements EvaluationService{
                     (long) i+1,
                     rubriqueDTO.getType()
 
+<<<<<<< HEAD
 =======
                     "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
 >>>>>>> 292d28b49b37d9d1656bfe5f9ac4a823beb2d22d
+=======
+
+                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
+
+>>>>>>> US5
             );
         if (!rubriqueEvalutionRepository.findAllByIdEvaluationOrderByOrdreAsc(evaluationDTO.getIdEvaluation())
                 .isEmpty())
@@ -420,10 +434,12 @@ public class EvaluationServiceImpl implements EvaluationService{
 
 
 	@Override
-	public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
+	public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 
 

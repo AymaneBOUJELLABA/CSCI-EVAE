@@ -18,6 +18,7 @@ import java.io.Serializable;
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 
+
 public class Qualificatif implements Serializable {
     @Id
     @Column(name = "ID_QUALIFICATIF")

@@ -13,10 +13,6 @@ import fr.ubo.dosi.CSCIEVAE.services.EtudiantEvaluationService;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
 import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
 
-import fr.ubo.dosi.CSCIEVAE.repository.ReponseQuestionRepository;
-
-import fr.ubo.dosi.CSCIEVAE.services.EtudiantEvaluationService;
-import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
 
 import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseQuestionService;

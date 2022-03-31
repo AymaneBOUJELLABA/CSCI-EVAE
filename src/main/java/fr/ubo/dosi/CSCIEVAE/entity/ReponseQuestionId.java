@@ -14,7 +14,6 @@ public class ReponseQuestionId implements Serializable{
 	private Long idReponseEvaluation;
     private Long idQuestionEvaluation;
     
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(idQuestionEvaluation, idReponseEvaluation);
@@ -31,4 +30,6 @@ public class ReponseQuestionId implements Serializable{
 		return Objects.equals(idQuestionEvaluation, other.idQuestionEvaluation)
 				&& Objects.equals(idReponseEvaluation, other.idReponseEvaluation);
 	}
+
 }
+
