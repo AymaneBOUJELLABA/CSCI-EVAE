@@ -303,9 +303,11 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Override
-    public Evaluation publierEvaluation(Evaluation evaluation) {
+    public Evaluation publierEvaluation(Evaluation evaluation)
+    {
            log.info(" -- Start publishing in service --");
-           if (getRubriqueEvaluation(evaluation.getIdEvaluation()).isEmpty()){
+           if (getRubriqueEvaluation(evaluation.getIdEvaluation()).isEmpty())
+           {
                log.info(" !! Evaluation can't be published bcs it has no content !!");
                throw new EvaluationUpdateErrorException(
                        HttpStatus.NO_CONTENT,
@@ -319,10 +321,11 @@ public class EvaluationServiceImpl implements EvaluationService{
 
 	@Override
 	public List<StatRubriqueDTO> getStatRubriques(Long idEvaluation) {
-		List<RubriqueEvaluation> rubriques = this.rubriqueEvaluationService.findAllByIdEvaluationOrderByOrdreAsc(idEvaluation);
+		List<RubriqueDTO> rubriques = this.getRubriqueEvaluation(idEvaluation);
 		List<StatRubriqueDTO> statRubriques = new ArrayList<StatRubriqueDTO>();
 		//mapping de chaque rubrique  de rubrique à stat rubrique dto
-		for(int i= 0; i<rubriques.size(); i++) {
+		for(int i= 0; i<rubriques.size(); i++)
+		{
 			StatRubriqueDTO statRubrique = new StatRubriqueDTO();
 			statRubrique.setIdRubrique(rubriques.get(i).getIdRubrique());
 			statRubrique.setDesignation(rubriques.get(i).getDesignation());			
