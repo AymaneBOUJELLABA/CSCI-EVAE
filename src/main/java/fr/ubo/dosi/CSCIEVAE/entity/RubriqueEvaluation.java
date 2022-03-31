@@ -1,7 +1,9 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 @Table(name = "RUBRIQUE_EVALUATION")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter @Setter
 public class RubriqueEvaluation implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_RUBRIQUE_EVALUATION")
@@ -27,43 +30,4 @@ public class RubriqueEvaluation implements Serializable {
     @Column(name = "DESIGNATION")
     private String designation;
 
-    public Long getIdRubriqueEvaluation() {
-        return this.idRubriqueEvaluation;
-    }
-
-    public void setIdRubriqueEvaluation(Long idRubriqueEvaluation) {
-        this.idRubriqueEvaluation = idRubriqueEvaluation;
-    }
-
-    public Long getIdEvaluation() {
-        return this.idEvaluation;
-    }
-
-    public void setIdEvaluation(Long idEvaluation) {
-        this.idEvaluation = idEvaluation;
-    }
-
-    public Long getIdRubrique() {
-        return this.idRubrique;
-    }
-
-    public void setIdRubrique(Long idRubrique) {
-        this.idRubrique = idRubrique;
-    }
-
-    public Long getOrdre() {
-        return this.ordre;
-    }
-
-    public void setOrdre(Long ordre) {
-        this.ordre = ordre;
-    }
-
-    public String getDesignation() {
-        return this.designation;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
 }

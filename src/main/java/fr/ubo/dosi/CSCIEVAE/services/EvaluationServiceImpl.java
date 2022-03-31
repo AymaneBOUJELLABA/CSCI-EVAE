@@ -2,7 +2,10 @@ package fr.ubo.dosi.CSCIEVAE.services;
 
 import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatReponseQuestionDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatEvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.*;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationUpdateErrorException;
@@ -10,7 +13,7 @@ import fr.ubo.dosi.CSCIEVAE.exceptions.QuestionsEvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.exceptions.RubriquesEvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@Log4j2
+@Log
 public class EvaluationServiceImpl implements EvaluationService{
 
     @Autowired
@@ -40,36 +43,57 @@ public class EvaluationServiceImpl implements EvaluationService{
     private QuestionEvaluationRepository questionEvaluationRepository;
     @Autowired
     private QuestionRepository questionRepository;
+   
     @Autowired
     private QualificatifRepository qualificatifRepository;
     @Autowired
     private DroitRepository droitRepository;
     @Autowired
     private DataMapper dataMapper;
+    @Autowired
+    private ReponseQuestionRepository reponseQuestionRepository;
+    @Autowired
+	private ReponseQuestionService reponseQustionService;
+    @Autowired
+	private RubriqueEvaluationService rubriqueEvaluationService;
+
 
        @Override
     public List<Evaluation> getAllEvalutions() {
-        log.info("Recherche de toutes les évaluation en service");
+        //log.info("Recherche de toutes les évaluation en service");
         return evaluationRepository.findAll();
     }
 
    @Override
+
     public Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv) {
         log.info("Recherche de évaluation associée à une UE de code "+codeUe
                         + "pour l'année univercitaire " + anneeUniv +", en service");
        return evaluationRepository.
-               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);
+               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);}
+
+    public Evaluation getEvalutionParCodeUe(String codeUe) {
+       /*log.info("Recherche de évaluation associée à une UE de code "+codeUe+
+                " en service");*/
+        Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+
+        return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+
     }
 
     @Override
     public Evaluation getEvalutionParId(Long id) {
 
         if (evaluationRepository.findById(id).isPresent()) {
+
             log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
-        }else
+        }else {
             log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
-            return null;
+
+           log.info("Recherche d'une évaluation par ID " + id + " en service");
+            return evaluationRepository.findById(id).get();
+        }
     }
 
     @Override
@@ -128,31 +152,45 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Transactional
-    public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
-        log.info("--- Start Evalution Creation ---");
+    @Override
+    public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
+        //log.info("--- Start Evalution Creation ---");
+
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
         try {
             eva = evaluationRepository.save(eva);
             Evaluation finalEva = eva;
             if (finalEva.getIdEvaluation() == null) {
-                log.error(" Problème dans la création de l'évaluation !");
+                //log.error(" Problème dans la création de l'évaluation !");
                 throw new EvaluationErrorException();
             } else
+
                 log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             log.info(" Donner les droits associer à une évaluation");
+
+            //log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
+            //log.info(" Donner les droits associer à une évaluation");
+
             droitRepository.save(new Droit(
                     finalEva.getIdEvaluation(),
                     finalEva.getNoEnseignant(),
                     "O",
                     "N"
             ));
+
             log.info(" Droits evaluation associer avec success ");
             log.info(" __ Assossier les rubriques à l'évalution __ ");
             associerRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
             log.info(" Les rubriques sont associées avec success à l'évalution ");
+
+            //log.info(" Droits evaluation associer avec success ");
+            //log.info(" __ Assossier les rubriques à l'évalution __ ");
+            associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
+            //log.info(" Les rubriques sont associées avec success à l'évalution ");
+
             EvaluationDTO newEvaDTO = dataMapper.evaluationMapperToDTO(finalEva);
             newEvaDTO.setRubriques(getRubriqueEvaluation(finalEva.getIdEvaluation()));
-            log.info("Evalution est associée aux rubriques avec success !");
+            //log.info("Evalution est associée aux rubriques avec success !");
             return newEvaDTO;
         }catch (Exception e){
             throw new EvaluationErrorException(e.getMessage());
@@ -160,6 +198,7 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Override
+
     public void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
         try {
@@ -218,14 +257,28 @@ public class EvaluationServiceImpl implements EvaluationService{
         log.info(" ___ End association of questions to Rubriques evaluation ___");
     }
 
-    @Override
+  /*  @Override
     @Transactional
     public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
         log.info(" __ Updates sur les rubriques associées aux évaluations __ ");
         if (!evaluationDTO.getEtat().equals("ELA"))
             throw new EvaluationUpdateErrorException(
                     HttpStatus.NOT_ACCEPTABLE,
-                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
+                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !");}*/
+
+    @Override
+    public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
+   /*    //log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
+    	
+        int i= 0;
+        rubriquesDto.forEach(rubriqueDTO -> {
+            RubriqueEvaluation rubEva = new RubriqueEvaluation(
+                    null,
+                    finalEva.getIdEvaluation(),
+                    rubriqueDTO.getIdRubrique(),
+                    (long) i+1,
+                    rubriqueDTO.getType()
+
             );
         if (!rubriqueEvalutionRepository.findAllByIdEvaluationOrderByOrdreAsc(evaluationDTO.getIdEvaluation())
                 .isEmpty())
@@ -251,7 +304,7 @@ public class EvaluationServiceImpl implements EvaluationService{
         associerRubriquesToEvaluation(evaluation, evaluationDTO.getRubriques());
         evaluationDTO.setRubriques(getRubriqueEvaluation(evaluation.getIdEvaluation()));
         log.info("-- Evaluation updated successfully --");
-        return evaluationDTO;
+        return evaluationDTO;*/
     }
 
     @Override
@@ -294,5 +347,77 @@ public class EvaluationServiceImpl implements EvaluationService{
                return evaluationRepository.save(evaluation);
            }
     }
+    
+
+    
+    
+    
+    
+	@Override
+	public List<StatRubriqueDTO> getStatRubriques(Long idEval) {
+		List<RubriqueEvaluation> rubriques = this.rubriqueEvaluationService.findAllByIdEvaluationOrderByOrdreAsc(idEval);
+		List<StatRubriqueDTO> statRubriques = new ArrayList<StatRubriqueDTO>();
+		//mapping de chaque rubrique  de rubrique à stat rubrique dto
+		for(int i= 0; i<rubriques.size(); i++) {
+			StatRubriqueDTO statRubrique = new StatRubriqueDTO();
+			statRubrique.setIdRubrique(rubriques.get(i).getIdRubrique());
+			statRubrique.setDesignation(rubriques.get(i).getDesignation());			
+			// cas ou la designation est nulle			
+			if(rubriques.get(i).getDesignation()== null) {				
+				Rubrique rubrique = this.rubriqueRepository.getById(rubriques.get(i).getIdRubrique());
+				statRubrique.setDesignation(rubrique.getDesignation());				
+			}
+			statRubrique.setOrdre(rubriques.get(i).getOrdre());			
+			//get question evaluation par rubrique!!
+			List<StatReponseQuestionDTO> statQuestions = new ArrayList<StatReponseQuestionDTO>();
+			List<QuestionEvaluation> questions = this.questionEvaluationRepository.findAllByIdRubriqueEvaluationOrderByOrdreAsc(rubriques.get(i).getIdRubriqueEvaluation());
+			for(int j =0; j<questions.size(); j++) {
+				StatReponseQuestionDTO statRepQuest = this.reponseQustionService.getStatReponseQuestion(questions.get(j).getIdQuestionEvaluation());
+				statQuestions.add(statRepQuest);				
+			}			
+			statRubrique.setQuestions(statQuestions);
+			statRubriques.add(statRubrique);			
+		}
+		return statRubriques;
+	}
+
+	@Override
+	public StatEvaluationDTO getStatEvaluation(Long idEvaluation) {
+		Evaluation eva = this.evaluationRepository.getById(idEvaluation);
+		StatEvaluationDTO statEva = new StatEvaluationDTO();
+		statEva.setIdEvaluation(idEvaluation);
+		statEva.setAnneeUniversitaire(eva.getAnneeUniversitaire());
+		statEva.setCodeEc(eva.getCodeEc());
+		statEva.setCodeFormation(eva.getCodeFormation());
+		statEva.setCodeUe(eva.getCodeUe());
+		statEva.setDebutReponse(eva.getDebutReponse());
+		statEva.setDesignation(eva.getDesignation());
+		statEva.setEtat(eva.getEtat());
+		statEva.setFinReponse(eva.getFinReponse());
+		statEva.setNoEnseignant(eva.getNoEnseignant());
+		statEva.setNoEvaluation(eva.getNoEvaluation());
+		statEva.setPeriode(eva.getPeriode());
+		
+		
+		
+		statEva.setRubriques(this.getStatRubriques(idEvaluation));
+		return statEva;
+	}
+
+	@Override
+	public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	
+
+
+    
+
+    
+    
 
 }

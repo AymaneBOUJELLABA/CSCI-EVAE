@@ -7,13 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-import fr.ubo.dosi.CSCIEVAE.dto.EvaluationDTO;
-import fr.ubo.dosi.CSCIEVAE.dto.UniteEnseignementDTO;
-import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.UniteEnseignement;
-import fr.ubo.dosi.CSCIEVAE.exceptions.EvaluationNotfoundException;
-import fr.ubo.dosi.CSCIEVAE.exceptions.UeExceptionController;
 import fr.ubo.dosi.CSCIEVAE.exceptions.UeNotFoundException;
 import fr.ubo.dosi.CSCIEVAE.services.UniteEnseignementService;
 
@@ -46,7 +40,12 @@ public class UniteEnseignementController {
 	                    HttpStatus.FOUND);
 	        }
 	    }
-	@GetMapping("/list/{code}")
+
+	
+
+	
+	@GetMapping("list/{code}")
+
 	public ResponseEntity<List<Map<String,String>>> ListerUeByFormation(@PathVariable String code){
 		
 		return new ResponseEntity<>(

@@ -1,14 +1,22 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "QUALIFICATIF")
+
 @AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
+
 public class Qualificatif implements Serializable {
     @Id
     @Column(name = "ID_QUALIFICATIF")
@@ -20,27 +28,4 @@ public class Qualificatif implements Serializable {
     @Column(name = "MINIMAL")
     private String minimal;
 
-    public Long getIdQualificatif() {
-        return this.idQualificatif;
-    }
-
-    public void setIdQualificatif(Long idQualificatif) {
-        this.idQualificatif = idQualificatif;
-    }
-
-    public String getMaximal() {
-        return this.maximal;
-    }
-
-    public void setMaximal(String maximal) {
-        this.maximal = maximal;
-    }
-
-    public String getMinimal() {
-        return this.minimal;
-    }
-
-    public void setMinimal(String minimal) {
-        this.minimal = minimal;
-    }
 }
