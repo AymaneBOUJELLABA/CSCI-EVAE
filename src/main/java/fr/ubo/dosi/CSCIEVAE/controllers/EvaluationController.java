@@ -166,7 +166,7 @@ public class EvaluationController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<Evaluation> publierEvaluation(@PathVariable int id)throws ParseException {
+    public ResponseEntity<EvaluationDTO> publierEvaluation(@PathVariable int id) {
         log.info("--- Controller for Publishing Evaluation with ID : "+id);
         Evaluation evaluation = evaluationService.getEvalutionParId((long) id);
         if (!evaluation.getEtat().equals("ELA")){
@@ -178,8 +178,12 @@ public class EvaluationController {
             );
         }else {
             log.info(" -- Send request to service to Start the process of publishing --");
+            Evaluation eval = evaluationService.publierEvaluation(evaluation);
+            log.info(" -- Sending new published Evaluation to front ");
+            EvaluationDTO evaluationDTO = dataMapper.evaluationMapperToDTO(eval);
+            evaluationDTO.setRubriques(evaluationService.getRubriqueEvaluation(eval.getIdEvaluation()));
             return new ResponseEntity<>(
-                    evaluationService.publierEvaluation(evaluation),
+                    evaluationDTO,
                     HttpStatus.ACCEPTED
             );
         }

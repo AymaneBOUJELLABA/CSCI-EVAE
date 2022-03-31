@@ -27,8 +27,7 @@ public interface EvaluationService {
     List<Rubrique> getRubriquesForEvaluationCreation();
     List<StatRubriqueDTO> getStatRubriques(Long idEvaluation);
     StatEvaluationDTO getStatEvaluation(Long idEvaluation);
-    EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
-    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
+
 
     EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO);
 
