@@ -38,17 +38,20 @@ public class CsciEvaeApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		
+		// Setting Ques Eval data for old Promotion
+		List<Long> idEvals = Arrays.asList(3L,4L,5L,6L,7L,8L);
 		
+		idEvals.forEach(idEval -> {
+			System.out.println("For eval with ID : "+idEval);
+			rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval)
+							.forEach(rubriqueEvaluation -> {
+								System.out.println(""+rubriqueEvaluation.getIdRubrique());
+								System.out.println(""+rubriqueEvaluation.getOrdre());
+							});
+			List<RubriqueEvaluation> rubriqueEvaluations = rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval);
+			evaluationService.setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+		});
 		
-		
-		List<Long> questCours = Arrays.asList(1L,2L,3L,4L,5L,6L,7L,8L,9L);
-		List<Long> questTD = Arrays.asList(10L,11L,12L,5L,6L,8L);
-		List<Long> questTp = Arrays.asList(13L,11L,12L,5L,6L,23L,14L);
-		List<Long> questProjet = Arrays.asList(15L,16L,17L);
-		List<Long> questBilan = Arrays.asList(18L,19L,20L,21L,22L);
-		List<Long> questTdTp = Arrays.asList(10L,11L,12L,13L,14L,5L,6L,8L,23L);
-		List<Long> questCoursTd = Arrays.asList(1L,2L,3L,4L,5L,6L,7L,8L,9L,10L,11L,12L);
-
 		questionRepository.save(
 				new Question(
 						23L,
@@ -59,6 +62,15 @@ public class CsciEvaeApplication implements CommandLineRunner {
 
 				)
 		);
+
+		List<Long> questCours = Arrays.asList(1L,2L,3L,4L,5L,6L,7L,8L,9L);
+		List<Long> questTD = Arrays.asList(10L,11L,12L,5L,6L,8L);
+		List<Long> questTp = Arrays.asList(13L,11L,12L,5L,6L,23L,14L);
+		List<Long> questProjet = Arrays.asList(15L,16L,17L);
+		List<Long> questBilan = Arrays.asList(18L,19L,20L,21L,22L);
+		List<Long> questTdTp = Arrays.asList(10L,11L,12L,13L,14L,5L,6L,8L,23L);
+		List<Long> questCoursTd = Arrays.asList(1L,2L,3L,4L,5L,6L,7L,8L,9L,10L,11L,12L);
+
 		questCours.forEach( coursQuestId -> {
 			rubriqueQuestionRepository.save(
 					new RubriqueQuestion(
@@ -124,17 +136,8 @@ public class CsciEvaeApplication implements CommandLineRunner {
 		});
 		
 		
-		// Setting Ques Eval data for old Promotion
-		/*List<Long> idEvals = Arrays.asList(3L,4L,5L,6L,7L,8L);
-		idEvals.forEach(idEval -> {
-			System.out.println("For eval with ID : "+idEval);
-			rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval)
-							.forEach(rubriqueEvaluation -> {
-								System.out.println(""+rubriqueEvaluation.getIdRubrique());
-								System.out.println(""+rubriqueEvaluation.getOrdre());
-							});
-			List<RubriqueEvaluation> rubriqueEvaluations = rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval);
-			evaluationService.setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
-		});*/
+		
+		
+
 	}
 }
