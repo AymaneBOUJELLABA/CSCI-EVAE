@@ -26,26 +26,20 @@ public interface EvaluationService {
     List<QuestionDTO> getQuestionRubriqueForEvaluation(Long idRubrique);
     List<Rubrique> getRubriquesForEvaluationCreation();
 
-
-
-
     EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO);
 
     void setQuestionsEvaluationForRubsEval(List<RubriqueEvaluation> rubriqueEvaluations);
 
-
     List<StatRubriqueDTO> getStatRubriques(Long idEvaluation);
     StatEvaluationDTO getStatEvaluation(Long idEvaluation);
-    EvaluationDTO createEvalution(EvaluationDTO evaluationDTO);
-    void associetRubriquesToEvaluation(Evaluation finalEva,List<RubriqueDTO> rubriquesDto);
 
-
-
-    void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto);
-
-   // EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
+   EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO);
 
     List<QuestionDTO> getQuestionsEvalForRubriqueEval(Long idRubEval);
 
     Evaluation publierEvaluation(Evaluation evaluation);
+    
+    List<EvaluationDTO> evaluationPubliee();
+
+	void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto);
 }

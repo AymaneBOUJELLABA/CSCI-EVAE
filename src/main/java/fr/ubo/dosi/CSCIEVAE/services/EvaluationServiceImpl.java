@@ -14,6 +14,8 @@ import fr.ubo.dosi.CSCIEVAE.exceptions.RubriquesEvaluationErrorException;
 import fr.ubo.dosi.CSCIEVAE.repository.*;
 import fr.ubo.dosi.CSCIEVAE.utils.DataMapper;
 import lombok.extern.java.Log;
+import net.bytebuddy.asm.Advice.Return;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -65,21 +67,11 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
    @Override
-
     public Evaluation getEvalutionParCodeUeAndAnneeUniv(String codeUe, String anneeUniv) {
         log.info("Recherche de évaluation associée à une UE de code "+codeUe
                         + "pour l'année univercitaire " + anneeUniv +", en service");
        return evaluationRepository.
-
-               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);}
-
-    public Evaluation getEvalutionParCodeUe(String codeUe) {
-       /*log.info("Recherche de évaluation associée à une UE de code "+codeUe+
-                " en service");*/
-        Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
-
-        return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
-
+               findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);
 
     }
 
@@ -90,17 +82,11 @@ public class EvaluationServiceImpl implements EvaluationService{
 
             log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
-        }else {
+        }else
             log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
 
-
-
-           log.info("Recherche d'une évaluation par ID " + id + " en service");
-            return evaluationRepository.findById(id).get();
-        }
-
+            return null;
     }
-
 
     @Override
     @Transactional
@@ -157,14 +143,10 @@ public class EvaluationServiceImpl implements EvaluationService{
         );
     }
 
+    @Override
     @Transactional
- @Override
-
-
     public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
         log.info("--- Start Evalution Creation ---");
-
-
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
         try {
             eva = evaluationRepository.save(eva);
@@ -176,12 +158,6 @@ public class EvaluationServiceImpl implements EvaluationService{
 
                 log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             log.info(" Donner les droits associer à une évaluation");
-
-
-            //log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
-            //log.info(" Donner les droits associer à une évaluation");
-
-
 
             droitRepository.save(new Droit(
                     finalEva.getIdEvaluation(),
@@ -195,13 +171,6 @@ public class EvaluationServiceImpl implements EvaluationService{
             associerRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
             log.info(" Les rubriques sont associées avec success à l'évalution ");
 
-
-            //log.info(" Droits evaluation associer avec success ");
-            //log.info(" __ Assossier les rubriques à l'évalution __ ");
-            associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
-            //log.info(" Les rubriques sont associées avec success à l'évalution ");
-
-
             EvaluationDTO newEvaDTO = dataMapper.evaluationMapperToDTO(finalEva);
             newEvaDTO.setRubriques(getRubriqueEvaluation(finalEva.getIdEvaluation()));
             //log.info("Evalution est associée aux rubriques avec success !");
@@ -212,8 +181,8 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Override
-
-    public void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
+    public void associerRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) 
+    {
         log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
         try {
             List<RubriqueEvaluation> rubriqueEvaluations = new ArrayList<>();
@@ -271,42 +240,14 @@ public class EvaluationServiceImpl implements EvaluationService{
         log.info(" ___ End association of questions to Rubriques evaluation ___");
     }
 
-  /*  @Override
+    @Override
     @Transactional
     public EvaluationDTO updateRubriquesEvaluationOrder(EvaluationDTO evaluationDTO) {
         log.info(" __ Updates sur les rubriques associées aux évaluations __ ");
         if (!evaluationDTO.getEtat().equals("ELA"))
             throw new EvaluationUpdateErrorException(
                     HttpStatus.NOT_ACCEPTABLE,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> US5
-                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !");}*/
-
-    @Override
-    public void associetRubriquesToEvaluation(Evaluation finalEva, List<RubriqueDTO> rubriquesDto) {
-   /*    //log.info(" __ Assossiation des rubriques à l'évalution encours __ ");
-    	
-        int i= 0;
-        rubriquesDto.forEach(rubriqueDTO -> {
-            RubriqueEvaluation rubEva = new RubriqueEvaluation(
-                    null,
-                    finalEva.getIdEvaluation(),
-                    rubriqueDTO.getIdRubrique(),
-                    (long) i+1,
-                    rubriqueDTO.getType()
-
-<<<<<<< HEAD
-=======
                     "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
->>>>>>> 292d28b49b37d9d1656bfe5f9ac4a823beb2d22d
-=======
-
-                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
-
->>>>>>> US5
             );
         if (!rubriqueEvalutionRepository.findAllByIdEvaluationOrderByOrdreAsc(evaluationDTO.getIdEvaluation())
                 .isEmpty())
@@ -332,7 +273,7 @@ public class EvaluationServiceImpl implements EvaluationService{
         associerRubriquesToEvaluation(evaluation, evaluationDTO.getRubriques());
         evaluationDTO.setRubriques(getRubriqueEvaluation(evaluation.getIdEvaluation()));
         log.info("-- Evaluation updated successfully --");
-        return evaluationDTO;*/
+        return evaluationDTO;
     }
 
     @Override
@@ -375,15 +316,10 @@ public class EvaluationServiceImpl implements EvaluationService{
                return evaluationRepository.save(evaluation);
            }
     }
-    
 
-    
-    
-    
-    
 	@Override
-	public List<StatRubriqueDTO> getStatRubriques(Long idEval) {
-		List<RubriqueEvaluation> rubriques = this.rubriqueEvaluationService.findAllByIdEvaluationOrderByOrdreAsc(idEval);
+	public List<StatRubriqueDTO> getStatRubriques(Long idEvaluation) {
+		List<RubriqueEvaluation> rubriques = this.rubriqueEvaluationService.findAllByIdEvaluationOrderByOrdreAsc(idEvaluation);
 		List<StatRubriqueDTO> statRubriques = new ArrayList<StatRubriqueDTO>();
 		//mapping de chaque rubrique  de rubrique à stat rubrique dto
 		for(int i= 0; i<rubriques.size(); i++) {
@@ -398,7 +334,7 @@ public class EvaluationServiceImpl implements EvaluationService{
 			statRubrique.setOrdre(rubriques.get(i).getOrdre());			
 			//get question evaluation par rubrique!!
 			List<StatReponseQuestionDTO> statQuestions = new ArrayList<StatReponseQuestionDTO>();
-			List<QuestionEvaluation> questions = this.questionEvaluationRepository.findAllByIdRubriqueEvaluationOrderByOrdreAsc(rubriques.get(i).getIdRubriqueEvaluation());
+			List<QuestionEvaluation> questions = this.questionEvaluationRepository.findAllByIdRubriqueEvaluationOrderByOrdreAsc(rubriques.get(i).getIdRubrique());
 			for(int j =0; j<questions.size(); j++) {
 				StatReponseQuestionDTO statRepQuest = this.reponseQustionService.getStatReponseQuestion(questions.get(j).getIdQuestionEvaluation());
 				statQuestions.add(statRepQuest);				
@@ -425,27 +361,23 @@ public class EvaluationServiceImpl implements EvaluationService{
 		statEva.setNoEnseignant(eva.getNoEnseignant());
 		statEva.setNoEvaluation(eva.getNoEvaluation());
 		statEva.setPeriode(eva.getPeriode());
-		
-		
-		
 		statEva.setRubriques(this.getStatRubriques(idEvaluation));
 		return statEva;
 	}
 
-
 	@Override
-	public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<EvaluationDTO> evaluationPubliee()
+	{
+		List<Evaluation> result = evaluationRepository.findAllByEtat("DIS");
+		
+		return result.stream().map(eval ->
+		{
+			EvaluationDTO newEval = dataMapper.evaluationMapperToDTO(eval);
+			
+			newEval.setRubriques(getRubriqueEvaluation(eval.getIdEvaluation()));
+			return newEval;
+		}).collect(Collectors.toList());
 	}
 
-
-
-
-
-	
-
-
-    
 
 }

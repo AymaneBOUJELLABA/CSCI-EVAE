@@ -203,5 +203,14 @@ public class EvaluationController {
         Integer NumberEtudiantRepondu = etudiantEvaluationService.NumberOfStudents(codeFormation,anneeUniv);
         return new ResponseEntity<>(NumberEtudiantRepondu,HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping(path="/publiees")
+    @ResponseBody
+    public ResponseEntity<List<EvaluationDTO>> getEvalsPublie()
+    {
+    	List<EvaluationDTO> response = evaluationService.evaluationPubliee();
+    	
+    	return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
 }

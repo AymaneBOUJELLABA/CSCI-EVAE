@@ -1,6 +1,9 @@
 package fr.ubo.dosi.CSCIEVAE.repository;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +13,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation,Long> {
     Evaluation findByCodeUeContainingIgnoreCase(String codeUe);
 
     Evaluation findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(String anneeUniv, String codeUe);
+    
+    List<Evaluation> findAllByEtat(String etat);
 }
