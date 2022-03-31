@@ -1,9 +1,13 @@
 package fr.ubo.dosi.CSCIEVAE;
 
 import fr.ubo.dosi.CSCIEVAE.entity.Question;
+import fr.ubo.dosi.CSCIEVAE.entity.RubriqueEvaluation;
 import fr.ubo.dosi.CSCIEVAE.entity.RubriqueQuestion;
 import fr.ubo.dosi.CSCIEVAE.repository.QuestionRepository;
+import fr.ubo.dosi.CSCIEVAE.repository.RubriqueEvalutionRepository;
 import fr.ubo.dosi.CSCIEVAE.repository.RubriqueQuestionRepository;
+import fr.ubo.dosi.CSCIEVAE.services.EvaluationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +25,10 @@ public class CsciEvaeApplication implements CommandLineRunner {
 	RubriqueQuestionRepository rubriqueQuestionRepository;
 	@Autowired
 	QuestionRepository questionRepository;
+	@Autowired
+	RubriqueEvalutionRepository rubriqueEvaluationRepository;
+	@Autowired
+	EvaluationService evaluationService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CsciEvaeApplication.class, args);
@@ -29,6 +37,21 @@ public class CsciEvaeApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		
+		// Setting Ques Eval data for old Promotion
+		List<Long> idEvals = Arrays.asList(3L,4L,5L,6L,7L,8L);
+		
+		idEvals.forEach(idEval -> {
+			System.out.println("For eval with ID : "+idEval);
+			rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval)
+							.forEach(rubriqueEvaluation -> {
+								System.out.println(""+rubriqueEvaluation.getIdRubrique());
+								System.out.println(""+rubriqueEvaluation.getOrdre());
+							});
+			List<RubriqueEvaluation> rubriqueEvaluations = rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval);
+			evaluationService.setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
+		});
+		
 		questionRepository.save(
 				new Question(
 						23L,
@@ -111,5 +134,10 @@ public class CsciEvaeApplication implements CommandLineRunner {
 					)
 			);
 		});
+		
+		
+		
+		
+
 	}
 }

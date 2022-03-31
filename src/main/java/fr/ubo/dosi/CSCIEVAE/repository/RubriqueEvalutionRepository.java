@@ -10,6 +10,10 @@ import java.util.List;
 public interface RubriqueEvalutionRepository extends JpaRepository<RubriqueEvaluation,Long> {
 
     List<RubriqueEvaluation> findAllByIdEvaluationOrderByOrdreAsc(Long idEvaluation);
-
+    
+    List<RubriqueEvaluation> findByDesignation(String designation);
+    
+    RubriqueEvaluation findByIdEvaluationAndIdRubrique(Long idEvaluation, Long idRubrique);
+    
     void deleteAllByIdEvaluation(Long idEva);
 }

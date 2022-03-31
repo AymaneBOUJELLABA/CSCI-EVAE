@@ -19,6 +19,4 @@ public class RubriqueDTO {
     private String designation;
     private Long ordre;
     private List<QuestionDTO> questions;
-  
-
 }

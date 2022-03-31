@@ -70,6 +70,7 @@ public class EvaluationServiceImpl implements EvaluationService{
         log.info("Recherche de évaluation associée à une UE de code "+codeUe
                         + "pour l'année univercitaire " + anneeUniv +", en service");
        return evaluationRepository.
+
                findByAnneeUniversitaireAndCodeUeContainingIgnoreCase(anneeUniv,codeUe);}
 
     public Evaluation getEvalutionParCodeUe(String codeUe) {
@@ -78,6 +79,7 @@ public class EvaluationServiceImpl implements EvaluationService{
         Evaluation eva = evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
 
         return evaluationRepository.findByCodeUeContainingIgnoreCase(codeUe);
+
 
     }
 
@@ -91,9 +93,11 @@ public class EvaluationServiceImpl implements EvaluationService{
         }else {
             log.info("La recherche d'une évaluation par ID " + id + ", n'existe pas");
 
+
            log.info("Recherche d'une évaluation par ID " + id + " en service");
             return evaluationRepository.findById(id).get();
         }
+
     }
 
     @Override
@@ -152,9 +156,11 @@ public class EvaluationServiceImpl implements EvaluationService{
     }
 
     @Transactional
+
     @Override
     public EvaluationDTO createEvalution(EvaluationDTO evaluationDTO) {
         //log.info("--- Start Evalution Creation ---");
+
 
         Evaluation eva = dataMapper.evaluationDtoToEvaluation(evaluationDTO);
         try {
@@ -168,8 +174,10 @@ public class EvaluationServiceImpl implements EvaluationService{
                 log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             log.info(" Donner les droits associer à une évaluation");
 
+
             //log.info(" Evalution créer avec success, " + finalEva.getIdEvaluation());
             //log.info(" Donner les droits associer à une évaluation");
+
 
             droitRepository.save(new Droit(
                     finalEva.getIdEvaluation(),
@@ -183,10 +191,12 @@ public class EvaluationServiceImpl implements EvaluationService{
             associerRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
             log.info(" Les rubriques sont associées avec success à l'évalution ");
 
+
             //log.info(" Droits evaluation associer avec success ");
             //log.info(" __ Assossier les rubriques à l'évalution __ ");
             associetRubriquesToEvaluation(finalEva, evaluationDTO.getRubriques());
             //log.info(" Les rubriques sont associées avec success à l'évalution ");
+
 
             EvaluationDTO newEvaDTO = dataMapper.evaluationMapperToDTO(finalEva);
             newEvaDTO.setRubriques(getRubriqueEvaluation(finalEva.getIdEvaluation()));
@@ -264,6 +274,7 @@ public class EvaluationServiceImpl implements EvaluationService{
         if (!evaluationDTO.getEtat().equals("ELA"))
             throw new EvaluationUpdateErrorException(
                     HttpStatus.NOT_ACCEPTABLE,
+<<<<<<< HEAD
                     "L'évaluation est déja publiée vous ne pouvez pas faire des modification !");}*/
 
     @Override
@@ -279,6 +290,9 @@ public class EvaluationServiceImpl implements EvaluationService{
                     (long) i+1,
                     rubriqueDTO.getType()
 
+=======
+                    "L'évaluation est déja publiée vous ne pouvez pas faire des modification !"
+>>>>>>> 292d28b49b37d9d1656bfe5f9ac4a823beb2d22d
             );
         if (!rubriqueEvalutionRepository.findAllByIdEvaluationOrderByOrdreAsc(evaluationDTO.getIdEvaluation())
                 .isEmpty())
@@ -404,6 +418,7 @@ public class EvaluationServiceImpl implements EvaluationService{
 		return statEva;
 	}
 
+
 	@Override
 	public EvaluationDTO createEvaluation(EvaluationDTO evaluationDTO) {
 		// TODO Auto-generated method stub
@@ -415,9 +430,6 @@ public class EvaluationServiceImpl implements EvaluationService{
 	
 
 
-    
-
-    
     
 
 }

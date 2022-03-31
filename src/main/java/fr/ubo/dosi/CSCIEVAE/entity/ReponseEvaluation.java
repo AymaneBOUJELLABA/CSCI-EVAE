@@ -1,13 +1,19 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
 import javax.persistence.*;
+
+import lombok.Data;
+import lombok.ToString;
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = "REPONSE_EVALUATION")
+@ToString
 public class ReponseEvaluation implements Serializable {
     @Id
     @Column(name = "ID_REPONSE_EVALUATION")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idReponseEvaluation;
 
     @Column(name = "ID_EVALUATION")

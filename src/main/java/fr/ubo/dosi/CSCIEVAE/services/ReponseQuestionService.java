@@ -108,12 +108,12 @@ public class ReponseQuestionService {
        int nbrEtud=rq.getNbrPos1()+rq.getNbrPos2()+rq.getNbrPos3()+rq.getNbrPos4()+rq.getNbrPos5() ;
      
        if(nbrEtud !=0) 
-     rq.setMoyenne((long)((rq.getNbrPos1()
+     rq.setMoyenne(Math.round((double)((rq.getNbrPos1()
     		  +(rq.getNbrPos2()*2)
     		  +(rq.getNbrPos3()*3)
     		  +(rq.getNbrPos4()*4)
     		  +(rq.getNbrPos5()*5))
-    		  /nbrEtud));
+    		  /nbrEtud)));
        else rq.setMoyenne((long)0);
       return rq;
     	

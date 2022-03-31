@@ -1,6 +1,7 @@
 package fr.ubo.dosi.CSCIEVAE.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import fr.ubo.dosi.CSCIEVAE.dto.QuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueDTO;
@@ -22,5 +23,9 @@ public interface RubriqueService
 	public List<RubriqueDTO> ajouterOrUpdateAllRubriques(List<Rubrique> items) throws Exception;
 
 	List<QuestionDTO> getQuestionsForRubrique(Long idRubrique);
+	
+	Rubrique getRubriqueByDesignation(String Designation) throws NoSuchElementException;
+
+	Rubrique getRubriqueByIdRubriqueEvaluation(Long idRubriqueEvaluation) throws NoSuchElementException;
 	
 }

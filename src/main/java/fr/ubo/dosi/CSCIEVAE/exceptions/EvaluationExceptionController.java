@@ -67,4 +67,13 @@ public class EvaluationExceptionController {
     }
 
 
+    @ExceptionHandler(AuthentificationNotFoundException.class)
+    public ResponseEntity<Object> handleAuthentificationNotFoundExceptions(Exception e) {
+        return new ResponseEntity<>(
+                "Identifiant ou mot de passe erronés! \t"
+                        +e.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
 }

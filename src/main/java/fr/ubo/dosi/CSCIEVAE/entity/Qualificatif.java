@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "QUALIFICATIF")
 
+
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 

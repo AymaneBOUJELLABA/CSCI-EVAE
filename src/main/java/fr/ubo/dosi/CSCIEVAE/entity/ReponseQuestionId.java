@@ -1,6 +1,8 @@
 package fr.ubo.dosi.CSCIEVAE.entity;
 
+
 import java.io.Serializable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -29,8 +31,4 @@ public class ReponseQuestionId implements Serializable{
 		return Objects.equals(idQuestionEvaluation, other.idQuestionEvaluation)
 				&& Objects.equals(idReponseEvaluation, other.idReponseEvaluation);
 	}
-    
-    
-
-
 }
