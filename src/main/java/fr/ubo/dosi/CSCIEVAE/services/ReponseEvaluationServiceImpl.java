@@ -21,6 +21,7 @@ import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationGraphesDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseQuestionDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseRubriqueDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.RubriqueGraphesDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.StatEvaluationDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.UeStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.entity.Etudiant;
 import fr.ubo.dosi.CSCIEVAE.entity.Evaluation;
@@ -107,6 +108,13 @@ public class ReponseEvaluationServiceImpl implements ReponseEvaluationService
 		return null;
 	}
 
+	/*public StatEvaluationDTO getStatsEval(String codeUe,String anneeUniv)
+	{
+		List<ReponseEvaluationDTO> res = getAllReponseEvaluationsByUeAndAnneUniv(codeUe, anneeUniv);
+		
+		res.get
+		
+	}*/
 	@Override
 	public ReponseEvaluationDTO addReponseEvaluation(EvaluationReponseInMessage entity) throws Exception
 	{

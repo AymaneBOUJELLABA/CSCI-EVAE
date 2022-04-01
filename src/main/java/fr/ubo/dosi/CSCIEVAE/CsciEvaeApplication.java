@@ -124,7 +124,7 @@ public class CsciEvaeApplication implements CommandLineRunner {
 		});
 		
 		
-		// Setting Ques Eval data for old Promotion
+		/*// Setting Ques Eval data for old Promotion
 		List<Long> idEvals = Arrays.asList(3L,4L,5L,6L,7L,8L);
 		
 		idEvals.forEach(idEval -> {
@@ -136,7 +136,7 @@ public class CsciEvaeApplication implements CommandLineRunner {
 							});
 			List<RubriqueEvaluation> rubriqueEvaluations = rubriqueEvaluationRepository.findAllByIdEvaluationOrderByOrdreAsc(idEval);
 			evaluationService.setQuestionsEvaluationForRubsEval(rubriqueEvaluations);
-		});
+		});*/
 		
 
 	}
