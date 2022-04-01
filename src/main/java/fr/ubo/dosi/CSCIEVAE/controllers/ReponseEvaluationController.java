@@ -1,6 +1,7 @@
 package fr.ubo.dosi.CSCIEVAE.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.ubo.dosi.CSCIEVAE.dto.PromotionsStatsDTO;
 import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationDTO;
+import fr.ubo.dosi.CSCIEVAE.dto.ReponseEvaluationGraphesDTO;
 import fr.ubo.dosi.CSCIEVAE.messages.EvaluationReponseInMessage;
 import fr.ubo.dosi.CSCIEVAE.services.ReponseEvaluationService;
 import lombok.extern.log4j.Log4j2;
@@ -58,6 +60,32 @@ public class ReponseEvaluationController
 		List<PromotionsStatsDTO> result = reponseEvaluationService.getAllPromotionsGraphesData();
 		
 		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/graphes/{codeUe}")
+	@ResponseBody
+	public ResponseEntity<List<PromotionsStatsDTO>> getAllPromotionsUeForGraphes(@PathVariable("codeUe") String codeUe)
+	{
+		log.info("Recherche des informations pour affichage des graphes");
+		List<PromotionsStatsDTO> result = reponseEvaluationService.getAllPromotionsGraphesData();
+		
+		
+		List<PromotionsStatsDTO> promoUe = result.stream().map(promo ->
+		{
+			PromotionsStatsDTO n = new PromotionsStatsDTO();
+			
+			List<ReponseEvaluationGraphesDTO> newE = promo.getReponseEvaluations()
+					.stream()
+					.filter(repEval-> repEval.getCodeUe().equals(codeUe))
+					.collect(Collectors.toList());
+			
+			n.setAnneUniv(promo.getAnneUniv());
+			n.setCodeFormation(promo.getCodeFormation());
+			promo.setReponseEvaluations(newE);
+			
+			return n;
+		}).collect(Collectors.toList());
+		return new ResponseEntity<>(promoUe, HttpStatus.OK);
 	}
 	
 	@PostMapping
